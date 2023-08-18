@@ -1,13 +1,17 @@
-'use client'
-import React, { useEffect, useRef } from "react";
-import ForceGraph3D from "3d-force-graph";
+"use client";
+import * as THREE from "three";
+import { useState, useEffect } from "react";
+import ForceGraph3D from "react-force-graph-3d";
+import ShowNodeInfo from "./showNodeInfo";
+import ShowNodeCard from "./ShowNodeCard";
 
 function ThreeGraph() {
-  const containerRef = useRef(null);
+  const [gData, setGData] = useState<any>({ nodes: [], links: [] });
+  const amountOfBadgeHolders = 0.5;
 
   useEffect(() => {
-    const N = 300;
-    const gData = {
+    const N = 10;
+    const data = {
       nodes: [...Array(N).keys()].map((i) => ({ id: i })),
       links: [...Array(N).keys()]
         .filter((id) => id)
@@ -17,10 +21,32 @@ function ThreeGraph() {
         })),
     };
 
-    const Graph = ForceGraph3D()(containerRef.current).graphData(gData);
+    setGData(data);
   }, []);
 
-  return <div ref={containerRef} style={{ width: "100%", height: "100vh" }} />;
+  return (
+    <>
+      <ForceGraph3D
+        graphData={gData}
+        linkDirectionalArrowLength={2}
+        linkDirectionalArrowColor={"green"}
+        linkWidth={1}
+        nodeResolution={4}
+        onNodeClick={ShowNodeCard()}
+        onNodeHover={ShowNodeInfo()}
+        nodeThreeObject={() =>
+          new THREE.Mesh(
+            new THREE.BoxGeometry(
+              amountOfBadgeHolders * 10,
+              amountOfBadgeHolders * 10,
+              amountOfBadgeHolders * 10
+            )
+          )
+        }
+      />
+      ;
+    </>
+  );
 }
 
 export default ThreeGraph;
