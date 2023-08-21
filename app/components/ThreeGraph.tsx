@@ -57,7 +57,8 @@ export default function ThreeGraph() {
 
         const addresses: Set<string> = attestations.reduce(
           (acc: Set<string>, attestation: any) => {
-            acc.add(attestation.recipient);
+            console.log(attestation);
+            acc.add(attestation.decodedDataJson[1].value.value);
             acc.add(attestation.attester);
             return acc;
           },
