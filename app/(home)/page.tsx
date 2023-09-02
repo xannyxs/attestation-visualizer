@@ -1,5 +1,6 @@
 "use client";
 
+import ShowNodeCard from "../components/ShowNodeCard";
 import ThreeGraph from "../components/ThreeGraphWrapper";
 import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
 
