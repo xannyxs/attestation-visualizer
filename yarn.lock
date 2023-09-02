@@ -493,6 +493,11 @@
     "@ethersproject/properties" "^5.7.0"
     "@ethersproject/strings" "^5.7.0"
 
+"@fontsource-variable/league-spartan@^5.0.8":
+  version "5.0.8"
+  resolved "https://registry.yarnpkg.com/@fontsource-variable/league-spartan/-/league-spartan-5.0.8.tgz#3d3cb180ecc43a1a3bd8b9150909a7ca4053d69e"
+  integrity sha512-q9vYxyc0Oio5TaWvIoO/USJIXV46mqm1eP9zf3rZf2mcxe/t6pVn8bJluadqyo+U12zkDGVck3GbFitibgHRAA==
+
 "@graphql-typed-document-node/core@^3.1.1":
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/@graphql-typed-document-node/core/-/core-3.2.0.tgz#5f3d96ec6b2354ad6d8a28bf216a1d97b5426861"
