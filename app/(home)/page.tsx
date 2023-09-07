@@ -1,6 +1,7 @@
 "use client";
 
-import ShowNodeCard from "../components/ShowNodeCard";
+import { WagmiConfig, createConfig, mainnet } from "wagmi";
+import { createPublicClient, http } from "viem";
 import ThreeGraph from "../components/ThreeGraphWrapper";
 import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
 
@@ -10,11 +11,21 @@ export default function Home() {
     cache: new InMemoryCache(),
   });
 
+  const configWagmi = createConfig({
+    autoConnect: true,
+    publicClient: createPublicClient({
+      chain: mainnet,
+      transport: http(),
+    }),
+  });
+
   return (
     <ApolloProvider client={client}>
-      <main>
-        <ThreeGraph />
-      </main>
+      <WagmiConfig config={configWagmi}>
+        <main>
+          <ThreeGraph />
+        </main>
+      </WagmiConfig>
     </ApolloProvider>
   );
 }
