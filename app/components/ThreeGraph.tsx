@@ -1,5 +1,6 @@
 "use client";
 
+import { ICardProps as CardType } from "../types";
 import { useEffect, useState } from "react";
 import { gql, useQuery } from "@apollo/client";
 import SpriteText from "three-spritetext";
@@ -8,13 +9,6 @@ import { ethers } from "ethers";
 import ForceGraph3D from "react-force-graph-3d";
 import { abi as EAS } from "@ethereum-attestation-service/eas-contracts/artifacts/contracts/EAS.sol/EAS.json";
 import ShowNodeCard from "./ShowNodeCard";
-
-export type AddressInfo = {
-  currentAddress: string;
-  referredBy: string;
-  referredMethod: string;
-  retroPGFRound: number;
-};
 
 export default function ThreeGraph() {
   const rpc = "https://goerli.optimism.io";
@@ -28,10 +22,10 @@ export default function ThreeGraph() {
   const schema =
     "0xfdcfdad2dbe7489e0ce56b260348b7f14e8365a8a325aef9834818c00d46b31b";
   const [graph, setGraph] = useState({ nodes: [], links: [] });
-  const [addressHashMap, setAddressHashMap] = useState<
-    Map<string, AddressInfo>
-  >(new Map());
-  const [selectedNode, setSelectedNode] = useState<AddressInfo | null>(null);
+  const [addressHashMap, setAddressHashMap] = useState<Map<string, CardType>>(
+    new Map()
+  );
+  const [selectedNode, setSelectedNode] = useState<CardType | null>(null);
   const [isCardVisible, setCardVisible] = useState(false);
 
   const { refetch } = useQuery(
@@ -52,16 +46,12 @@ export default function ThreeGraph() {
         },
       },
       onCompleted: async (data) => {
-        const attestations = data.attestations
-          .map((attestation: any) => {
-            return {
-              ...attestation,
-              decodedDataJson: JSON.parse(attestation.decodedDataJson),
-            };
-          })
-          .filter((attestation: any) => {
-            return (attestation.decodedDataJson[0].value.value = true);
-          });
+        const attestations = data.attestations.map((attestation: any) => {
+          return {
+            ...attestation,
+            decodedDataJson: JSON.parse(attestation.decodedDataJson),
+          };
+        });
 
         const addresses: Set<string> = attestations.reduce(
           (acc: Set<string>, attestation: any) => {
@@ -92,12 +82,11 @@ export default function ThreeGraph() {
             }),
           ] as any,
         });
-        const hashMap: Map<string, AddressInfo> = new Map();
-
+        const hashMap: Map<string, CardType> = new Map();
 
         attestations.forEach((attestation: any) => {
-          console.log(attestation)
-          const info: AddressInfo = {
+          console.log(attestation);
+          const info: CardType = {
             currentAddress: attestation.attester,
             referredBy: attestation.decodedDataJson[1].value.value,
             referredMethod: attestation.decodedDataJson[2].value.value,

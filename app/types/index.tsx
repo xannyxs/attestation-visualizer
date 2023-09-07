@@ -1,8 +1,8 @@
 export type EthereumAddress = `0x${string}`;
 
 export interface ICardProps {
-  currentAddress: { id: EthereumAddress };
+  currentAddress: EthereumAddress;
   referredBy: EthereumAddress;
   referredMethod: string;
-  retroPGFRound: number;
+  retroPGFRound: number | null;
 }
