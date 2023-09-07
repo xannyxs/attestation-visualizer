@@ -2,9 +2,10 @@ import InfoBar from "./InfoBar";
 import EnsBar from "./EnsBox";
 import ProfilePicture from "./ProfilePicture";
 import { ICardProps } from "../types";
+import { AddressInfo } from "./ThreeGraph";
 
 interface NodeInfoCardProps {
-  cardInfo: ICardProps
+  cardInfo: AddressInfo
   onClose: () => void;
 }
 
@@ -23,8 +24,8 @@ export default function ShowNodeCard({ cardInfo, onClose }: NodeInfoCardProps) {
           "https://pbs.twimg.com/profile_images/1637604783996428289/Qcbg0CqT_400x400.jpg"
         }
       />
-      <EnsBar objectName={"ENS address"} address={cardInfo.currentAddress.id} />
-      <InfoBar objectName={"Current address"} object={cardInfo.currentAddress.id} />
+      <EnsBar objectName={"ENS address"} address={cardInfo.currentAddress} />
+      <InfoBar objectName={"Current address"} object={cardInfo.currentAddress} />
       <InfoBar objectName={"Referred by"} object={cardInfo.referredBy} />
       <InfoBar objectName={"Referred method"} object={cardInfo.referredMethod} />
       <InfoBar objectName={"RetroPGF Round"} object={cardInfo.retroPGFRound} />

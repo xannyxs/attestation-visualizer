@@ -9,6 +9,13 @@ import ForceGraph3D from "react-force-graph-3d";
 import { abi as EAS } from "@ethereum-attestation-service/eas-contracts/artifacts/contracts/EAS.sol/EAS.json";
 import ShowNodeCard from "./ShowNodeCard";
 
+export type AddressInfo = {
+  currentAddress: string;
+  referredBy: string;
+  referredMethod: string;
+  retroPGFRound: number;
+};
+
 export default function ThreeGraph() {
   const rpc = "https://goerli.optimism.io";
   const provider = new ethers.providers.StaticJsonRpcProvider(rpc);
@@ -21,12 +28,16 @@ export default function ThreeGraph() {
   const schema =
     "0xfdcfdad2dbe7489e0ce56b260348b7f14e8365a8a325aef9834818c00d46b31b";
   const [graph, setGraph] = useState({ nodes: [], links: [] });
+  const [addressHashMap, setAddressHashMap] = useState<
+    Map<string, AddressInfo>
+  >(new Map());
+  const [selectedNode, setSelectedNode] = useState<AddressInfo | null>(null);
+  const [isCardVisible, setCardVisible] = useState(false);
+
   const { refetch } = useQuery(
     gql`
       query Query($where: AttestationWhereInput) {
         attestations(where: $where) {
-          id
-          schemaId
           attester
           recipient
           decodedDataJson
@@ -36,12 +47,8 @@ export default function ThreeGraph() {
     {
       variables: {
         where: {
-          schemaId: {
-            equals: schema,
-          },
-          revoked: {
-            equals: false,
-          },
+          schemaId: { equals: schema },
+          revoked: { equals: false },
         },
       },
       onCompleted: async (data) => {
@@ -85,6 +92,21 @@ export default function ThreeGraph() {
             }),
           ] as any,
         });
+        const hashMap: Map<string, AddressInfo> = new Map();
+
+
+        attestations.forEach((attestation: any) => {
+          console.log(attestation)
+          const info: AddressInfo = {
+            currentAddress: attestation.attester,
+            referredBy: attestation.decodedDataJson[1].value.value,
+            referredMethod: attestation.decodedDataJson[2].value.value,
+            retroPGFRound: attestation.decodedDataJson[0].value.value,
+          };
+          hashMap.set(attestation.attester, info);
+        });
+
+        setAddressHashMap(hashMap);
       },
     }
   );
@@ -102,11 +124,6 @@ export default function ThreeGraph() {
     blockies = require("ethereum-blockies");
   }
 
-  blockies?.create({ seed: "fixies!" });
-
-  const [selectedNode, setSelectedNode] = useState(null);
-  const [isCardVisible, setCardVisible] = useState(false);
-
   const handleClose = () => {
     setCardVisible(false);
     setSelectedNode(null);
@@ -115,15 +132,7 @@ export default function ThreeGraph() {
   return (
     <div>
       {selectedNode && isCardVisible && (
-        <ShowNodeCard
-          cardInfo={{
-            currentAddress: selectedNode, 
-            referredBy: "0x0",
-            referredMethod: "cool",
-            retroPGFRound: 3,
-          }}
-          onClose={handleClose}
-        />
+        <ShowNodeCard cardInfo={selectedNode} onClose={handleClose} />
       )}
       <ForceGraph3D
         graphData={graph}
@@ -135,7 +144,10 @@ export default function ThreeGraph() {
         linkDirectionalArrowRelPos={1}
         linkDirectionalParticles={1}
         onNodeClick={(node) => {
-          setSelectedNode(node);
+          const additionalInfo = addressHashMap.get(node.id);
+          if (additionalInfo) {
+            setSelectedNode(additionalInfo);
+          }
           setCardVisible(true);
         }}
         nodeThreeObject={(node: any) => {
