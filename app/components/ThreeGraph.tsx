@@ -1,6 +1,6 @@
 "use client";
 
-import { ICardProps as CardType } from "../types";
+import { ICardProps as CardType, EthereumAddress } from "../types";
 import { useEffect, useState } from "react";
 import { gql, useQuery } from "@apollo/client";
 import SpriteText from "three-spritetext";
@@ -16,14 +16,14 @@ export default function ThreeGraph() {
   const eas = new ethers.Contract(
     "0x1d86C2F5cc7fBEc35FEDbd3293b5004A841EA3F0",
     EAS,
-    provider
+    provider,
   );
 
   const schema =
     "0xfdcfdad2dbe7489e0ce56b260348b7f14e8365a8a325aef9834818c00d46b31b";
   const [graph, setGraph] = useState({ nodes: [], links: [] });
   const [addressHashMap, setAddressHashMap] = useState<Map<string, CardType>>(
-    new Map()
+    new Map(),
   );
   const [selectedNode, setSelectedNode] = useState<CardType | null>(null);
   const [isCardVisible, setCardVisible] = useState(false);
@@ -55,11 +55,18 @@ export default function ThreeGraph() {
 
         const addresses: Set<string> = attestations.reduce(
           (acc: Set<string>, attestation: any) => {
+            console.log(attestation)
+            if (
+              attestation.attester ===
+              "0x621477dBA416E12df7FF0d48E14c4D20DC85D7D9"
+            ) {
+              return;
+            }
             acc.add(attestation.decodedDataJson[1].value.value);
-            acc.add(attestation.attester);
+            acc.add(attestation.recipient);
             return acc;
           },
-          new Set()
+          new Set(),
         );
 
         setGraph({
@@ -76,28 +83,30 @@ export default function ThreeGraph() {
             ...attestations.map((attestation: any) => {
               return {
                 source: attestation.decodedDataJson[1].value.value,
-                target: attestation.attester,
+                target: attestation.recipient,
                 type: attestation.schemaId,
               };
             }),
           ] as any,
         });
-        const hashMap: Map<string, CardType> = new Map();
+        const hashMap: Map<EthereumAddress, CardType> = new Map();
 
         attestations.forEach((attestation: any) => {
-          console.log(attestation);
+          const retroPGFRound = Number(
+            attestation.decodedDataJson[0].value.value,
+          );
           const info: CardType = {
-            currentAddress: attestation.attester,
+            currentAddress: attestation.recipient,
             referredBy: attestation.decodedDataJson[1].value.value,
             referredMethod: attestation.decodedDataJson[2].value.value,
-            retroPGFRound: attestation.decodedDataJson[0].value.value,
+            retroPGFRound: isNaN(retroPGFRound) ? null : retroPGFRound,
           };
-          hashMap.set(attestation.attester, info);
+          hashMap.set(attestation.recipient, info);
         });
 
         setAddressHashMap(hashMap);
       },
-    }
+    },
   );
 
   useEffect(() => {
