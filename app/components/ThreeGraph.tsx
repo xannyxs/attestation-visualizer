@@ -16,14 +16,14 @@ export default function ThreeGraph() {
   const eas = new ethers.Contract(
     "0x1d86C2F5cc7fBEc35FEDbd3293b5004A841EA3F0",
     EAS,
-    provider,
+    provider
   );
 
   const schema =
     "0xfdcfdad2dbe7489e0ce56b260348b7f14e8365a8a325aef9834818c00d46b31b";
   const [graph, setGraph] = useState({ nodes: [], links: [] });
   const [addressHashMap, setAddressHashMap] = useState<Map<string, CardType>>(
-    new Map(),
+    new Map()
   );
   const [selectedNode, setSelectedNode] = useState<CardType | null>(null);
   const [isCardVisible, setCardVisible] = useState(false);
@@ -46,7 +46,13 @@ export default function ThreeGraph() {
         },
       },
       onCompleted: async (data) => {
-        const attestations = data.attestations.map((attestation: any) => {
+        const filteredAttestations = data.attestations.filter(
+          (attestation: any) =>
+            attestation.attester ===
+            "0x621477dBA416E12df7FF0d48E14c4D20DC85D7D9"
+        );
+
+        const attestations = filteredAttestations.map((attestation: any) => {
           return {
             ...attestation,
             decodedDataJson: JSON.parse(attestation.decodedDataJson),
@@ -55,23 +61,17 @@ export default function ThreeGraph() {
 
         const addresses: Set<string> = attestations.reduce(
           (acc: Set<string>, attestation: any) => {
-            console.log(attestation)
-            if (
-              attestation.attester ===
-              "0x621477dBA416E12df7FF0d48E14c4D20DC85D7D9"
-            ) {
-              return;
-            }
             acc.add(attestation.decodedDataJson[1].value.value);
             acc.add(attestation.recipient);
             return acc;
           },
-          new Set(),
+          new Set()
         );
 
         setGraph({
           nodes: [
             ...Array.from(addresses).map((address: string) => {
+              console.log(address);
               return {
                 id: address,
                 name: address,
@@ -81,6 +81,7 @@ export default function ThreeGraph() {
           ] as any,
           links: [
             ...attestations.map((attestation: any) => {
+              console.log(attestation);
               return {
                 source: attestation.decodedDataJson[1].value.value,
                 target: attestation.recipient,
@@ -89,11 +90,12 @@ export default function ThreeGraph() {
             }),
           ] as any,
         });
+
         const hashMap: Map<EthereumAddress, CardType> = new Map();
 
         attestations.forEach((attestation: any) => {
           const retroPGFRound = Number(
-            attestation.decodedDataJson[0].value.value,
+            attestation.decodedDataJson[0].value.value
           );
           const info: CardType = {
             currentAddress: attestation.recipient,
@@ -106,7 +108,7 @@ export default function ThreeGraph() {
 
         setAddressHashMap(hashMap);
       },
-    },
+    }
   );
 
   useEffect(() => {
