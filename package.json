@@ -24,6 +24,7 @@
     "graphql": "^16.8.0",
     "next": "13.4.16",
     "postcss": "8.4.28",
+    "prettier": "^3.0.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-force-graph-3d": "^1.23.0",
@@ -33,5 +34,8 @@
     "typescript": "5.1.6",
     "viem": "^1.10.7",
     "wagmi": "^1.4.1"
+  },
+  "devDependencies": {
+    "@tsconfig/recommended": "^1.0.3"
   }
 }
