@@ -9,6 +9,7 @@ import { ethers } from "ethers";
 import ForceGraph3D from "react-force-graph-3d";
 import { abi as EAS } from "@ethereum-attestation-service/eas-contracts/artifacts/contracts/EAS.sol/EAS.json";
 import ShowNodeCard from "./ShowNodeCard";
+import { fetchOptimismNFTImage } from "./ProfilePicture";
 
 export default function ThreeGraph() {
   const rpc = "https://goerli.optimism.io";
@@ -16,14 +17,14 @@ export default function ThreeGraph() {
   const eas = new ethers.Contract(
     "0x1d86C2F5cc7fBEc35FEDbd3293b5004A841EA3F0",
     EAS,
-    provider
+    provider,
   );
 
   const schema =
     "0xfdcfdad2dbe7489e0ce56b260348b7f14e8365a8a325aef9834818c00d46b31b";
   const [graph, setGraph] = useState({ nodes: [], links: [] });
   const [addressHashMap, setAddressHashMap] = useState<Map<string, CardType>>(
-    new Map()
+    new Map(),
   );
   const [selectedNode, setSelectedNode] = useState<CardType | null>(null);
   const [isCardVisible, setCardVisible] = useState(false);
@@ -49,7 +50,7 @@ export default function ThreeGraph() {
         const filteredAttestations = data.attestations.filter(
           (attestation: any) =>
             attestation.attester ===
-            "0x621477dBA416E12df7FF0d48E14c4D20DC85D7D9"
+            "0x621477dBA416E12df7FF0d48E14c4D20DC85D7D9",
         );
 
         const attestations = filteredAttestations.map((attestation: any) => {
@@ -65,13 +66,12 @@ export default function ThreeGraph() {
             acc.add(attestation.recipient);
             return acc;
           },
-          new Set()
+          new Set(),
         );
 
         setGraph({
           nodes: [
             ...Array.from(addresses).map((address: string) => {
-              console.log(address);
               return {
                 id: address,
                 name: address,
@@ -81,7 +81,6 @@ export default function ThreeGraph() {
           ] as any,
           links: [
             ...attestations.map((attestation: any) => {
-              console.log(attestation);
               return {
                 source: attestation.decodedDataJson[1].value.value,
                 target: attestation.recipient,
@@ -93,22 +92,24 @@ export default function ThreeGraph() {
 
         const hashMap: Map<EthereumAddress, CardType> = new Map();
 
-        attestations.forEach((attestation: any) => {
+        attestations.forEach(async (attestation: any) => {
           const retroPGFRound = Number(
-            attestation.decodedDataJson[0].value.value
+            attestation.decodedDataJson[0].value.value,
           );
           const info: CardType = {
             currentAddress: attestation.recipient,
             referredBy: attestation.decodedDataJson[1].value.value,
             referredMethod: attestation.decodedDataJson[2].value.value,
             retroPGFRound: isNaN(retroPGFRound) ? null : retroPGFRound,
+            imageUrl: await fetchOptimismNFTImage(attestation.recipient),
           };
+
           hashMap.set(attestation.recipient, info);
         });
 
         setAddressHashMap(hashMap);
       },
-    }
+    },
   );
 
   useEffect(() => {
@@ -151,21 +152,45 @@ export default function ThreeGraph() {
           setCardVisible(true);
         }}
         nodeThreeObject={(node: any) => {
+          let sprite: any;
+
           if (node.type === "address") {
-            const icon = blockies?.create({ seed: node.id });
-            const data = icon?.toDataURL("image/png");
-            const texture = new THREE.TextureLoader().load(data);
-            texture.colorSpace = THREE.SRGBColorSpace;
-            const material = new THREE.SpriteMaterial({ map: texture });
-            const sprite = new THREE.Sprite(material);
+            // Initialize with placeholder image
+            const placeholderTexture = new THREE.TextureLoader().load(
+              "placeholder.png",
+            );
+            const placeholderMaterial = new THREE.SpriteMaterial({
+              map: placeholderTexture,
+            });
+            sprite = new THREE.Sprite(placeholderMaterial);
             sprite.scale.set(8, 8, 0);
-            return sprite;
-          } else {
-            const sprite = new SpriteText(node.name);
-            sprite.color = node.color;
-            sprite.textHeight = 4;
+
+            // Check if the hashMap contains an image URL for this node.id
+            const cardInfo = addressHashMap.get(node.id);
+            let data = cardInfo?.imageUrl || "";
+
+            // If no image URL is found, use blockies as a fallback
+            if (data === "") {
+              const blockieIcon = blockies?.create({ seed: node.id });
+              data = blockieIcon?.toDataURL("image/png");
+            }
+
+            // Create new texture based on the fetched or fallback data
+            const newTexture = new THREE.TextureLoader().load(data);
+            newTexture.colorSpace = THREE.SRGBColorSpace;
+
+            sprite.material.map = newTexture;
+            sprite.material.needsUpdate = true;
+
             return sprite;
           }
+
+          // For other node types
+          sprite = new SpriteText(node.name);
+          sprite.color = node.color;
+          sprite.textHeight = 4;
+
+          return sprite;
         }}
       />
     </div>

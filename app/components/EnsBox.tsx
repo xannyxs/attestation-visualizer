@@ -8,7 +8,21 @@ interface InforCardProps {
 export default function EnsBar({ objectName, address }: InforCardProps) {
   const ensName = useEnsName({ address: address as `0x${string}`, chainId: 1 });
 
-  if (ensName.isError || !ensName.data || ensName.isLoading) {
+  if (ensName.isLoading) {
+    // TODO: Should be a skeleton load
+    return (
+      <>
+        <div className="ml-4 font-bold">{objectName}</div>
+        <div className="bg-gray-300 rounded mt-1 m-4">
+          <p className="truncate text-mg p-4 hover:bg-gray-400 hover:rounded">
+            Fetching data...
+          </p>
+        </div>
+      </>
+    );
+  }
+
+  if (ensName.isError || !ensName.data) {
     return <></>;
   }
 

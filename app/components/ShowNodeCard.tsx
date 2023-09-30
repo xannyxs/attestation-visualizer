@@ -2,6 +2,7 @@ import InfoBar from "./InfoBar";
 import EnsBar from "./EnsBox";
 import ProfilePicture from "./ProfilePicture";
 import { ICardProps } from "../types";
+import AddressBar from "./AddressBar";
 
 interface NodeInfoCardProps {
   cardInfo: ICardProps;
@@ -9,8 +10,6 @@ interface NodeInfoCardProps {
 }
 
 // TODO: <Button> should be an icon
-//
-// Keep the z-10, otherwise the card will get behind the graph
 
 export default function ShowNodeCard({ cardInfo, onClose }: NodeInfoCardProps) {
   return (
@@ -18,22 +17,21 @@ export default function ShowNodeCard({ cardInfo, onClose }: NodeInfoCardProps) {
       <button className="p-4 text-red-500" onClick={onClose}>
         X
       </button>
-      <ProfilePicture
-        url={
-          "https://pbs.twimg.com/profile_images/1637604783996428289/Qcbg0CqT_400x400.jpg"
-        }
-      />
+      <ProfilePicture address={cardInfo.currentAddress} />
       <EnsBar objectName={"ENS address"} address={cardInfo.currentAddress} />
-      <InfoBar
+      <AddressBar
         objectName={"Current address"}
         object={cardInfo.currentAddress}
       />
-      <InfoBar objectName={"Referred by"} object={cardInfo.referredBy} />
+      <AddressBar objectName={"Referred by"} object={cardInfo.referredBy} />
       <InfoBar
         objectName={"Referred method"}
         object={cardInfo.referredMethod}
       />
-      <InfoBar objectName={"RetroPGF Round"} object={cardInfo.retroPGFRound ?? "N/A"} />
+      <InfoBar
+        objectName={"RetroPGF Round"}
+        object={cardInfo.retroPGFRound ?? "N/A"}
+      />
     </div>
   );
 }
