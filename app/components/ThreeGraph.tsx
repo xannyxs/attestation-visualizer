@@ -1,7 +1,7 @@
 "use client";
 
 import { Attestation, ICardProps as CardType, EthereumAddress } from "../types";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { gql, useQuery } from "@apollo/client";
 import SpriteText from "three-spritetext";
 import * as THREE from "three";
@@ -11,13 +11,40 @@ import { abi as EAS } from "@ethereum-attestation-service/eas-contracts/artifact
 import ShowNodeCard from "./ShowNodeCard";
 import { fetchOptimismNFTImage } from "./ProfilePicture";
 
+const rpc = "https://goerli.optimism.io";
+const provider = new ethers.providers.StaticJsonRpcProvider(rpc);
+new ethers.Contract(
+  "0x1d86C2F5cc7fBEc35FEDbd3293b5004A841EA3F0",
+  EAS,
+  provider,
+);
+const schema =
+  "0xfdcfdad2dbe7489e0ce56b260348b7f14e8365a8a325aef9834818c00d46b31b";
+
 function buildGraphData(attestations: Attestation[]) {
   const addresses = new Set<string>();
+  const addressToLinks = new Map<string, any[]>();
 
   const processedAttestations = attestations.map((attestation) => {
-    addresses.add(attestation.decodedDataJson[1].value.value);
-    addresses.add(attestation.recipient);
-    return attestation;
+    const source = attestation.decodedDataJson[1].value.value;
+    const target = attestation.recipient;
+
+    addresses.add(source);
+    addresses.add(target);
+
+    const link = {
+      source,
+      target,
+      type: "address",
+    };
+
+    if (!addressToLinks.has(source)) addressToLinks.set(source, []);
+    if (!addressToLinks.has(target)) addressToLinks.set(target, []);
+
+    addressToLinks.get(source).push(link);
+    addressToLinks.get(target).push(link);
+
+    return link;
   });
 
   return {
@@ -25,12 +52,9 @@ function buildGraphData(attestations: Attestation[]) {
       id: address,
       name: address,
       type: "address",
+      links: addressToLinks.get(address) || [],
     })),
-    links: processedAttestations.map((attestation: any) => ({
-      source: attestation.decodedDataJson[1].value.value,
-      target: attestation.recipient,
-      type: attestation.schemaId,
-    })),
+    links: processedAttestations,
   };
 }
 
@@ -71,24 +95,17 @@ async function buildAddressHashMap(
 }
 
 export default function ThreeGraph() {
-  const rpc = "https://goerli.optimism.io";
-  const provider = new ethers.providers.StaticJsonRpcProvider(rpc);
-  const eas = new ethers.Contract(
-    "0x1d86C2F5cc7fBEc35FEDbd3293b5004A841EA3F0",
-    EAS,
-    provider,
-  );
-
-  const schema =
-    "0xfdcfdad2dbe7489e0ce56b260348b7f14e8365a8a325aef9834818c00d46b31b";
   const [graph, setGraph] = useState<any>({ nodes: [], links: [] });
   const [addressHashMap, setAddressHashMap] = useState<Map<string, CardType>>(
     new Map(),
   );
   const [selectedNode, setSelectedNode] = useState<CardType | null>(null);
   const [isCardVisible, setCardVisible] = useState(false);
+  const [highlightNodes, setHighlightNodes] = useState(new Set());
+  const [highlightLinks, setHighlightLinks] = useState(new Set());
+  const [hoverNode, setHoverNode] = useState(null);
 
-  const { refetch } = useQuery(
+  useQuery(
     gql`
       query Query($where: AttestationWhereInput) {
         attestations(where: $where) {
@@ -126,11 +143,28 @@ export default function ThreeGraph() {
     },
   );
 
-
   let blockies: any;
   if (typeof document !== "undefined") {
     blockies = require("ethereum-blockies");
   }
+
+  const updateHighlight = () => {
+    setHighlightNodes(highlightNodes);
+    setHighlightLinks(highlightLinks);
+  };
+
+  const handleNodeHover = (node) => {
+    highlightNodes.clear();
+    highlightLinks.clear();
+
+    if (node) {
+      highlightNodes.add(node);
+      node.links.forEach((link) => highlightLinks.add(link));
+    }
+
+    setHoverNode(node || null);
+    updateHighlight();
+  };
 
   const handleClose = () => {
     setCardVisible(false);
@@ -146,11 +180,15 @@ export default function ThreeGraph() {
         graphData={graph}
         nodeAutoColorBy="type"
         linkAutoColorBy="type"
-        linkWidth={0.2}
+        linkWidth={link => highlightLinks.has(link) ? 2 : 0.2}
         linkOpacity={0.5}
         linkDirectionalArrowLength={3.5}
         linkDirectionalArrowRelPos={1}
         linkDirectionalParticles={1}
+        linkColor={(link: any) =>
+          highlightLinks.has(link) ? "red" : "lightblue"
+        }
+        linkCurvature={0.25}
         onNodeClick={(node) => {
           const additionalInfo = addressHashMap.get(node.id);
           if (additionalInfo) {
@@ -198,6 +236,7 @@ export default function ThreeGraph() {
 
           return sprite;
         }}
+        onNodeHover={handleNodeHover}
       />
     </div>
   );
