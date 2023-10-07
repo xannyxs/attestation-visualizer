@@ -2,7 +2,6 @@ import InfoBar from "./InfoBar";
 import EnsBar from "./EnsBox";
 import ProfilePicture from "./ProfilePicture";
 import { ICardProps } from "../types";
-import AddressBar from "./AddressBar";
 
 interface NodeInfoCardProps {
   cardInfo: ICardProps;
@@ -18,8 +17,8 @@ export default function ShowNodeCard({ cardInfo, onClose }: NodeInfoCardProps) {
         X
       </button>
       <ProfilePicture url={cardInfo.imageUrl} />
-      <EnsBar objectName={"ENS address"} address={cardInfo.currentAddress} />
-      <AddressBar objectName={"Referred by"} object={cardInfo.referredBy} />
+      <EnsBar objectName={"Current ENS address"} address={cardInfo.currentAddress} />
+      <EnsBar objectName={"Referred by"} address={cardInfo.referredBy} />
       <InfoBar
         objectName={"Referred method"}
         object={cardInfo.referredMethod}
