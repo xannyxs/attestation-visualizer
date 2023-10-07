@@ -12,7 +12,7 @@ import ShowNodeCard from "./ShowNodeCard";
 import { fetchOptimismNFTImage } from "./ProfilePicture";
 
 function buildGraphData(attestations: Attestation[]) {
-  const addresses = new Set<string>;
+  const addresses = new Set<string>();
 
   const processedAttestations = attestations.map((attestation) => {
     addresses.add(attestation.decodedDataJson[1].value.value);
@@ -37,18 +37,34 @@ function buildGraphData(attestations: Attestation[]) {
 async function buildAddressHashMap(
   attestations: Attestation[],
 ): Promise<Map<EthereumAddress, CardType>> {
-  const hashMap = new Map<EthereumAddress, CardType>;
+  const hashMap = new Map<EthereumAddress, CardType>();
 
-  for (const attestation of attestations) {
-    const retroPGFRound = Number(attestation.decodedDataJson[0].value.value);
-    const info: CardType = {
-      currentAddress: attestation.recipient,
-      referredBy: attestation.decodedDataJson[1].value.value,
-      referredMethod: attestation.decodedDataJson[2].value.value,
-      retroPGFRound: isNaN(retroPGFRound) ? null : retroPGFRound,
-      imageUrl: await fetchOptimismNFTImage(attestation.recipient),
-    };
-    hashMap.set(attestation.recipient, info);
+  const fetchPromises: Promise<[EthereumAddress, string, number | null]>[] =
+    attestations.map(async (attestation) => {
+      const retroPGFRound = Number(attestation.decodedDataJson[0].value.value);
+      const imageUrl = await fetchOptimismNFTImage(attestation.recipient);
+      return [
+        attestation.recipient,
+        imageUrl,
+        isNaN(retroPGFRound) ? null : retroPGFRound,
+      ] as [EthereumAddress, string, number | null];
+    });
+
+  const fetchedData = await Promise.all(fetchPromises);
+
+  for (const [recipient, imageUrl, retroPGFRound] of fetchedData) {
+    const attestation = attestations.find((a) => a.recipient === recipient);
+
+    if (attestation) {
+      const info: CardType = {
+        currentAddress: recipient,
+        referredBy: attestation.decodedDataJson[1].value.value,
+        referredMethod: attestation.decodedDataJson[2].value.value,
+        retroPGFRound,
+        imageUrl,
+      };
+      hashMap.set(recipient, info);
+    }
   }
 
   return hashMap;
