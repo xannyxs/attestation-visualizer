@@ -126,13 +126,6 @@ export default function ThreeGraph() {
     },
   );
 
-  useEffect(() => {
-    const listener = () => {
-      refetch();
-    };
-    eas.off("Attested", listener);
-    eas.on("Attested", listener);
-  }, [eas, refetch]);
 
   let blockies: any;
   if (typeof document !== "undefined") {
