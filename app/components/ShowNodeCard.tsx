@@ -19,10 +19,6 @@ export default function ShowNodeCard({ cardInfo, onClose }: NodeInfoCardProps) {
       </button>
       <ProfilePicture address={cardInfo.currentAddress} />
       <EnsBar objectName={"ENS address"} address={cardInfo.currentAddress} />
-      <AddressBar
-        objectName={"Current address"}
-        object={cardInfo.currentAddress}
-      />
       <AddressBar objectName={"Referred by"} object={cardInfo.referredBy} />
       <InfoBar
         objectName={"Referred method"}

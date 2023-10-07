@@ -8,22 +8,19 @@ interface InforCardProps {
 export default function EnsBar({ objectName, address }: InforCardProps) {
   const ensName = useEnsName({ address: address as `0x${string}`, chainId: 1 });
 
-  if (ensName.isLoading) {
-    // TODO: Should be a skeleton load
+  if (ensName.isError || !ensName.data) {
     return (
       <>
-        <div className="ml-4 font-bold">{objectName}</div>
+        <div className="ml-4 font-bold">Current address</div>
         <div className="bg-gray-300 rounded mt-1 m-4">
-          <p className="truncate text-mg p-4 hover:bg-gray-400 hover:rounded">
-            Fetching data...
-          </p>
+          <a href={`https://etherscan.io/address/${address}`}>
+            <p className="truncate text-mg p-4 hover:bg-gray-400 hover:rounded">
+              {address}
+            </p>
+          </a>
         </div>
       </>
     );
-  }
-
-  if (ensName.isError || !ensName.data) {
-    return <></>;
   }
 
   return (

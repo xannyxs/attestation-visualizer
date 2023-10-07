@@ -6,12 +6,14 @@ interface ProfilePictureProps {
   address: EthereumAddress;
 }
 
-export async function fetchOptimismNFTImage(address: EthereumAddress): Promise<string> {
+export async function fetchOptimismNFTImage(
+  address: EthereumAddress,
+): Promise<string> {
   try {
     const res = await fetch(`/api/fetchnft?address=${address}`);
     if (res.ok) {
       const data = await res.json();
-      console.log(data)
+      console.log(data);
       const optimismNFT = data.nfts?.find(
         (nft: any) => nft.collection === "optimist-nft",
       );
