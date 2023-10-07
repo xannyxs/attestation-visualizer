@@ -46,3 +46,6 @@ If you'd like to contribute, please fork the repository and make changes as you'
 ## Credits
 - **JSeiferth**: Check out his GitHub [here](https://github.com/JSeiferth).
 - **coolgraph**: Learn more about the project [here](https://github.com/smartcontracts/coolgraph).
+
+## Source
+- Where it all started... [Ecosystem Project Idea: Voting Badge Attestation Visualizer](https://github.com/ethereum-optimism/ecosystem-contributions/issues/107)
