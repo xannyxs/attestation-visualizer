@@ -1,6 +1,6 @@
 "use client";
 
-import { ICardProps as CardType, EthereumAddress } from "../types";
+import { Attestation, ICardProps as CardType, EthereumAddress } from "../types";
 import { useEffect, useState } from "react";
 import { gql, useQuery } from "@apollo/client";
 import SpriteText from "three-spritetext";
@@ -11,10 +11,10 @@ import { abi as EAS } from "@ethereum-attestation-service/eas-contracts/artifact
 import ShowNodeCard from "./ShowNodeCard";
 import { fetchOptimismNFTImage } from "./ProfilePicture";
 
-function buildGraphData(attestations: any[]) {
+function buildGraphData(attestations: Attestation[]) {
   const addresses = new Set<string>;
 
-  const processedAttestations = attestations.map((attestation: any) => {
+  const processedAttestations = attestations.map((attestation) => {
     addresses.add(attestation.decodedDataJson[1].value.value);
     addresses.add(attestation.recipient);
     return attestation;
@@ -35,9 +35,9 @@ function buildGraphData(attestations: any[]) {
 }
 
 async function buildAddressHashMap(
-  attestations: any[],
+  attestations: Attestation[],
 ): Promise<Map<EthereumAddress, CardType>> {
-  const hashMap = new Map<EthereumAddress, CardType>();
+  const hashMap = new Map<EthereumAddress, CardType>;
 
   for (const attestation of attestations) {
     const retroPGFRound = Number(attestation.decodedDataJson[0].value.value);
@@ -153,7 +153,6 @@ export default function ThreeGraph() {
           let sprite: any;
 
           if (node.type === "address") {
-            // Initialize with placeholder image
             const placeholderTexture = new THREE.TextureLoader().load(
               "placeholder.png",
             );
@@ -163,17 +162,14 @@ export default function ThreeGraph() {
             sprite = new THREE.Sprite(placeholderMaterial);
             sprite.scale.set(8, 8, 0);
 
-            // Check if the hashMap contains an image URL for this node.id
             const cardInfo = addressHashMap.get(node.id);
             let data = cardInfo?.imageUrl || "";
 
-            // If no image URL is found, use blockies as a fallback
             if (data === "") {
               const blockieIcon = blockies?.create({ seed: node.id });
               data = blockieIcon?.toDataURL("image/png");
             }
 
-            // Create new texture based on the fetched or fallback data
             const newTexture = new THREE.TextureLoader().load(data);
             newTexture.colorSpace = THREE.SRGBColorSpace;
 
@@ -182,8 +178,6 @@ export default function ThreeGraph() {
 
             return sprite;
           }
-
-          // For other node types
           sprite = new SpriteText(node.name);
           sprite.color = node.color;
           sprite.textHeight = 4;
