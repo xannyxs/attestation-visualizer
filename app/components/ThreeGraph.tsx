@@ -1,6 +1,6 @@
 "use client";
 
-import { ICardProps as CardType, EthereumAddress } from "../types";
+import { Attestation, ICardProps as CardType, EthereumAddress } from "../types";
 import { useEffect, useState } from "react";
 import { gql, useQuery } from "@apollo/client";
 import SpriteText from "three-spritetext";
@@ -10,6 +10,49 @@ import ForceGraph3D from "react-force-graph-3d";
 import { abi as EAS } from "@ethereum-attestation-service/eas-contracts/artifacts/contracts/EAS.sol/EAS.json";
 import ShowNodeCard from "./ShowNodeCard";
 import { fetchOptimismNFTImage } from "./ProfilePicture";
+
+function buildGraphData(attestations: any[]) {
+  const addresses = new Set<string>;
+
+  const processedAttestations = attestations.map((attestation: any) => {
+    addresses.add(attestation.decodedDataJson[1].value.value);
+    addresses.add(attestation.recipient);
+    return attestation;
+  });
+
+  return {
+    nodes: Array.from(addresses).map((address) => ({
+      id: address,
+      name: address,
+      type: "address",
+    })),
+    links: processedAttestations.map((attestation: any) => ({
+      source: attestation.decodedDataJson[1].value.value,
+      target: attestation.recipient,
+      type: attestation.schemaId,
+    })),
+  };
+}
+
+async function buildAddressHashMap(
+  attestations: any[],
+): Promise<Map<EthereumAddress, CardType>> {
+  const hashMap = new Map<EthereumAddress, CardType>();
+
+  for (const attestation of attestations) {
+    const retroPGFRound = Number(attestation.decodedDataJson[0].value.value);
+    const info: CardType = {
+      currentAddress: attestation.recipient,
+      referredBy: attestation.decodedDataJson[1].value.value,
+      referredMethod: attestation.decodedDataJson[2].value.value,
+      retroPGFRound: isNaN(retroPGFRound) ? null : retroPGFRound,
+      imageUrl: await fetchOptimismNFTImage(attestation.recipient),
+    };
+    hashMap.set(attestation.recipient, info);
+  }
+
+  return hashMap;
+}
 
 export default function ThreeGraph() {
   const rpc = "https://goerli.optimism.io";
@@ -60,54 +103,8 @@ export default function ThreeGraph() {
           };
         });
 
-        const addresses: Set<string> = attestations.reduce(
-          (acc: Set<string>, attestation: any) => {
-            acc.add(attestation.decodedDataJson[1].value.value);
-            acc.add(attestation.recipient);
-            return acc;
-          },
-          new Set(),
-        );
-
-        setGraph({
-          nodes: [
-            ...Array.from(addresses).map((address: string) => {
-              return {
-                id: address,
-                name: address,
-                type: "address",
-              };
-            }),
-          ] as any,
-          links: [
-            ...attestations.map((attestation: any) => {
-              return {
-                source: attestation.decodedDataJson[1].value.value,
-                target: attestation.recipient,
-                type: attestation.schemaId,
-              };
-            }),
-          ] as any,
-        });
-
-        const hashMap: Map<EthereumAddress, CardType> = new Map();
-
-        attestations.forEach(async (attestation: any) => {
-          const retroPGFRound = Number(
-            attestation.decodedDataJson[0].value.value,
-          );
-          const info: CardType = {
-            currentAddress: attestation.recipient,
-            referredBy: attestation.decodedDataJson[1].value.value,
-            referredMethod: attestation.decodedDataJson[2].value.value,
-            retroPGFRound: isNaN(retroPGFRound) ? null : retroPGFRound,
-            imageUrl: await fetchOptimismNFTImage(attestation.recipient),
-          };
-
-          hashMap.set(attestation.recipient, info);
-        });
-
-        setAddressHashMap(hashMap);
+        setGraph(buildGraphData(attestations));
+        setAddressHashMap(await buildAddressHashMap(attestations));
       },
     },
   );

@@ -1,5 +1,4 @@
 import { NextResponse, NextRequest } from "next/server";
-import axios from "axios";
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const address = req.nextUrl.searchParams.get("address");
