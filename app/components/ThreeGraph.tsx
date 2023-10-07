@@ -65,7 +65,7 @@ export default function ThreeGraph() {
 
   const schema =
     "0xfdcfdad2dbe7489e0ce56b260348b7f14e8365a8a325aef9834818c00d46b31b";
-  const [graph, setGraph] = useState({ nodes: [], links: [] });
+  const [graph, setGraph] = useState<any>({ nodes: [], links: [] });
   const [addressHashMap, setAddressHashMap] = useState<Map<string, CardType>>(
     new Map(),
   );
@@ -103,7 +103,8 @@ export default function ThreeGraph() {
           };
         });
 
-        setGraph(buildGraphData(attestations));
+        const graph = buildGraphData(attestations);
+        setGraph(graph);
         setAddressHashMap(await buildAddressHashMap(attestations));
       },
     },

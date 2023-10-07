@@ -3,6 +3,12 @@ import { NextResponse, NextRequest } from "next/server";
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const address = req.nextUrl.searchParams.get("address");
 
+  if (!process.env.NEXT_PUBLIC_OPENSEA_API) {
+    return new NextResponse("Internal: Missing ENV variable", {
+      status: 500,
+    });
+  }
+
   if (!address) {
     return new NextResponse("Bad Request: Missing ETH Address", {
       status: 400,
@@ -14,7 +20,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     {
       cache: "force-cache",
       headers: {
-        "X-API-KEY": process.env.OPENSEA_API,
+        "X-API-KEY": process.env.NEXT_PUBLIC_OPENSEA_API,
         Accept: "application/json",
       },
     },
