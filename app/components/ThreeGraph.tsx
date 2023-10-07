@@ -178,7 +178,7 @@ export default function ThreeGraph() {
             sprite = new THREE.Sprite(placeholderMaterial);
             sprite.scale.set(8, 8, 0);
 
-            let data: string;
+            let data: string | undefined;
             if (node.id === "0x0000000000000000000000000000000000000000") {
               data = "sunny.png";
             } else {
