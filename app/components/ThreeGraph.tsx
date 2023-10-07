@@ -1,6 +1,6 @@
 "use client";
 
-import { Attestation, ICardProps as CardType, EthereumAddress } from "../types";
+import { ICardProps as CardType, EthereumAddress } from "../types";
 import { useEffect, useState } from "react";
 import { gql, useQuery } from "@apollo/client";
 import SpriteText from "three-spritetext";
