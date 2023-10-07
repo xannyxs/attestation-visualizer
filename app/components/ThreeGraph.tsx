@@ -153,17 +153,41 @@ export default function ThreeGraph() {
     setHighlightLinks(highlightLinks);
   };
 
-  const handleNodeHover = (node) => {
+  const handleNodeHover = (node: any) => {
     highlightNodes.clear();
     highlightLinks.clear();
 
-    if (node) {
-      highlightNodes.add(node);
-      node.links.forEach((link) => highlightLinks.add(link));
-    }
+    const highlightReferralChain = (currentNode: any) => {
+      if (!currentNode) return;
+
+      highlightNodes.add(currentNode);
+
+      const additionalInfo = addressHashMap.get(currentNode.id);
+      const referredBy = additionalInfo?.referredBy;
+
+      if (!referredBy) return;
+
+      const link = graph.links.find(
+        (link: any) =>
+          (link.source.id === currentNode.id &&
+            link.target.id === referredBy) ||
+          (link.source.id === referredBy && link.target.id === currentNode.id),
+      );
+
+      if (link) {
+        highlightLinks.add(link);
+      }
+
+      const parentNode = graph.nodes.find((n: any) => n.id === referredBy);
+      highlightReferralChain(parentNode);
+    };
+
+    highlightReferralChain(node);
+
+    setHighlightNodes(new Set(highlightNodes));
+    setHighlightLinks(new Set(highlightLinks));
 
     setHoverNode(node || null);
-    updateHighlight();
   };
 
   const handleClose = () => {
@@ -180,7 +204,7 @@ export default function ThreeGraph() {
         graphData={graph}
         nodeAutoColorBy="type"
         linkAutoColorBy="type"
-        linkWidth={link => highlightLinks.has(link) ? 2 : 0.2}
+        linkWidth={(link) => (highlightLinks.has(link) ? 2 : 0.2)}
         linkOpacity={0.5}
         linkDirectionalArrowLength={3.5}
         linkDirectionalArrowRelPos={1}
