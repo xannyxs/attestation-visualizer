@@ -178,8 +178,13 @@ export default function ThreeGraph() {
             sprite = new THREE.Sprite(placeholderMaterial);
             sprite.scale.set(8, 8, 0);
 
-            const cardInfo = addressHashMap.get(node.id);
-            let data = cardInfo?.imageUrl || "";
+            let data: string;
+            if (node.id === "0x0000000000000000000000000000000000000000") {
+              data = "sunny.png";
+            } else {
+              const cardInfo = addressHashMap.get(node.id);
+              data = cardInfo?.imageUrl;
+            }
 
             if (data === "") {
               const blockieIcon = blockies?.create({ seed: node.id });
