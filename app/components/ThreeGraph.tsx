@@ -3,7 +3,6 @@
 import { Attestation, ICardProps as CardType, EthereumAddress } from "../types";
 import { useState } from "react";
 import { gql, useQuery } from "@apollo/client";
-import SpriteText from "three-spritetext";
 import * as THREE from "three";
 import { ethers } from "ethers";
 import ForceGraph3D from "react-force-graph-3d";
@@ -104,6 +103,9 @@ export default function ThreeGraph() {
   const [highlightNodes, setHighlightNodes] = useState(new Set());
   const [highlightLinks, setHighlightLinks] = useState(new Set());
   const [hoverNode, setHoverNode] = useState(null);
+  const [spriteCache, setSpriteCache] = useState<Map<string, THREE.Sprite>>(
+    new Map(),
+  );
 
   useQuery(
     gql`
@@ -138,20 +140,18 @@ export default function ThreeGraph() {
 
         const graph = buildGraphData(attestations);
         setGraph(graph);
-        setAddressHashMap(await buildAddressHashMap(attestations));
+        const newAddresses = await buildAddressHashMap(attestations);
+        setAddressHashMap(newAddresses);
+        const newSpriteCache = initSprites(newAddresses);
+        setSpriteCache(newSpriteCache);
       },
     },
   );
 
   let blockies: any;
   if (typeof document !== "undefined") {
-    blockies = require("ethereum-blockies");
+    blockies = require("ethereum-blockies-base64");
   }
-
-  const updateHighlight = () => {
-    setHighlightNodes(highlightNodes);
-    setHighlightLinks(highlightLinks);
-  };
 
   const handleNodeHover = (node: any) => {
     highlightNodes.clear();
@@ -195,6 +195,30 @@ export default function ThreeGraph() {
     setSelectedNode(null);
   };
 
+  const initSprites = (
+    addressHashMap: Map<string, CardType>,
+  ): Map<string, THREE.Sprite> => {
+    return Array.from(addressHashMap.entries()).reduce((acc, [key, value]) => {
+      let texture: THREE.Texture;
+      let data = value.imageUrl ?? "";
+
+      if (key === "0x0000000000000000000000000000000000000000") {
+        data = "path/to/sunny.png";
+      } else if (data === "") {
+        const blockieIcon = blockies?.create({ seed: key });
+        data = blockieIcon?.toDataURL("image/png") ?? "";
+      }
+
+      texture = new THREE.TextureLoader().load(data);
+      const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
+      const sprite = new THREE.Sprite(spriteMaterial);
+      sprite.scale.set(8, 8, 0);
+
+      acc.set(key, sprite);
+      return acc;
+    }, new Map<string, THREE.Sprite>());
+  };
+
   return (
     <div>
       {selectedNode && isCardVisible && (
@@ -221,44 +245,16 @@ export default function ThreeGraph() {
           setCardVisible(true);
         }}
         nodeThreeObject={(node: any) => {
-          let sprite: any;
-
-          if (node.type === "address") {
-            const placeholderTexture = new THREE.TextureLoader().load(
-              "placeholder.png",
-            );
-            const placeholderMaterial = new THREE.SpriteMaterial({
-              map: placeholderTexture,
-            });
-            sprite = new THREE.Sprite(placeholderMaterial);
-            sprite.scale.set(8, 8, 0);
-
-            let data: string;
-            if (node.id === "0x0000000000000000000000000000000000000000") {
-              data = "sunny.png";
-            } else {
-              const cardInfo = addressHashMap.get(node.id);
-              data = cardInfo?.imageUrl ?? "";
-            }
-
-            if (data === "") {
-              const blockieIcon = blockies?.create({ seed: node.id });
-              data = blockieIcon?.toDataURL("image/png");
-            }
-
-            const newTexture = new THREE.TextureLoader().load(data);
-            newTexture.colorSpace = THREE.SRGBColorSpace;
-
-            sprite.material.map = newTexture;
-            sprite.material.needsUpdate = true;
-
+          const sprite = spriteCache.get(node.id);
+          if (sprite) {
             return sprite;
           }
-          sprite = new SpriteText(node.name);
-          sprite.color = node.color;
-          sprite.textHeight = 4;
-
-          return sprite;
+          const defaultSpriteMaterial = new THREE.SpriteMaterial({
+            color: 0xffffff,
+          });
+          const defaultSprite = new THREE.Sprite(defaultSpriteMaterial);
+          defaultSprite.scale.set(8, 8, 0);
+          return defaultSprite;
         }}
         onNodeHover={handleNodeHover}
       />
