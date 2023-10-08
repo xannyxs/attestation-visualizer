@@ -1,7 +1,7 @@
 "use client";
 
 import { Attestation, ICardProps as CardType, EthereumAddress } from "../types";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { gql, useQuery } from "@apollo/client";
 import * as THREE from "three";
 import { ethers } from "ethers";
@@ -18,8 +18,6 @@ new ethers.Contract(
   EAS,
   provider,
 );
-const schema =
-  "0xfdcfdad2dbe7489e0ce56b260348b7f14e8365a8a325aef9834818c00d46b31b";
 
 function buildGraphData(attestations: Attestation[]) {
   const addresses = new Set<string>();
@@ -108,46 +106,28 @@ export default function ThreeGraph() {
     new Map(),
   );
 
-  useQuery(
-    gql`
-      query Query($where: AttestationWhereInput) {
-        attestations(where: $where) {
-          attester
-          recipient
-          decodedDataJson
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/api/fetchgraph");
+        if (!response.ok) {
+          console.error("Failed to fetch graph");
+          return;
         }
-      }
-    `,
-    {
-      variables: {
-        where: {
-          schemaId: { equals: schema },
-          revoked: { equals: false },
-        },
-      },
-      onCompleted: async (data) => {
-        const filteredAttestations = data.attestations.filter(
-          (attestation: any) =>
-            attestation.attester ===
-            "0x621477dBA416E12df7FF0d48E14c4D20DC85D7D9",
-        );
-
-        const attestations = filteredAttestations.map((attestation: any) => {
-          return {
-            ...attestation,
-            decodedDataJson: JSON.parse(attestation.decodedDataJson),
-          };
-        });
-
-        const graph = buildGraphData(attestations);
-        setGraph(graph);
-        const newAddresses = await buildAddressHashMap(attestations);
+        const graphData = await response.json();
+        const buildedGraph = buildGraphData(graphData);
+        setGraph(buildedGraph);
+        const newAddresses = await buildAddressHashMap(graphData);
         setAddressHashMap(newAddresses);
         const newSpriteCache = initSprites(newAddresses);
         setSpriteCache(newSpriteCache);
-      },
-    },
-  );
+      } catch (error) {
+        console.error("An error occurred while fetching the data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleNodeHover = (node: any) => {
     highlightNodes.clear();
