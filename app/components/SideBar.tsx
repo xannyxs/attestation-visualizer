@@ -1,6 +1,7 @@
 import { ChevronLast, ChevronFirst } from "lucide-react";
 import { useContext, createContext, useState, ReactNode } from "react";
 import { useRouter } from "next/navigation";
+import { useGraphData } from "./GraphDataContext";
 
 interface SidebarContextType {
   expanded: boolean;
@@ -9,6 +10,7 @@ interface SidebarContextType {
 const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
 
 export default function Sidebar({ children }: { children: ReactNode }) {
+  const graphData = useGraphData();
   const [expanded, setExpanded] = useState(false);
 
   return (

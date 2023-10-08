@@ -2,7 +2,6 @@
 
 import { Attestation, ICardProps as CardType, EthereumAddress } from "../types";
 import { useState, useEffect } from "react";
-import { gql, useQuery } from "@apollo/client";
 import * as THREE from "three";
 import { ethers } from "ethers";
 import ForceGraph3D from "react-force-graph-3d";
@@ -10,6 +9,8 @@ import { abi as EAS } from "@ethereum-attestation-service/eas-contracts/artifact
 import ShowNodeCard from "./ShowNodeCard";
 import { fetchOptimismNFTImage } from "./ProfilePicture";
 import makeBlockie from "ethereum-blockies-base64";
+import { useGraphData } from "./GraphDataContext";
+import buildGraphData from "../utils/buildGraph";
 
 const rpc = "https://goerli.optimism.io";
 const provider = new ethers.providers.StaticJsonRpcProvider(rpc);
@@ -18,43 +19,6 @@ new ethers.Contract(
   EAS,
   provider,
 );
-
-function buildGraphData(attestations: Attestation[]) {
-  const addresses = new Set<string>();
-  const addressToLinks = new Map<string, any[]>();
-
-  const processedAttestations = attestations.map((attestation) => {
-    const source = attestation.decodedDataJson[1].value.value;
-    const target = attestation.recipient;
-
-    addresses.add(source);
-    addresses.add(target);
-
-    const link = {
-      source,
-      target,
-      type: "address",
-    };
-
-    if (!addressToLinks.has(source)) addressToLinks.set(source, []);
-    if (!addressToLinks.has(target)) addressToLinks.set(target, []);
-
-    addressToLinks.get(source)?.push(link);
-    addressToLinks.get(target)?.push(link);
-
-    return link;
-  });
-
-  return {
-    nodes: Array.from(addresses).map((address) => ({
-      id: address,
-      name: address,
-      type: "address",
-      links: addressToLinks.get(address) || [],
-    })),
-    links: processedAttestations,
-  };
-}
 
 async function buildAddressHashMap(
   attestations: Attestation[],
@@ -93,6 +57,7 @@ async function buildAddressHashMap(
 }
 
 export default function ThreeGraph() {
+  const graphData = useGraphData();
   const [graph, setGraph] = useState<any>({ nodes: [], links: [] });
   const [addressHashMap, setAddressHashMap] = useState<Map<string, CardType>>(
     new Map(),
@@ -108,26 +73,19 @@ export default function ThreeGraph() {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const response = await fetch("/api/fetchgraph");
-        if (!response.ok) {
-          console.error("Failed to fetch graph");
-          return;
-        }
-        const graphData = await response.json();
+      if (graphData) {
         const buildedGraph = buildGraphData(graphData);
-        setGraph(buildedGraph);
         const newAddresses = await buildAddressHashMap(graphData);
-        setAddressHashMap(newAddresses);
         const newSpriteCache = initSprites(newAddresses);
+
+        setGraph(buildedGraph);
+        setAddressHashMap(newAddresses);
         setSpriteCache(newSpriteCache);
-      } catch (error) {
-        console.error("An error occurred while fetching the data:", error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [graphData]);
 
   const handleNodeHover = (node: any) => {
     highlightNodes.clear();
