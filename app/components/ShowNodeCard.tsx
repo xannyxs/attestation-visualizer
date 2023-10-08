@@ -12,12 +12,15 @@ interface NodeInfoCardProps {
 
 export default function ShowNodeCard({ cardInfo, onClose }: NodeInfoCardProps) {
   return (
-    <div className="fixed right-0 top-3 bottom-3 w-1/4 mr-3 bg-white z-10 rounded h-full">
+    <div className="fixed left-0 top-3 bottom-3 w-1/4 ml-3 bg-white z-10 rounded">
       <button className="p-4 text-red-500" onClick={onClose}>
         X
       </button>
       <ProfilePicture url={cardInfo.imageUrl} />
-      <EnsBar objectName={"Current ENS address"} address={cardInfo.currentAddress} />
+      <EnsBar
+        objectName={"Current ENS address"}
+        address={cardInfo.currentAddress}
+      />
       <EnsBar objectName={"Referred by"} address={cardInfo.referredBy} />
       <InfoBar
         objectName={"Referred method"}
