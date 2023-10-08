@@ -35,7 +35,7 @@ export default function ProfilePicture({ url }: ProfilePictureProps) {
   }
 
   return (
-    <div className="flex w-full justify-center mt-1 m-4">
+    <div className="flex w-full justify-center mb-4">
       <Image
         className="rounded-full border-gray border-2"
         src={url}
