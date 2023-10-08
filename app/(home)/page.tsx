@@ -27,7 +27,11 @@ export default function Home() {
   const router = useRouter();
 
   const handleItemClick = (view: typeof activeView) => {
-    setActiveView(view);
+    if (activeView === view) {
+      setActiveView("none");
+    } else {
+      setActiveView(view);
+    }
   };
 
   const handleRoute = (href: string) => {
@@ -38,7 +42,7 @@ export default function Home() {
     <GraphDataProvider>
       <WagmiConfig config={configWagmi}>
         <main className="flex">
-          <div className="w-[1/4]">
+          <div className="w-[1/4] z-20 relative">
             <SideBar>
               <SidebarItem
                 icon={<LayoutGrid size={20} />}
@@ -78,12 +82,14 @@ export default function Home() {
               />
             </SideBar>
           </div>
-          <div className="min-w-[40rem] flex-grow">
+          <div className="w-[40rem] z-10 relative">
             {activeView === "grid" && <GridView />}
             {activeView === "list" && <ListView />}
             {activeView === "credits" && <CreditsView />}
           </div>
-          <ThreeGraph />
+          <div className="absolute inset-0">
+            <ThreeGraph />
+          </div>
         </main>
       </WagmiConfig>
     </GraphDataProvider>

@@ -16,7 +16,7 @@ export default function Sidebar({ children }: { children: ReactNode }) {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <aside className="h-screen z-10">
+    <aside className="h-screen">
       <nav className="h-full flex flex-col bg-white border-r">
         <div className="p-4 pb-2 flex justify-between items-center">
           <img
@@ -58,7 +58,7 @@ export function SidebarItem({
   return (
     <li
       onClick={onClick}
-      className={`z-10
+      className={`
         relative flex items-center py-2 px-3 my-1
         font-medium rounded-md cursor-pointer
         transition-colors group
