@@ -1,10 +1,6 @@
 import { ChevronLast, ChevronFirst } from "lucide-react";
-import {
-  useContext,
-  createContext,
-  useState,
-  ReactNode,
-} from "react";
+import Image from "next/image";
+import { useContext, createContext, useState, ReactNode } from "react";
 
 interface SidebarContextType {
   expanded: boolean;
@@ -14,17 +10,20 @@ const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
 
 export default function Sidebar({ children }: { children: ReactNode }) {
   const [expanded, setExpanded] = useState(false);
+  const dimension = 150;
 
   return (
     <aside className="h-screen">
       <nav className="h-full flex flex-col bg-white border-r">
         <div className="p-4 pb-2 flex justify-between items-center">
-          <img
+          <Image
             src="https://img.logoipsum.com/243.svg"
             className={`overflow-hidden transition-all ${
               expanded ? "w-32" : "w-0"
             }`}
-            alt=""
+            alt="logo"
+            width={dimension}
+            height={dimension}
           />
           <button
             onClick={() => setExpanded((curr) => !curr)}
