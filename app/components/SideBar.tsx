@@ -1,7 +1,15 @@
 import { ChevronLast, ChevronFirst } from "lucide-react";
-import { useContext, createContext, useState, ReactNode } from "react";
+import {
+  useContext,
+  createContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
 import { useRouter } from "next/navigation";
 import { useGraphData } from "./GraphDataContext";
+import buildAddressHashMap from "../utils/buildAddressHashmap";
+import { ICardProps as CardType } from "../types";
 
 interface SidebarContextType {
   expanded: boolean;
@@ -12,6 +20,21 @@ const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
 export default function Sidebar({ children }: { children: ReactNode }) {
   const graphData = useGraphData();
   const [expanded, setExpanded] = useState(false);
+  const [addressHashMap, setAddressHashMap] = useState<Map<string, CardType>>(
+    new Map(),
+  );
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (graphData) {
+        const newAddresses = await buildAddressHashMap(graphData);
+
+        setAddressHashMap(newAddresses);
+      }
+    };
+
+    fetchData();
+  }, [graphData]);
 
   return (
     <aside className="h-screen z-10">
@@ -43,26 +66,19 @@ export default function Sidebar({ children }: { children: ReactNode }) {
 export function SidebarItem({
   icon,
   text,
-  href = "#",
   active = false,
+  onClick,
 }: {
   icon: ReactNode;
   text: string;
-  href?: string;
   active?: boolean;
+  onClick: () => void;
 }) {
   const { expanded } = useContext(SidebarContext) ?? { expanded: false };
-  const router = useRouter();
-
-  const handleNavigation = () => {
-    if (href) {
-      router.push(href);
-    }
-  };
 
   return (
     <li
-      onClick={handleNavigation}
+      onClick={onClick}
       className={`z-10
         relative flex items-center py-2 px-3 my-1
         font-medium rounded-md cursor-pointer

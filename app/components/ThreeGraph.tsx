@@ -1,60 +1,14 @@
 "use client";
 
-import { Attestation, ICardProps as CardType, EthereumAddress } from "../types";
+import { ICardProps as CardType} from "../types";
 import { useState, useEffect } from "react";
 import * as THREE from "three";
-import { ethers } from "ethers";
 import ForceGraph3D from "react-force-graph-3d";
-import { abi as EAS } from "@ethereum-attestation-service/eas-contracts/artifacts/contracts/EAS.sol/EAS.json";
 import ShowNodeCard from "./ShowNodeCard";
-import { fetchOptimismNFTImage } from "./ProfilePicture";
 import makeBlockie from "ethereum-blockies-base64";
 import { useGraphData } from "./GraphDataContext";
 import buildGraphData from "../utils/buildGraph";
-
-const rpc = "https://goerli.optimism.io";
-const provider = new ethers.providers.StaticJsonRpcProvider(rpc);
-new ethers.Contract(
-  "0x1d86C2F5cc7fBEc35FEDbd3293b5004A841EA3F0",
-  EAS,
-  provider,
-);
-
-async function buildAddressHashMap(
-  attestations: Attestation[],
-): Promise<Map<EthereumAddress, CardType>> {
-  const hashMap = new Map<EthereumAddress, CardType>();
-
-  const fetchPromises: Promise<[EthereumAddress, string, number | null]>[] =
-    attestations.map(async (attestation) => {
-      const retroPGFRound = Number(attestation.decodedDataJson[0].value.value);
-      const imageUrl = await fetchOptimismNFTImage(attestation.recipient);
-      return [
-        attestation.recipient,
-        imageUrl,
-        isNaN(retroPGFRound) ? null : retroPGFRound,
-      ] as [EthereumAddress, string, number | null];
-    });
-
-  const fetchedData = await Promise.all(fetchPromises);
-
-  for (const [recipient, imageUrl, retroPGFRound] of fetchedData) {
-    const attestation = attestations.find((a) => a.recipient === recipient);
-
-    if (attestation) {
-      const info: CardType = {
-        currentAddress: recipient,
-        referredBy: attestation.decodedDataJson[1].value.value,
-        referredMethod: attestation.decodedDataJson[2].value.value,
-        retroPGFRound,
-        imageUrl,
-      };
-      hashMap.set(recipient, info);
-    }
-  }
-
-  return hashMap;
-}
+import buildAddressHashMap from "../utils/buildAddressHashmap";
 
 export default function ThreeGraph() {
   const graphData = useGraphData();
