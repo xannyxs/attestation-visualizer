@@ -1,6 +1,7 @@
 import InfoBar from "./InfoBar";
 import EnsBar from "./EnsBox";
 import ProfilePicture from "./ProfilePicture";
+import { X } from "lucide-react";
 import { ICardProps } from "../types";
 
 interface NodeInfoCardProps {
@@ -8,14 +9,14 @@ interface NodeInfoCardProps {
   onClose: () => void;
 }
 
-// TODO: <Button> should be an icon
-
 export default function ShowNodeCard({ cardInfo, onClose }: NodeInfoCardProps) {
   return (
-    <div className="fixed left-0 top-3 bottom-3 w-1/4 ml-3 bg-white z-10 rounded">
-      <button className="p-4 text-red-500" onClick={onClose}>
-        X
-      </button>
+    <div className="fixed h-full w-1/4 bg-white z-10">
+      <div className="flex justify-end">
+        <button className="p-4 text-red-500" onClick={onClose}>
+          <X />
+        </button>
+      </div>
       <ProfilePicture url={cardInfo.imageUrl} />
       <EnsBar
         objectName={"Current ENS address"}
