@@ -1,7 +1,7 @@
 # Attestation Visualizer for RetroPGF
 
 ## Overview
-Visualize the RetroPGF network like never before! This project uses the ThreeGraph module to create a 3D graph that helps you understand the relationships and pathways within the RetroPGF ecosystem. Explore, zoom, and highlight to your heart's content.
+Visualise the Optimism Citizens’ House like never before! This project uses the ThreeGraph module to create a 3D graph that helps you understand the relationships and pathways within the RetroPGF ecosystem. Explore, zoom, and highlight to your heart's content.
 
 ## Future Features
 - 🌈 **Highlight Paths**: Easily track the path of any selected badgeholder to see their connections.
