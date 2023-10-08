@@ -4,12 +4,7 @@ import {
   createContext,
   useState,
   ReactNode,
-  useEffect,
 } from "react";
-import { useRouter } from "next/navigation";
-import { useGraphData } from "./GraphDataContext";
-import buildAddressHashMap from "../utils/buildAddressHashmap";
-import { ICardProps as CardType } from "../types";
 
 interface SidebarContextType {
   expanded: boolean;
@@ -18,23 +13,7 @@ interface SidebarContextType {
 const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
 
 export default function Sidebar({ children }: { children: ReactNode }) {
-  const graphData = useGraphData();
   const [expanded, setExpanded] = useState(false);
-  const [addressHashMap, setAddressHashMap] = useState<Map<string, CardType>>(
-    new Map(),
-  );
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (graphData) {
-        const newAddresses = await buildAddressHashMap(graphData);
-
-        setAddressHashMap(newAddresses);
-      }
-    };
-
-    fetchData();
-  }, [graphData]);
 
   return (
     <aside className="h-screen z-10">

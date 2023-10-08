@@ -78,14 +78,12 @@ export default function Home() {
               />
             </SideBar>
           </div>
-          <div>
+          <div className="min-w-[40rem] flex-grow">
             {activeView === "grid" && <GridView />}
             {activeView === "list" && <ListView />}
             {activeView === "credits" && <CreditsView />}
           </div>
-          <div className="w-3/4">
-            <ThreeGraph />
-          </div>
+          <ThreeGraph />
         </main>
       </WagmiConfig>
     </GraphDataProvider>
