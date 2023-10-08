@@ -9,6 +9,7 @@ import ForceGraph3D from "react-force-graph-3d";
 import { abi as EAS } from "@ethereum-attestation-service/eas-contracts/artifacts/contracts/EAS.sol/EAS.json";
 import ShowNodeCard from "./ShowNodeCard";
 import { fetchOptimismNFTImage } from "./ProfilePicture";
+import makeBlockie from "ethereum-blockies-base64";
 
 const rpc = "https://goerli.optimism.io";
 const provider = new ethers.providers.StaticJsonRpcProvider(rpc);
@@ -148,11 +149,6 @@ export default function ThreeGraph() {
     },
   );
 
-  let blockies: any;
-  if (typeof document !== "undefined") {
-    blockies = require("ethereum-blockies-base64");
-  }
-
   const handleNodeHover = (node: any) => {
     highlightNodes.clear();
     highlightLinks.clear();
@@ -198,25 +194,35 @@ export default function ThreeGraph() {
   const initSprites = (
     addressHashMap: Map<string, CardType>,
   ): Map<string, THREE.Sprite> => {
-    return Array.from(addressHashMap.entries()).reduce((acc, [key, value]) => {
-      let texture: THREE.Texture;
-      let data = value.imageUrl ?? "";
+    const acc = Array.from(addressHashMap.entries()).reduce(
+      (acc, [key, value]) => {
+        let texture: THREE.Texture;
+        let data = value.imageUrl ?? "";
 
-      if (key === "0x0000000000000000000000000000000000000000") {
-        data = "path/to/sunny.png";
-      } else if (data === "") {
-        const blockieIcon = blockies?.create({ seed: key });
-        data = blockieIcon?.toDataURL("image/png") ?? "";
-      }
+        if (data === "") {
+          data = makeBlockie(key);
+        }
 
-      texture = new THREE.TextureLoader().load(data);
+        texture = new THREE.TextureLoader().load(data);
+        const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
+        const sprite = new THREE.Sprite(spriteMaterial);
+        sprite.scale.set(8, 8, 0);
+
+        acc.set(key, sprite);
+        return acc;
+      },
+      new Map<string, THREE.Sprite>(),
+    );
+
+    if (!acc.has("0x0000000000000000000000000000000000000000")) {
+      const texture = new THREE.TextureLoader().load("sunny.png");
       const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
       const sprite = new THREE.Sprite(spriteMaterial);
       sprite.scale.set(8, 8, 0);
+      acc.set("0x0000000000000000000000000000000000000000", sprite);
+    }
 
-      acc.set(key, sprite);
-      return acc;
-    }, new Map<string, THREE.Sprite>());
+    return acc;
   };
 
   return (
@@ -228,14 +234,12 @@ export default function ThreeGraph() {
         graphData={graph}
         nodeAutoColorBy="type"
         linkAutoColorBy="type"
-        linkWidth={(link) => (highlightLinks.has(link) ? 2 : 0.2)}
+        linkWidth={(link) => (highlightLinks.has(link) ? 1.5 : 0.2)}
         linkOpacity={0.5}
         linkDirectionalArrowLength={3.5}
         linkDirectionalArrowRelPos={1}
-        linkDirectionalParticles={1}
-        linkColor={(link: any) =>
-          highlightLinks.has(link) ? "red" : "lightblue"
-        }
+        linkDirectionalParticles={(link) => (highlightLinks.has(link) ? 20 : 1)}
+        linkColor={(link) => (highlightLinks.has(link) ? "red" : "lightblue")}
         linkCurvature={0.25}
         onNodeClick={(node) => {
           const additionalInfo = addressHashMap.get(node.id);
@@ -245,16 +249,7 @@ export default function ThreeGraph() {
           setCardVisible(true);
         }}
         nodeThreeObject={(node: any) => {
-          const sprite = spriteCache.get(node.id);
-          if (sprite) {
-            return sprite;
-          }
-          const defaultSpriteMaterial = new THREE.SpriteMaterial({
-            color: 0xffffff,
-          });
-          const defaultSprite = new THREE.Sprite(defaultSpriteMaterial);
-          defaultSprite.scale.set(8, 8, 0);
-          return defaultSprite;
+          return spriteCache.get(node.id);
         }}
         onNodeHover={handleNodeHover}
       />
