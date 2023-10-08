@@ -200,7 +200,7 @@ export default function ThreeGraph() {
         let data = value.imageUrl ?? "";
 
         if (data === "") {
-          data = makeBlockie(key);
+          return acc;
         }
 
         texture = new THREE.TextureLoader().load(data);
@@ -249,7 +249,16 @@ export default function ThreeGraph() {
           setCardVisible(true);
         }}
         nodeThreeObject={(node: any) => {
-          return spriteCache.get(node.id);
+          let sprite = spriteCache.get(node.id);
+          if (!sprite) {
+            const data = makeBlockie(node.id);
+            const texture = new THREE.TextureLoader().load(data);
+            const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
+            sprite = new THREE.Sprite(spriteMaterial);
+            sprite.scale.set(8, 8, 0);
+            spriteCache.set(node.id, sprite);
+          }
+          return sprite as unknown as THREE.Object3D;
         }}
         onNodeHover={handleNodeHover}
       />
