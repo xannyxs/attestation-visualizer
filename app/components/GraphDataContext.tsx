@@ -19,7 +19,6 @@ export default function GraphDataProvider({
 
   useEffect(() => {
     const fetchData = async () => {
-      // fetch and set your data
       const response = await fetch("/api/fetchgraph");
       const data = await response.json();
       setGraphData(data);
