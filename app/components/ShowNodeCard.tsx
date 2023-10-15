@@ -11,8 +11,8 @@ interface NodeInfoCardProps {
 
 export default function ShowNodeCard({ cardInfo, onClose }: NodeInfoCardProps) {
   return (
-    <div className="fixed h-full w-1/4 bg-white z-10">
-      <div className="flex justify-end">
+    <div className="fixed h-full w-1/4 bg-white z-10 right-0">
+      <div className="flex">
         <button className="p-4 text-red-500" onClick={onClose}>
           <X />
         </button>
