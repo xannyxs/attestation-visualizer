@@ -7,7 +7,6 @@ import SideBar, { SidebarItem } from "../components/SideBar";
 import { Gem, LayoutGrid, Rows, Bug, Rocket } from "lucide-react";
 import GraphDataProvider from "../components/GraphDataContext";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import ListView from "../components/views/ListView";
 import GridView from "../components/views/GridView";
 import CreditsView from "../components/views/CreditsView";
@@ -24,8 +23,6 @@ export default function Home() {
     }),
   });
 
-  const router = useRouter();
-
   const handleItemClick = (view: typeof activeView) => {
     if (activeView === view) {
       setActiveView("none");
@@ -35,7 +32,7 @@ export default function Home() {
   };
 
   const handleRoute = (href: string) => {
-    router.push(href);
+    window.open(href, "_blank");
   };
 
   return (
