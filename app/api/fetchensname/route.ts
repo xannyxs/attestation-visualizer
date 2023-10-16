@@ -1,6 +1,28 @@
 import { NextResponse, NextRequest } from "next/server";
-import { fetchEnsName } from "wagmi/actions";
 import { EthereumAddress } from "@/app/types";
+import { JsonRpcProvider } from "ethers/providers";
+import { getAddress } from "viem";
+
+async function fetchEnsName({
+  address,
+}: {
+  address: EthereumAddress;
+}): Promise<string | null> {
+  const provider = new JsonRpcProvider(
+    "https://mainnet.infura.io/v3/52daeb2a47174d6f8e7238affeeaacba",
+  );
+
+  const checksumAddress = getAddress(address);
+
+  try {
+    const ensName = await provider.lookupAddress(checksumAddress);
+
+    return ensName || null;
+  } catch (error: any) {
+    console.error("Error fetching ENS name:", error);
+    return null;
+  }
+}
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const address = req.nextUrl.searchParams.get("address");
@@ -17,26 +39,14 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     });
 
     if (!ensName) {
-      return new NextResponse(JSON.stringify({ ensName: address }), {
-        status: 200,
-        headers: {
-          "Content-Type": "application/json",
-        },
+      return new NextResponse("Could not find the ENS address", {
+        status: 404,
       });
     }
 
-    return new NextResponse(JSON.stringify({ ensName }), {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  } catch (error) {
-    return new NextResponse(JSON.stringify({ error: error.message }), {
-      status: 500,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    return new NextResponse(JSON.stringify(ensName), { status: 200 });
+  } catch (error: any) {
+    console.error(error);
+    return new NextResponse(error, { status: 500 });
   }
 }
