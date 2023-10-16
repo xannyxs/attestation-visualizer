@@ -7,6 +7,7 @@ export default async function fetchEnsName(
     const res = await fetch(`/api/fetchensname?address=${address}`);
     if (res.ok) {
       const data = await res.json();
+
       return data && data.ensName ? data.ensName : null;
     } else {
       console.log(`Failed to fetch ENS name. Status: ${res.status}`);
