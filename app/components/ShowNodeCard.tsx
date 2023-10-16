@@ -21,6 +21,7 @@ export default function ShowNodeCard({ cardInfo, onClose }: NodeInfoCardProps) {
       <EnsBar
         objectName={"Current ENS address"}
         address={cardInfo.currentAddress}
+        ens={cardInfo.ens}
       />
       <EnsBar objectName={"Referred by"} address={cardInfo.referredBy} />
       <InfoBar

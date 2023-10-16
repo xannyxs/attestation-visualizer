@@ -25,7 +25,6 @@ export default async function buildAddressHashMap(
 
   for (const [recipient, imageUrl, ens, retroPGFRound] of fetchedData) {
     const attestation = attestations.find((a) => a.recipient === recipient);
-    console.log(ens)
 
     if (attestation) {
       const info: CardType = {
