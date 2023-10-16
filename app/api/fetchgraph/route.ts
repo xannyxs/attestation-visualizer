@@ -19,7 +19,7 @@ export async function GET(): Promise<NextResponse> {
         }
       `,
       variables: {
-        first: 500,
+        first: 10,
         where: {
           schemaId: {
             equals:

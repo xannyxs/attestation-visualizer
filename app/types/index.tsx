@@ -5,6 +5,7 @@ export interface ICardProps {
   referredBy: EthereumAddress;
   referredMethod: EthereumAddress;
   retroPGFRound: number | null;
+  ens?: string;
   imageUrl?: string;
 }
 
