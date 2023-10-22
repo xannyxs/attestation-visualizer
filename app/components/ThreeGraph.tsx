@@ -72,7 +72,7 @@ export default function ThreeGraph() {
         setAddressHashMap(addressHashMap);
       }
     }
-  });
+  }, []);
 
   if (!graphDataContext) {
     return (
