@@ -53,9 +53,9 @@ export default function ThreeGraph() {
     string,
     CardType
   > | null>(null);
+  const [highlightedNode, setHighlightedNode] = useState(null);
   const [highlightNodes, setHighlightNodes] = useState(new Set());
   const [highlightLinks, setHighlightLinks] = useState(new Set());
-  const [hoverNode, setHoverNode] = useState(null);
   const [spriteCache, setSetSpriteCache] = useState(
     new Map<string, THREE.Sprite>(),
   );
@@ -89,7 +89,16 @@ export default function ThreeGraph() {
     );
   }
 
-  const handleNodeHover = (node: any) => {
+  const [clickedNode, setClickedNode] = useState(null);
+
+  const handleNodeClick = (node: any) => {
+    setClickedNode(node); // Update the clicked node state when a node is clicked
+    handleNodeHover(node, false); // Call the hover handler with hover set to false
+  };
+
+  const handleNodeHover = (node: any, hover: boolean) => {
+    if ((hover && clickedNode && clickedNode === node) || !node) return;
+
     highlightNodes.clear();
     highlightLinks.clear();
 
@@ -125,8 +134,6 @@ export default function ThreeGraph() {
 
     setHighlightNodes(new Set(highlightNodes));
     setHighlightLinks(new Set(highlightLinks));
-
-    setHoverNode(node || null);
   };
 
   return (
@@ -145,6 +152,7 @@ export default function ThreeGraph() {
         onNodeClick={(node) => {
           const selectedNode = addressHashMap!.get(node.id);
           if (selectedNode) {
+            handleNodeClick(node);
             openModal(<ShowNodeCard cardInfo={selectedNode} />);
           }
         }}
@@ -160,7 +168,7 @@ export default function ThreeGraph() {
           }
           return sprite as unknown as THREE.Object3D;
         }}
-        onNodeHover={handleNodeHover}
+        onNodeHover={(node) => handleNodeHover(node, true)}
       />
     </div>
   );
