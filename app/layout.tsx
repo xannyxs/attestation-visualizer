@@ -18,11 +18,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <ModalContextProvider>
-        <GraphDataProvider>
-          <body className={inter.className}>{children}</body>
-        </GraphDataProvider>
-      </ModalContextProvider>
+      <body className={inter.className}>
+        <ModalContextProvider>
+          <GraphDataProvider>{children}</GraphDataProvider>
+        </ModalContextProvider>
+      </body>
     </html>
   );
 }
