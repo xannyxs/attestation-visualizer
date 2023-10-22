@@ -70,10 +70,9 @@ export default function ThreeGraph() {
         setSetSpriteCache(newSpriteCache);
         setGraph(buildedGraph);
         setAddressHashMap(addressHashMap);
-        console.log('hi')
       }
     }
-  }, []);
+  }, [graphDataContext]);
 
   if (!graphDataContext) {
     return (

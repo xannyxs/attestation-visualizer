@@ -19,7 +19,6 @@ export async function GET(): Promise<NextResponse> {
         }
       `,
       variables: {
-        first: 10,
         where: {
           schemaId: {
             equals:
@@ -30,10 +29,20 @@ export async function GET(): Promise<NextResponse> {
       },
     });
 
-    const filteredAttestations = data.attestations.filter(
-      (attestation: any) =>
-        attestation.attester === "0x621477dBA416E12df7FF0d48E14c4D20DC85D7D9",
-    );
+    let filteredAttestations: any;
+    if (process.env.NODE_ENV === "development") {
+      const limitedAttestations = data.attestations.slice(0, 80);
+
+      filteredAttestations = limitedAttestations.filter(
+        (attestation: any) =>
+          attestation.attester === "0x621477dBA416E12df7FF0d48E14c4D20DC85D7D9",
+      );
+    } else {
+      filteredAttestations = data.attestations.filter(
+        (attestation: any) =>
+          attestation.attester === "0x621477dBA416E12df7FF0d48E14c4D20DC85D7D9",
+      );
+    }
 
     const attestations = filteredAttestations.map((attestation: any) => {
       return {
