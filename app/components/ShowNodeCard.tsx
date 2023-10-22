@@ -3,16 +3,23 @@ import EnsBar from "./EnsBox";
 import ProfilePicture from "./ProfilePicture";
 import { X } from "lucide-react";
 import { ICardProps } from "../types";
+import { useContext } from "react";
+import { ModalContext } from "./context/modalContext";
 
 interface NodeInfoCardProps {
   cardInfo: ICardProps;
 }
 
 export default function ShowNodeCard({ cardInfo }: NodeInfoCardProps) {
+  const { closeModal } = useContext(ModalContext);
+
   return (
-    <div className="h-full bg-white z-10 right-0">
+    <div className="h-full bg-white">
       <div className="flex">
-        <button className="p-4 text-red-500">
+        <button
+          className="p-4 justify-end text-red-500"
+          onClick={() => closeModal()}
+        >
           <X />
         </button>
       </div>
