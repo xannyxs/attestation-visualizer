@@ -6,18 +6,21 @@ import ListCard from "../cards/ListCard";
 import makeBlockie from "ethereum-blockies-base64";
 
 export default function ListView() {
-  const graphData = useGraphData();
+  const graphDataContext = useGraphData();
   const [addressHashMap, setAddressHashMap] = useState<Map<string, CardType>>(
     new Map(),
   );
 
+  let graphData: any;
+  if (graphDataContext) {
+    graphData = graphDataContext.graphData;
+  }
+
   useEffect(() => {
     const fetchData = async () => {
-      if (graphData) {
-        const newAddresses = await buildAddressHashMap(graphData);
+      const newAddresses = await buildAddressHashMap(graphData);
 
-        setAddressHashMap(newAddresses);
-      }
+      setAddressHashMap(newAddresses);
     };
 
     fetchData();

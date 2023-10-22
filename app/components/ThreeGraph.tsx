@@ -1,6 +1,6 @@
 "use client";
 
-import { ICardProps as CardType} from "../types";
+import { ICardProps as CardType } from "../types";
 import { useState, useEffect } from "react";
 import * as THREE from "three";
 import ForceGraph3D from "react-force-graph-3d";
@@ -8,14 +8,26 @@ import ShowNodeCard from "./ShowNodeCard";
 import makeBlockie from "ethereum-blockies-base64";
 import { useGraphData } from "./GraphDataContext";
 import buildGraphData from "../utils/buildGraph";
-import buildAddressHashMap from "../utils/buildAddressHashmap";
 
 export default function ThreeGraph() {
-  const graphData = useGraphData();
+  const graphDataContext = useGraphData();
+  if (!graphDataContext) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        An error occurred
+      </div>
+    );
+  }
+
+  const { graphData, addressHashMap } = graphDataContext;
   const [graph, setGraph] = useState<any>({ nodes: [], links: [] });
-  const [addressHashMap, setAddressHashMap] = useState<Map<string, CardType>>(
-    new Map(),
-  );
   const [selectedNode, setSelectedNode] = useState<CardType | null>(null);
   const [isCardVisible, setCardVisible] = useState(false);
   const [highlightNodes, setHighlightNodes] = useState(new Set());
@@ -27,13 +39,11 @@ export default function ThreeGraph() {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (graphData) {
+      if (graphData && addressHashMap) {
         const buildedGraph = buildGraphData(graphData);
-        const newAddresses = await buildAddressHashMap(graphData);
-        const newSpriteCache = initSprites(newAddresses);
+        const newSpriteCache = initSprites(addressHashMap);
 
         setGraph(buildedGraph);
-        setAddressHashMap(newAddresses);
         setSpriteCache(newSpriteCache);
       }
     };
@@ -50,7 +60,7 @@ export default function ThreeGraph() {
 
       highlightNodes.add(currentNode);
 
-      const additionalInfo = addressHashMap.get(currentNode.id);
+      const additionalInfo = addressHashMap!.get(currentNode.id);
       const referredBy = additionalInfo?.referredBy;
 
       if (!referredBy) return;
@@ -134,7 +144,7 @@ export default function ThreeGraph() {
         linkColor={(link) => (highlightLinks.has(link) ? "red" : "lightblue")}
         linkCurvature={0.25}
         onNodeClick={(node) => {
-          const additionalInfo = addressHashMap.get(node.id);
+          const additionalInfo = addressHashMap!.get(node.id);
           if (additionalInfo) {
             setSelectedNode(additionalInfo);
           }
