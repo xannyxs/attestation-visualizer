@@ -92,8 +92,8 @@ export default function ThreeGraph() {
   const [clickedNode, setClickedNode] = useState(null);
 
   const handleNodeClick = (node: any) => {
-    setClickedNode(node); // Update the clicked node state when a node is clicked
-    handleNodeHover(node, false); // Call the hover handler with hover set to false
+    setClickedNode(node); 
+    handleNodeHover(node, false); 
   };
 
   const handleNodeHover = (node: any, hover: boolean) => {
