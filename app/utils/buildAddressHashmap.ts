@@ -12,8 +12,13 @@ export default async function buildAddressHashMap(
   >[] = attestations.map(async (attestation) => {
     const retroPGFRound = Number(attestation.decodedDataJson[0].value.value);
     const imageUrl = await fetchOptimismNFTImage(attestation.recipient);
-    // const ens = await fetchEnsName(attestation.recipient);
-    const ens = null
+
+    let ens: string | null;
+    if (process.env.NODE_ENV === "production") {
+      ens = await fetchEnsName(attestation.recipient);
+    } else {
+      ens = null;
+    }
 
     return [
       attestation.recipient,
