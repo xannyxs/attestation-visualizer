@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"3d-force-graph@1", "3d-force-graph@^1.72.1":
+"3d-force-graph@^1.72.1":
   version "1.72.3"
   resolved "https://registry.yarnpkg.com/3d-force-graph/-/3d-force-graph-1.72.3.tgz#cdc300cc45463a8cdd27d6af3cd844c63408ae62"
   integrity sha512-yyY5fg5DzEJqnHoxIkRM5U6dnBg3dI02CIu9vON/73wUESEC4AJLySrhIquGxjlj57uhkm/LzMgh2QdL2IWbVw==
@@ -12,6 +12,17 @@
     three ">=0.118 <1"
     three-forcegraph "1"
     three-render-objects "1"
+
+"3d-force-graph@^1.73":
+  version "1.73.0"
+  resolved "https://registry.yarnpkg.com/3d-force-graph/-/3d-force-graph-1.73.0.tgz#aa1117766f55459d88b3048afd70701d52a60c9e"
+  integrity sha512-fMuZxQRIx6pVnn/JiB/0VnM0VD6uRpku1TkXMXYbnzKiMziPYQnaKobQ/QAqSskrQGJA9RUaale0ux4lOsCnOw==
+  dependencies:
+    accessor-fn "1"
+    kapsule "1"
+    three ">=0.118 <1"
+    three-forcegraph "1"
+    three-render-objects "^1.29"
 
 "@aashutoshrathi/word-wrap@^1.2.3":
   version "1.2.6"
@@ -62,10 +73,17 @@
     tslib "^2.3.0"
     zen-observable-ts "^1.2.5"
 
-"@babel/runtime@^7.17.2", "@babel/runtime@^7.17.8", "@babel/runtime@^7.20.7", "@babel/runtime@^7.22.6":
+"@babel/runtime@^7.17.2", "@babel/runtime@^7.20.7", "@babel/runtime@^7.22.6":
   version "7.23.1"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.23.1.tgz#72741dc4d413338a91dcb044a86f3c0bc402646d"
   integrity sha512-hC2v6p8ZSI/W0HUzh3V8C5g+NwSKzKPtJwSpTjwl0o297GP9+ZLQSkdvHz46CM3LqyoXxq+5G9komY+eSqSO0g==
+  dependencies:
+    regenerator-runtime "^0.14.0"
+
+"@babel/runtime@^7.17.8":
+  version "7.23.2"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.23.2.tgz#062b0ac103261d68a966c4c7baf2ae3e62ec3885"
+  integrity sha512-mM8eg4yl5D6i3lu2QKPuPH4FArvJ8KhTofbE7jwMUv9KX5mBvwPAqnV3MlyBNqdp9RyRKP6Yck8TrfYrPvX3bg==
   dependencies:
     regenerator-runtime "^0.14.0"
 
@@ -4694,9 +4712,9 @@ jsonparse@^1.2.0:
     object.values "^1.1.6"
 
 kapsule@1:
-  version "1.14.4"
-  resolved "https://registry.yarnpkg.com/kapsule/-/kapsule-1.14.4.tgz#55f19fe7a04dfe111e9efc7d85a895e6440ef828"
-  integrity sha512-Ro1US5B5mtyZMM+NqW/0fqcBf9oEO7fG0gYY9FY+BVGo4KaonVsplFfuYx3pZ/GLCQfYE5cONduILLktsYjUpQ==
+  version "1.14.5"
+  resolved "https://registry.yarnpkg.com/kapsule/-/kapsule-1.14.5.tgz#c0bc7c1d4c693ee2647182e5b4ffbf95a4d65f72"
+  integrity sha512-H0iSpTynUzZw3tgraDmReprpFRmH5oP5GPmaNsurSwLx2H5iCpOMIkp5q+sfhB4Tz/UJd1E1IbEE9Z6ksnJ6RA==
   dependencies:
     lodash-es "4"
 
@@ -5693,11 +5711,11 @@ react-dom@18.2.0:
     scheduler "^0.23.0"
 
 react-force-graph-3d@^1.23.0:
-  version "1.23.1"
-  resolved "https://registry.yarnpkg.com/react-force-graph-3d/-/react-force-graph-3d-1.23.1.tgz#61b0ae4bbcbd956e3871638c53e3a08c716cfd27"
-  integrity sha512-2WvLq1AFogDqAi0btowqP+7/cBnTJDC4eMe/XJLu8jVQXCEDJZanqm12noYRHkd8croTPhQpUhUDcOm1uHmFAQ==
+  version "1.24.0"
+  resolved "https://registry.yarnpkg.com/react-force-graph-3d/-/react-force-graph-3d-1.24.0.tgz#560a0c6835dc0ec09696481237b4eb3e7fe14e14"
+  integrity sha512-EyfiIqhs6L6q5OvUQFUtcbn9EGMPaG5nesX12gsQZ6tf8DvOR4haBY3Vj+C7afIqUl5579Ac6yhPIeolgsV7pA==
   dependencies:
-    "3d-force-graph" "1"
+    "3d-force-graph" "^1.73"
     prop-types "15"
     react-kapsule "2"
 
@@ -6409,10 +6427,10 @@ three-forcegraph@1:
     ngraph.graph "20"
     tinycolor2 "1"
 
-three-render-objects@1:
-  version "1.28.6"
-  resolved "https://registry.yarnpkg.com/three-render-objects/-/three-render-objects-1.28.6.tgz#96386dcafd270e509606691139018c4a093ff495"
-  integrity sha512-e1Dls7NbT9XvKByueLRFRFKIAnNRL9sz7Ul318uXkP/f9uZjUFmelgloBAK3PSQ5xJd++FsKCf7ZIteSWNzTpA==
+three-render-objects@1, three-render-objects@^1.29:
+  version "1.29.0"
+  resolved "https://registry.yarnpkg.com/three-render-objects/-/three-render-objects-1.29.0.tgz#fb9769e62784f02682d7d26626dda4fec2655deb"
+  integrity sha512-HzVjL12KG2ko5VoU3aO/qFbtVu5Md5SN8dSzjGS7uNeTmYSAdQQZmg+R6zgctmvUrEjA78vO6ZGAC9y/9o/H2A==
   dependencies:
     "@tweenjs/tween.js" "18 - 21"
     accessor-fn "1"
