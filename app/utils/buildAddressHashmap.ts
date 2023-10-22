@@ -8,17 +8,19 @@ export default async function buildAddressHashMap(
   const hashMap = new Map<EthereumAddress, CardType>();
 
   const fetchPromises: Promise<
-    [EthereumAddress, string, string, number | null]
+    [EthereumAddress, string, string | null, number | null]
   >[] = attestations.map(async (attestation) => {
     const retroPGFRound = Number(attestation.decodedDataJson[0].value.value);
     const imageUrl = await fetchOptimismNFTImage(attestation.recipient);
-    const ens = await fetchEnsName(attestation.recipient);
+    // const ens = await fetchEnsName(attestation.recipient);
+    const ens = null
+
     return [
       attestation.recipient,
       imageUrl,
       ens,
       isNaN(retroPGFRound) ? null : retroPGFRound,
-    ] as [EthereumAddress, string, string, number | null];
+    ] as [EthereumAddress, string, string | null, number | null];
   });
 
   const fetchedData = await Promise.all(fetchPromises);
@@ -27,9 +29,19 @@ export default async function buildAddressHashMap(
     const attestation = attestations.find((a) => a.recipient === recipient);
 
     if (attestation) {
+      let referredBy: EthereumAddress | string =
+        attestation.decodedDataJson[1].value.value;
+
+      if (
+        referredBy &&
+        referredBy === "0x0000000000000000000000000000000000000000"
+      ) {
+        referredBy = "Optimism Foundation";
+      }
+
       const info: CardType = {
         currentAddress: recipient,
-        referredBy: attestation.decodedDataJson[1].value.value,
+        referredBy: referredBy,
         referredMethod: attestation.decodedDataJson[2].value.value,
         retroPGFRound,
         imageUrl,

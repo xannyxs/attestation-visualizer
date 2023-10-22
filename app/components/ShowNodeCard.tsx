@@ -6,14 +6,13 @@ import { ICardProps } from "../types";
 
 interface NodeInfoCardProps {
   cardInfo: ICardProps;
-  onClose: () => void;
 }
 
-export default function ShowNodeCard({ cardInfo, onClose }: NodeInfoCardProps) {
+export default function ShowNodeCard({ cardInfo }: NodeInfoCardProps) {
   return (
-    <div className="fixed h-full w-1/4 bg-white z-10 right-0">
+    <div className="h-full bg-white z-10 right-0">
       <div className="flex">
-        <button className="p-4 text-red-500" onClick={onClose}>
+        <button className="p-4 text-red-500">
           <X />
         </button>
       </div>
@@ -21,7 +20,7 @@ export default function ShowNodeCard({ cardInfo, onClose }: NodeInfoCardProps) {
       <EnsBar
         objectName={"Current ENS address"}
         address={cardInfo.currentAddress}
-        ens={cardInfo.ens}
+        ens={cardInfo.ens!}
       />
       <EnsBar objectName={"Referred by"} address={cardInfo.referredBy} />
       <InfoBar

@@ -8,7 +8,7 @@ export default function ListCard({
 }: {
   address: string | EthereumAddress;
   image: string;
-  referredBy: EthereumAddress;
+  referredBy: EthereumAddress | string;
 }) {
   const dimensions = 150;
 

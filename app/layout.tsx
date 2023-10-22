@@ -1,7 +1,8 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { League_Spartan } from "next/font/google";
-import GraphDataProvider from "./components/GraphDataContext";
+import GraphDataProvider from "./components/context/GraphDataContext";
+import { ModalContextProvider } from "./components/context/modalContext";
 
 const inter = League_Spartan({ subsets: ["latin"] });
 
@@ -17,9 +18,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <GraphDataProvider>
-        <body className={inter.className}>{children}</body>
-      </GraphDataProvider>
+      <ModalContextProvider>
+        <GraphDataProvider>
+          <body className={inter.className}>{children}</body>
+        </GraphDataProvider>
+      </ModalContextProvider>
     </html>
   );
 }

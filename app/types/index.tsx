@@ -2,10 +2,10 @@ export type EthereumAddress = `0x${string}`;
 
 export interface ICardProps {
   currentAddress: EthereumAddress;
-  referredBy: EthereumAddress;
+  referredBy: EthereumAddress | string;
   referredMethod: EthereumAddress;
   retroPGFRound: number | null;
-  ens?: string;
+  ens: string | null;
   imageUrl?: string;
 }
 

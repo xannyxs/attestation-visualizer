@@ -1,13 +1,14 @@
 "use client";
 
 import { ICardProps as CardType, IGraph } from "../types";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import * as THREE from "three";
 import ForceGraph3D from "react-force-graph-3d";
 import ShowNodeCard from "./ShowNodeCard";
 import makeBlockie from "ethereum-blockies-base64";
-import { useGraphData } from "./GraphDataContext";
+import { useGraphData } from "./context/GraphDataContext";
 import buildGraphData from "../utils/buildGraph";
+import { ModalContext } from "./context/modalContext";
 
 const initSprites = (
   addressHashMap: Map<string, CardType>,
@@ -45,14 +46,13 @@ const initSprites = (
 
 export default function ThreeGraph() {
   const graphDataContext = useGraphData();
+  const { openModal } = useContext(ModalContext);
 
   const [graph, setGraph] = useState<IGraph>({ nodes: [], links: [] });
   const [addressHashMap, setAddressHashMap] = useState<Map<
     string,
     CardType
   > | null>(null);
-  const [selectedNode, setSelectedNode] = useState<CardType | null>(null);
-  const [isCardVisible, setCardVisible] = useState(false);
   const [highlightNodes, setHighlightNodes] = useState(new Set());
   const [highlightLinks, setHighlightLinks] = useState(new Set());
   const [hoverNode, setHoverNode] = useState(null);
@@ -126,16 +126,8 @@ export default function ThreeGraph() {
     setHoverNode(node || null);
   };
 
-  const handleClose = () => {
-    setCardVisible(false);
-    setSelectedNode(null);
-  };
-
   return (
     <div>
-      {selectedNode && isCardVisible && (
-        <ShowNodeCard cardInfo={selectedNode} onClose={handleClose} />
-      )}
       <ForceGraph3D
         graphData={graph}
         nodeAutoColorBy="type"
@@ -148,11 +140,10 @@ export default function ThreeGraph() {
         linkColor={(link) => (highlightLinks.has(link) ? "red" : "lightblue")}
         linkCurvature={0.25}
         onNodeClick={(node) => {
-          const additionalInfo = addressHashMap!.get(node.id);
-          if (additionalInfo) {
-            setSelectedNode(additionalInfo);
+          const selectedNode = addressHashMap!.get(node.id);
+          if (selectedNode) {
+            openModal(<ShowNodeCard cardInfo={selectedNode} />);
           }
-          setCardVisible(true);
         }}
         nodeThreeObject={(node: any) => {
           let sprite = spriteCache.get(node.id);

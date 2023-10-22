@@ -1,4 +1,3 @@
-import { useGraphData } from "../GraphDataContext";
 import buildAddressHashMap from "../../utils/buildAddressHashmap";
 import { ICardProps as CardType } from "../../types";
 import { useState, useEffect } from "react";

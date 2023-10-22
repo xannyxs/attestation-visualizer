@@ -82,7 +82,7 @@ export default function Home() {
             />
           </SideBar>
         </div>
-        <div className="w-[40rem] z-10 relative">
+        <div className="w-[35rem] z-10 relative">
           {activeView === "grid" && <GridView />}
           {activeView === "list" && <ListView />}
           {activeView === "credits" && <CreditsView />}
