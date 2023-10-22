@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import React, {
   createContext,
@@ -33,23 +33,18 @@ export default function GraphDataProvider({
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch("/api/fetchgraph");
+      if (!response.ok) {
+        console.error("Something went wrong: ", response.status);
+      }
       const data = await response.json();
       setGraphData(data);
+
+      const hashMap = await buildAddressHashMap(data);
+      setAddressHashMap(hashMap);
     };
 
     fetchData();
   }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (graphData) {
-        const hashMap = await buildAddressHashMap(graphData);
-        setAddressHashMap(hashMap);
-      }
-
-      fetchData();
-    };
-  }, [graphData]);
 
   return (
     <GraphDataContext.Provider value={{ graphData, addressHashMap }}>

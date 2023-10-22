@@ -69,7 +69,7 @@ export default function ThreeGraph() {
 
         setSetSpriteCache(newSpriteCache);
         setGraph(buildedGraph);
-        setAddressHashMap(addressHashMap)
+        setAddressHashMap(addressHashMap);
       }
     }
   });
