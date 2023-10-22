@@ -17,7 +17,7 @@ export default function ShowNodeCard({ cardInfo }: NodeInfoCardProps) {
     <div className="h-full bg-white">
       <div className="flex">
         <button
-          className="p-4 justify-end text-red-500"
+          className="p-4 text-red-500"
           onClick={() => closeModal()}
         >
           <X />
