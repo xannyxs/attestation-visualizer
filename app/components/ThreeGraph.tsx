@@ -99,10 +99,13 @@ export default function ThreeGraph() {
       highlightNodes.add(currentNode);
 
       const additionalInfo = addressHashMap!.get(currentNode.id);
-      const referredBy = additionalInfo?.referredBy;
+      let referredBy = additionalInfo?.referredBy;
 
       if (!referredBy) return;
 
+      if (referredBy === "Optimism Foundation") {
+        referredBy = "0x0000000000000000000000000000000000000000";
+      }
       const link = graph.links.find(
         (link: any) =>
           (link.source.id === currentNode.id &&
