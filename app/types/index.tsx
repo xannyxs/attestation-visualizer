@@ -28,3 +28,17 @@ export interface Attestation {
   recipient: EthereumAddress;
   decodedDataJson: DecodedDataJsonItem[];
 }
+
+export interface IGraph {
+  nodes: {
+    id: string;
+    name: string;
+    type: string;
+    links: any[];
+  }[];
+  links: {
+    source: string;
+    target: string;
+    type: string;
+  }[];
+}
