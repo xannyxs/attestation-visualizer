@@ -46,17 +46,33 @@ const initSprites = (
 export default function ThreeGraph() {
   const graphDataContext = useGraphData();
 
-  let spriteCache: Map<string, THREE.Sprite>;
-  let graph: IGraph = {
-    nodes: [],
-    links: [],
-  };
-
+  const [graph, setGraph] = useState<IGraph>({ nodes: [], links: [] });
+  const [addressHashMap, setAddressHashMap] = useState<Map<
+    string,
+    CardType
+  > | null>(null);
   const [selectedNode, setSelectedNode] = useState<CardType | null>(null);
   const [isCardVisible, setCardVisible] = useState(false);
   const [highlightNodes, setHighlightNodes] = useState(new Set());
   const [highlightLinks, setHighlightLinks] = useState(new Set());
   const [hoverNode, setHoverNode] = useState(null);
+  const [spriteCache, setSetSpriteCache] = useState(
+    new Map<string, THREE.Sprite>(),
+  );
+
+  useEffect(() => {
+    if (graphDataContext) {
+      const { graphData, addressHashMap } = graphDataContext;
+      if (graphData && addressHashMap) {
+        const buildedGraph = buildGraphData(graphData);
+        const newSpriteCache = initSprites(addressHashMap);
+
+        setSetSpriteCache(newSpriteCache);
+        setGraph(buildedGraph);
+        setAddressHashMap(addressHashMap)
+      }
+    }
+  });
 
   if (!graphDataContext) {
     return (
@@ -71,13 +87,6 @@ export default function ThreeGraph() {
         An error occurred
       </div>
     );
-  }
-
-  const { graphData, addressHashMap } = graphDataContext;
-
-  if (graphData && addressHashMap) {
-    graph = buildGraphData(graphData);
-    spriteCache = initSprites(addressHashMap);
   }
 
   const handleNodeHover = (node: any) => {
