@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prettier:fix": "prettier --write ./app",
+    "prettier:check": "prettier --check ./app"
   },
   "dependencies": {
     "3d-force-graph": "^1.72.1",

@@ -16,10 +16,7 @@ export default function ShowNodeCard({ cardInfo }: NodeInfoCardProps) {
   return (
     <div className="h-full bg-white">
       <div className="flex">
-        <button
-          className="p-4 text-red-500"
-          onClick={() => closeModal()}
-        >
+        <button className="p-4 text-red-500" onClick={() => closeModal()}>
           <X />
         </button>
       </div>
