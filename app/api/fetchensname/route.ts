@@ -8,9 +8,7 @@ async function fetchEnsName({
 }: {
   address: EthereumAddress;
 }): Promise<string | null> {
-  const provider = new JsonRpcProvider(
-    "https://mainnet.infura.io/v3/52daeb2a47174d6f8e7238affeeaacba",
-  );
+  const provider = new JsonRpcProvider(process.env.INFURA_URL);
 
   const checksumAddress = getAddress(address);
 
