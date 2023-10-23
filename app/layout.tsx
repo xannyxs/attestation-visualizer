@@ -25,8 +25,10 @@ export default function RootLayout({
         <ThreeGraphContextProvider>
           <ModalContextProvider>
             <SelectedNodeContextProvider>
-              <GraphDataProvider>{children}</GraphDataProvider>
-              <Analytics />
+              <GraphDataProvider>
+                {children}
+                <Analytics />
+              </GraphDataProvider>
             </SelectedNodeContextProvider>
           </ModalContextProvider>
         </ThreeGraphContextProvider>
