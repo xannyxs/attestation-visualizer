@@ -13,7 +13,6 @@
   "dependencies": {
     "3d-force-graph": "^1.72.1",
     "@apollo/client": "^3.8.1",
-    "@ensdomains/ensjs": "^3.0.0-alpha.67",
     "@ethereum-attestation-service/eas-sdk": "^1.1.0-beta.2",
     "@fontsource-variable/league-spartan": "^5.0.8",
     "@types/node": "20.5.0",
@@ -30,7 +29,6 @@
     "lucide-react": "^0.284.0",
     "next": "13.4.16",
     "postcss": "8.4.31",
-    "prettier": "^3.0.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-force-graph-3d": "^1.23.0",
@@ -41,6 +39,7 @@
     "wagmi": "^1.4.1"
   },
   "devDependencies": {
-    "@tsconfig/recommended": "^1.0.3"
+    "@tsconfig/recommended": "^1.0.3",
+    "prettier": "^3.0.3"
   }
 }
