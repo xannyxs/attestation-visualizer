@@ -4,13 +4,11 @@
 Visualise the Optimism Citizens’ House like never before! This project uses the ThreeGraph module to create a 3D graph that helps you understand the relationships and pathways within the RetroPGF ecosystem. Explore, zoom, and highlight to your heart's content.
 
 ## Future Features
-- 🌈 **Highlight Paths**: Easily track the path of any selected badgeholder to see their connections.
-- 🎭 **ENS & PFP Support**: If the referred-by address has an ENS or a profile picture, we display it.
-- 🎨 **Custom Styling**: Choose from different background colors and enjoy visually pleasing arrows.
-- 🔄 **Round Switching**: Toggle between rounds, with the latest round as the default view.
-- 📜 **List View**: A streamlined list of all badgeholders for quick access.
-- 📚 **Collapsible Menu**: Get more info with a detailed title description and various options.
-- 🔒 **Conditional Display**: The "ReferredBy" field is only visible when it's a `badgeholder choice`.
+- 🌈 **Highlight Paths**: Effortlessly track the path of any selected citizens to unveil their connections.
+- 🎭 **ENS & Optimism NFT Support**: If your address boasts an ENS or an Optimism NFT, we’ll showcase it.
+- 📜 **List & Grid View**: A streamlined list and grid view for quick access to all badgeholders.
+- 📚 **Intuitive Interface**: Delve into more details with descriptive titles and an array of options. 
+And more features on their way!
 
 ## Getting Started
 
