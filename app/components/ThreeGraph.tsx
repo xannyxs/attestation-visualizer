@@ -9,6 +9,8 @@ import makeBlockie from "ethereum-blockies-base64";
 import { useGraphData } from "./context/GraphDataContext";
 import buildGraphData from "../utils/buildGraph";
 import { ModalContext } from "./context/modalContext";
+import { useThreeGraphContext } from "./context/ThreeGraphContext";
+import { useSelectedNodeContext } from "./context/SelectedNodeContextProps";
 
 const initSprites = (
   addressHashMap: Map<string, CardType>,
@@ -45,6 +47,9 @@ const initSprites = (
 };
 
 export default function ThreeGraph() {
+  const { fgRef } = useThreeGraphContext();
+  const { selectedNodeId } = useSelectedNodeContext();
+
   const graphDataContext = useGraphData();
   const { openModal } = useContext(ModalContext);
 
@@ -59,6 +64,28 @@ export default function ThreeGraph() {
   const [spriteCache, setSetSpriteCache] = useState(
     new Map<string, THREE.Sprite>(),
   );
+
+  const handleNodeClick = (node: any) => {
+    setClickedNode(node);
+    handleNodeHover(node, false);
+
+    const distance = 120;
+    const distRatio = 1 + distance / Math.hypot(node.x, node.y, node.z);
+    fgRef.current?.cameraPosition(
+      { x: node.x * distRatio, y: node.y * distRatio, z: node.z * distRatio },
+      node,
+      3000,
+    );
+  };
+
+  useEffect(() => {
+    if (selectedNodeId) {
+      const node = graph.nodes.find((node) => node.id === selectedNodeId);
+      if (node) {
+        handleNodeClick(node);
+      }
+    }
+  }, [selectedNodeId, graph.nodes]);
 
   useEffect(() => {
     if (graphDataContext) {
@@ -88,11 +115,6 @@ export default function ThreeGraph() {
       </div>
     );
   }
-
-  const handleNodeClick = (node: any) => {
-    setClickedNode(node);
-    handleNodeHover(node, false);
-  };
 
   const handleNodeHover = (node: any, hover: boolean) => {
     if ((hover && clickedNode && clickedNode === node) || !node) return;
@@ -137,6 +159,7 @@ export default function ThreeGraph() {
   return (
     <div>
       <ForceGraph3D
+        ref={fgRef}
         graphData={graph}
         nodeAutoColorBy="type"
         linkAutoColorBy="type"

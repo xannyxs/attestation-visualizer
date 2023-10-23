@@ -1,12 +1,19 @@
-import { ICardProps as CardType, EthereumAddress } from "../../types";
+import {
+  ICardProps as CardType,
+  EthereumAddress,
+  ICardProps,
+} from "../../types";
 import { useGraphData } from "../context/GraphDataContext";
 import { useState, useEffect, useContext } from "react";
 import ListCard from "../cards/ListCard";
 import makeBlockie from "ethereum-blockies-base64";
 import ShowNodeCard from "../ShowNodeCard";
 import { ModalContext } from "../context/modalContext";
+import { useSelectedNodeContext } from "../context/SelectedNodeContextProps";
 
 export default function ListView() {
+  const { setSelectedNodeId } = useSelectedNodeContext();
+
   const graphDataContext = useGraphData();
   const { openModal } = useContext(ModalContext);
   const [addressHashMap, setAddressHashMap] = useState<Map<
@@ -33,6 +40,10 @@ export default function ListView() {
     );
   }
 
+  const handleHover = (nodeId: string) => {
+    setSelectedNodeId(nodeId);
+  };
+
   return (
     <div className="relative bg-white h-full w-full overflow-y-auto max-h-[calc(100vh)]">
       <div className="sticky top-0 flex pt-4 text-3xl justify-center border-b border-gray-300 pb-3 bg-white">
@@ -41,6 +52,7 @@ export default function ListView() {
       {Array.from(addressHashMap.entries()).map(([key, value]) => (
         <div
           key={key}
+          onMouseEnter={() => handleHover(value.currentAddress)}
           onClick={() => {
             openModal(<ShowNodeCard cardInfo={value} />);
           }}
