@@ -48,12 +48,12 @@ export default function ThreeGraph() {
   const graphDataContext = useGraphData();
   const { openModal } = useContext(ModalContext);
 
+  const [clickedNode, setClickedNode] = useState(null);
   const [graph, setGraph] = useState<IGraph>({ nodes: [], links: [] });
   const [addressHashMap, setAddressHashMap] = useState<Map<
     string,
     CardType
   > | null>(null);
-  const [highlightedNode, setHighlightedNode] = useState(null);
   const [highlightNodes, setHighlightNodes] = useState(new Set());
   const [highlightLinks, setHighlightLinks] = useState(new Set());
   const [spriteCache, setSetSpriteCache] = useState(
@@ -89,11 +89,9 @@ export default function ThreeGraph() {
     );
   }
 
-  const [clickedNode, setClickedNode] = useState(null);
-
   const handleNodeClick = (node: any) => {
-    setClickedNode(node); 
-    handleNodeHover(node, false); 
+    setClickedNode(node);
+    handleNodeHover(node, false);
   };
 
   const handleNodeHover = (node: any, hover: boolean) => {
