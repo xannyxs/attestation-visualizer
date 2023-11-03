@@ -32,7 +32,7 @@ export default function GraphDataProvider({
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch("/api/fetchgraph");
+      const response = await fetch("/api/fetchgraph?round=2");
       if (!response.ok) {
         console.error("Something went wrong: ", response.status);
       }
