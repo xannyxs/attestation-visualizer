@@ -18,7 +18,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
   let fromDateUnixTimestamp = 1697000000;
   let untilDateUnixTimestamp = Math.floor(Date.now() / 1000);
   if (round === "2") {
-    console.log('round 2')
+    console.log("round 2");
     fromDateUnixTimestamp = 1694304000;
     untilDateUnixTimestamp = 1694736000;
   }
