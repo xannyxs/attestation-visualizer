@@ -10,6 +10,7 @@ Visualise the Optimism Citizens’ House like never before! This project uses th
 - 📚 **Intuitive Interface**: Delve into more details with descriptive titles and an array of options. 
 And more features on their way!
 - 🔍 **Advanced Filtering**: Customise your exploration with filters to find exactly what you're looking for.
+
 And more features on their way!
 
 ## Getting Started
