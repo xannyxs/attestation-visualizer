@@ -1,10 +1,11 @@
 import SideBar, { SidebarItem } from "@/app/components/SideBar";
 import { Gem, LayoutGrid, Rows, Bug, Rocket } from "lucide-react";
+import { ActiveView } from "@/app/types";
 
 interface SidebarComponentProps {
   handleRoute: (href: string) => void;
-  activeView: "grid" | "list" | "credits" | "bug" | "feature" | "none";
-  handleItemClick: (view: SidebarComponentProps["activeView"]) => void;
+  activeView: ActiveView;
+  handleItemClick: (view: ActiveView) => void;
 }
 
 const SidebarComponent: React.FC<SidebarComponentProps> = ({

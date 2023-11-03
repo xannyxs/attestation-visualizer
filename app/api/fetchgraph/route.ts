@@ -64,7 +64,6 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       (attestation: any) =>
         attestation.attester === "0x621477dBA416E12df7FF0d48E14c4D20DC85D7D9",
     );
-    console.log(attestationsByAttester);
 
     const recentAttestations = Object.values(attestationsByAttester).map(
       (attestation: any) => ({

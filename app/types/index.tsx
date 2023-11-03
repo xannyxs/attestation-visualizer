@@ -42,3 +42,12 @@ export interface IGraph {
     type: string;
   }[];
 }
+
+export enum ActiveView {
+  Grid = "grid",
+  List = "list",
+  Credits = "credits",
+  Bug = "bug",
+  Feature = "feature",
+  None = "none",
+}
