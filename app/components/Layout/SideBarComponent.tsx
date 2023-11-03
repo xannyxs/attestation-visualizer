@@ -28,7 +28,7 @@ const SidebarComponent: React.FC<SidebarComponentProps> = ({
           icon={<Rows size={20} />}
           text="List view"
           active={activeView === "list"}
-          onClick={() => handleItemClick("list")}
+          onClick={() => handleItemClick(ActiveView.List)}
         />
         {
           // <SidebarItem
