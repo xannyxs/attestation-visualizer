@@ -11,11 +11,17 @@ import CreditsView from "../components/views/CreditsView";
 import GraphDataProvider from "../components/context/GraphDataContext";
 import RoundDropdown from "../components/RoundDropdown";
 import { ActiveView } from "../types";
+import useIsMobile from "../components/Layout/useIsMobile";
 
 export default function Home() {
+  const isMobile = useIsMobile();
   const [activeView, setActiveView] = useState<ActiveView>(ActiveView.None);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [round, setRound] = useState(3);
+
+  if (isMobile) {
+    return <div className="flex justify-center">Mobile version not supported.</div>;
+  }
 
   const handleSelectRound = useCallback((selectedRound: number) => {
     setRound(selectedRound);
