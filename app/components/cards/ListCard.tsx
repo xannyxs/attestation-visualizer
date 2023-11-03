@@ -20,7 +20,7 @@ export default function ListCard({
     openModal(<ShowNodeCard cardInfo={card} />);
   };
 
-  const dimensions = 55; 
+  const dimensions = 55;
 
   return (
     <div className="flex m-2 transition-all cursor-pointer items-center">
