@@ -1,10 +1,8 @@
 import { ICardProps as CardType, EthereumAddress } from "../../types";
 import { useGraphData } from "../context/GraphDataContext";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import ListCard from "../cards/ListCard";
 import makeBlockie from "ethereum-blockies-base64";
-import ShowNodeCard from "../ShowNodeCard";
-import { ModalContext } from "../context/modalContext";
 import { useSelectedNodeContext } from "../context/SelectedNodeContextProps";
 import ListCardSkeleton from "../cards/ListCardSkeleton";
 
@@ -12,12 +10,10 @@ export default function ListView() {
   const { setSelectedNodeId } = useSelectedNodeContext();
 
   const graphDataContext = useGraphData();
-  const { openModal } = useContext(ModalContext);
   const [addressHashMap, setAddressHashMap] = useState<Map<
     EthereumAddress,
     CardType
   > | null>(null);
-
   useEffect(() => {
     if (graphDataContext) {
       const { addressHashMap } = graphDataContext;
@@ -39,7 +35,7 @@ export default function ListView() {
     );
   }
 
-  const handleHover = (nodeId: string) => {
+  const handleIconClick = (nodeId: string) => {
     setSelectedNodeId(nodeId);
   };
 
@@ -49,17 +45,11 @@ export default function ListView() {
         List view
       </div>
       {Array.from(addressHashMap.entries()).map(([key, value]) => (
-        <div
-          key={key}
-          onMouseEnter={() => handleHover(value.currentAddress)}
-          onClick={() => {
-            openModal(<ShowNodeCard cardInfo={value} />);
-          }}
-        >
+        <div key={key}>
           <ListCard
-            address={value.ens ?? value.currentAddress}
             image={value.imageUrl || makeBlockie(value.currentAddress)}
-            referredBy={value.referredBy}
+            card={value}
+            onIconClick={() => handleIconClick(value.currentAddress)}
           />
         </div>
       ))}
