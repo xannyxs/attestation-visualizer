@@ -1,6 +1,13 @@
 import { NextResponse } from "next/server";
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 
+interface Attestation {
+  attester: string;
+  recipient: string;
+  decodedDataJson: string;
+  timeCreated: number;
+}
+
 export async function GET(): Promise<NextResponse> {
   const client = new ApolloClient({
     uri: "https://optimism.easscan.org/graphql",
@@ -15,6 +22,7 @@ export async function GET(): Promise<NextResponse> {
             attester
             recipient
             decodedDataJson
+            timeCreated
           }
         }
       `,
@@ -29,31 +37,37 @@ export async function GET(): Promise<NextResponse> {
       },
     });
 
-    let filteredAttestations: any;
-    if (process.env.NODE_ENV === "development") {
-      const limitedAttestations = data.attestations.slice(0, 80);
+    let attestationsByAttester = data.attestations.filter(
+      (attestation: any) =>
+        attestation.attester === "0x621477dBA416E12df7FF0d48E14c4D20DC85D7D9",
+    );
 
-      filteredAttestations = limitedAttestations.filter(
-        (attestation: any) =>
-          attestation.attester === "0x621477dBA416E12df7FF0d48E14c4D20DC85D7D9",
-      );
-    } else {
-      filteredAttestations = data.attestations.filter(
-        (attestation: any) =>
-          attestation.attester === "0x621477dBA416E12df7FF0d48E14c4D20DC85D7D9",
-      );
-    }
+    const mostRecentAttestations = attestationsByAttester.reduce(
+      (acc: Record<string, any>, current: any) => {
+        const recipient = current.recipient;
+        if (
+          !acc[recipient] ||
+          acc[recipient].timeCreated < current.timeCreated
+        ) {
+          acc[recipient] = current; 
+        }
+        return acc;
+      },
+      {},
+    );
 
-    const attestations = filteredAttestations.map((attestation: any) => {
-      return {
+    const recentAttestations = Object.values(mostRecentAttestations).map(
+      (attestation: any) => ({
         ...attestation,
         decodedDataJson: JSON.parse(attestation.decodedDataJson),
-      };
-    });
+      }),
+    );
 
-    return new NextResponse(JSON.stringify(attestations), { status: 200 });
+    return new NextResponse(JSON.stringify(recentAttestations), {
+      status: 200,
+    });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return new NextResponse("Something went wrong", {
       status: 500,
     });
