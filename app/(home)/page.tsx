@@ -19,10 +19,6 @@ export default function Home() {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [round, setRound] = useState(3);
 
-  if (isMobile) {
-    return <div className="flex justify-center">Mobile version not supported.</div>;
-  }
-
   const handleSelectRound = useCallback((selectedRound: number) => {
     setRound(selectedRound);
     setDropdownOpen(false);
@@ -51,6 +47,12 @@ export default function Home() {
       transport: http(),
     }),
   });
+
+  if (isMobile) {
+    return (
+      <div className="flex justify-center">Mobile version not supported.</div>
+    );
+  }
 
   return (
     <WagmiConfig config={configWagmi}>
