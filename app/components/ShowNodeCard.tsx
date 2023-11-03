@@ -26,7 +26,9 @@ export default function ShowNodeCard({ cardInfo }: NodeInfoCardProps) {
         address={cardInfo.currentAddress}
         ens={cardInfo.ens!}
       />
-      <EnsBar objectName={"Referred by"} address={cardInfo.referredBy} />
+      {cardInfo.referredBy !== "Optimism Foundation" && (
+        <EnsBar objectName={"Referred by"} address={cardInfo.referredBy} />
+      )}
       <InfoBar
         objectName={"Referred method"}
         object={cardInfo.referredMethod}
