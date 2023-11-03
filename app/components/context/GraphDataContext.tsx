@@ -21,8 +21,10 @@ export const useGraphData = () => useContext(GraphDataContext);
 
 export default function GraphDataProvider({
   children,
+  round,
 }: {
   children: ReactNode;
+  round: number;
 }) {
   const [graphData, setGraphData] = useState<any>(null);
   const [addressHashMap, setAddressHashMap] = useState<Map<
@@ -32,7 +34,7 @@ export default function GraphDataProvider({
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch("/api/fetchgraph?round=3");
+      const response = await fetch(`/api/fetchgraph?round=${round}`);
       if (!response.ok) {
         console.error("Something went wrong: ", response.status);
       }
@@ -44,7 +46,7 @@ export default function GraphDataProvider({
     };
 
     fetchData();
-  }, []);
+  }, [round]);
 
   return (
     <GraphDataContext.Provider value={{ graphData, addressHashMap }}>

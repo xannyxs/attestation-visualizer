@@ -2,7 +2,6 @@ import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import type { Metadata } from "next";
 import { League_Spartan } from "next/font/google";
-import GraphDataProvider from "./components/context/GraphDataContext";
 import { ModalContextProvider } from "./components/context/modalContext";
 import { ThreeGraphContextProvider } from "./components/context/ThreeGraphContext";
 import { SelectedNodeContextProvider } from "./components/context/SelectedNodeContextProps";
@@ -25,10 +24,8 @@ export default function RootLayout({
         <ThreeGraphContextProvider>
           <ModalContextProvider>
             <SelectedNodeContextProvider>
-              <GraphDataProvider>
-                {children}
-                <Analytics />
-              </GraphDataProvider>
+              {children}
+              <Analytics />
             </SelectedNodeContextProvider>
           </ModalContextProvider>
         </ThreeGraphContextProvider>
