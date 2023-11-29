@@ -41,7 +41,7 @@ export default function ListCard({
         <div className="flex-grow border-l-2 pl-3 pr-3 flex flex-col justify-center truncate">
           {card.ens ? (
             <h2 className="text-md font-semibold truncate">
-              ENS: {card.ens}
+              ENS Address: {card.ens}
             </h2>
           ) : (
             <h2 className="text-md font-semibold truncate">
