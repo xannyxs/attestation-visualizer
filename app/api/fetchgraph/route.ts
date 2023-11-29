@@ -1,5 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
+import { Attestation } from "@/app/types";
 
 export async function GET(request: NextRequest): Promise<NextResponse> {
   const round = request.nextUrl.searchParams.get("round");
@@ -72,7 +73,12 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       }),
     );
 
-    return new NextResponse(JSON.stringify(recentAttestations));
+    const filteredAttestations = recentAttestations.filter(
+      (attestation: Attestation) =>
+        attestation.decodedDataJson[0].value.value === round,
+    );
+
+    return new NextResponse(JSON.stringify(filteredAttestations));
   } catch (error) {
     console.error(error);
     return new NextResponse("Something went wrong", {
