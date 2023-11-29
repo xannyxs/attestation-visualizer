@@ -1,6 +1,6 @@
 import { ICardProps as CardType, EthereumAddress } from "../../types";
 import { useGraphData } from "../context/GraphDataContext";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import ListCard from "../cards/ListCard";
 import makeBlockie from "ethereum-blockies-base64";
 import { useSelectedNodeContext } from "../context/SelectedNodeContextProps";
@@ -15,19 +15,44 @@ export default function ListView() {
     EthereumAddress,
     CardType
   > | null>(null);
-  useEffect(() => {
-    if (graphDataContext) {
-      const { addressHashMap } = graphDataContext;
+  const [searchQuery, setSearchQuery] = useState("");
 
-      setAddressHashMap(addressHashMap);
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+  };
+
+  useEffect(() => {
+    if (graphDataContext?.addressHashMap) {
+      setAddressHashMap(graphDataContext.addressHashMap);
     }
-  }, [graphDataContext]);
+  }, [graphDataContext?.addressHashMap]);
+
+  const filteredCards = useMemo(() => {
+    if (!addressHashMap) return [];
+    return Array.from(addressHashMap.entries()).filter(([key, value]) => {
+      const searchLower = searchQuery.toLowerCase();
+      return (
+        value.currentAddress.toLowerCase().includes(searchLower) ||
+        (value.ens && value.ens.toLowerCase().includes(searchLower))
+      );
+    });
+  }, [addressHashMap, searchQuery]);
 
   if (!addressHashMap) {
     return (
       <div className="relative bg-white h-full w-full overflow-y-auto max-h-[calc(100vh)]">
-        <div className="sticky top-0 flex pt-4 text-3xl justify-center border-b border-gray-300 pb-3 bg-white">
-          List view
+        <div className="sticky top-0 mx-2 border-b border-gray-300 pt-4 pb-3 bg-white flex justify-between items-center">
+          <div className="text-3xl">List view</div>
+          <div className="flex justify-end items-center bg-gray-200 rounded">
+            <input
+              aria-label="Search addresses"
+              type="text"
+              placeholder="Search an address..."
+              className="m-1 p-1 border border-gray-300 rounded transition-all"
+              onChange={handleSearchChange}
+            />
+            <Search className="m-2" />
+          </div>
         </div>
         {Array.from({ length: 16 }).map((_, index) => (
           <ListCardSkeleton key={index} />
@@ -42,15 +67,20 @@ export default function ListView() {
 
   return (
     <div className="relative bg-white h-full w-full overflow-y-auto max-h-[calc(100vh)]">
-      <div className="sticky top-0 border-b border-gray-300 pt-5 pb-3 bg-white flex justify-between items-center">
-        <div className="flex-grow text-3xl justify-center hidden sm:flex">
-          List view
-        </div>
-        <div className="flex justify-end mr-2 p-2 hover:bg-gray-100">
-          <Search />
+      <div className="sticky top-0 mx-2 border-b border-gray-300 pt-4 pb-3 bg-white flex justify-between items-center">
+        <div className="text-3xl">List view</div>
+        <div className="flex justify-end items-center bg-gray-200 rounded">
+          <input
+            aria-label="Search addresses"
+            type="text"
+            placeholder="Search an address..."
+            className="m-1 p-1 border border-gray-300 rounded transition-all"
+            onChange={handleSearchChange}
+          />
+          <Search className="m-2" />
         </div>
       </div>
-      {Array.from(addressHashMap.entries()).map(([key, value]) => (
+      {filteredCards.map(([key, value]) => (
         <div key={key}>
           <ListCard
             image={value.imageUrl || makeBlockie(value.currentAddress)}
