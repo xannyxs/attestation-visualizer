@@ -24,6 +24,20 @@ const ModalContextProvider = ({ children }: { children: React.ReactNode }) => {
     setModal(null);
   };
 
+  useEffect(() => {
+    const handleEscapeKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        closeModal();
+      }
+    };
+
+    window.addEventListener("keydown", handleEscapeKey);
+
+    return () => {
+      window.removeEventListener("keydown", handleEscapeKey);
+    };
+  }, []);
+
   return (
     <ModalContext.Provider value={{ modal, openModal, closeModal }}>
       <Modal open={modal !== null} onClose={closeModal}>
