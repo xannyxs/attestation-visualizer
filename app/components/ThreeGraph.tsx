@@ -167,7 +167,9 @@ export default function ThreeGraph() {
         linkOpacity={0.5}
         linkDirectionalArrowLength={3.5}
         linkDirectionalArrowRelPos={1}
-        linkDirectionalParticles={(link) => (highlightLinks.has(link) ? 20 : 1)}
+        linkDirectionalParticles={(link) =>
+          highlightLinks.has(link) ? 20 : 0.06
+        }
         linkColor={(link) => (highlightLinks.has(link) ? "red" : "lightblue")}
         onNodeClick={(node) => {
           const selectedNode = addressHashMap!.get(node.id);
