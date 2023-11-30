@@ -47,20 +47,14 @@ export default function GridCard({
         {card.ens ? (
           <>
             <h3 className="text-center text-xl text-gray-900 font-medium leading-8">
-              ENS Address
+              {card.ens}
             </h3>
-            <div className="text-center text-gray-600 text-xs font-semibold">
-              <p className="truncate">{card.ens}</p>
-            </div>
           </>
         ) : (
           <>
-            <h3 className="text-center text-xl text-gray-900 font-medium leading-8">
-              Address
-            </h3>
-            <div className="text-center text-gray-600 text-xs font-semibold">
+            <h3 className="text-center text-md text-gray-900 font-medium leading-8">
               <p className="truncate">{card.currentAddress}</p>
-            </div>
+            </h3>
           </>
         )}
         <div className="flex flex-col text-sm my-3">
