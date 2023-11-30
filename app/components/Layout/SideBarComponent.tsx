@@ -17,12 +17,12 @@ const SidebarComponent: React.FC<SidebarComponentProps> = ({
     <div className="w-[1/4] z-10 relative">
       <SideBar>
         {
-          // <SidebarItem
-          //   icon={<LayoutGrid size={20} />}
-          //   text="Grid view"
-          //   active={activeView === "grid"}
-          //   onClick={() => handleItemClick("grid")}
-          // />
+          <SidebarItem
+            icon={<LayoutGrid size={20} />}
+            text="Grid view"
+            active={activeView === "grid"}
+            onClick={() => handleItemClick(ActiveView.Grid)}
+          />
         }
         <SidebarItem
           icon={<Rows size={20} />}

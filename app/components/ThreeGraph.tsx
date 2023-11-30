@@ -162,7 +162,6 @@ export default function ThreeGraph() {
         ref={fgRef}
         graphData={graph}
         nodeAutoColorBy="type"
-        nodeVal={(node) => 100 / (node.level + 1)}
         linkAutoColorBy="type"
         linkWidth={(link) => (highlightLinks.has(link) ? 1.5 : 0.2)}
         linkOpacity={0.5}
