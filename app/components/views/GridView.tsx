@@ -41,7 +41,7 @@ export default function ListView() {
   if (!addressHashMap) {
     return (
       <div className="relative bg-white h-full w-full overflow-y-auto max-h-[calc(100vh)]">
-        <SearchBar onChange={handleSearchChange} />
+        <SearchBar view={"Grid view"} onChange={handleSearchChange} />
 
         <div className="grid grid-cols-2 gap-2 m-2">
           {Array.from({ length: 16 }).map((_, index) => (
@@ -58,7 +58,7 @@ export default function ListView() {
 
   return (
     <div className="relative bg-white h-full w-full overflow-y-auto max-h-[calc(100vh)]">
-      <SearchBar onChange={handleSearchChange} />
+      <SearchBar view={"Grid view"} onChange={handleSearchChange} />
 
       <div className="grid grid-cols-2 gap-2 m-2">
         {filteredCards.map(([key, value]) => (

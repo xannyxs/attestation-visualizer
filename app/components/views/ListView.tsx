@@ -41,7 +41,7 @@ export default function ListView() {
   if (!addressHashMap) {
     return (
       <div className="relative bg-white h-full w-full overflow-y-auto max-h-[calc(100vh)]">
-        <SearchBar onChange={handleSearchChange} />
+        <SearchBar view={"List view"} onChange={handleSearchChange} />
 
         {Array.from({ length: 16 }).map((_, index) => (
           <ListCardSkeleton key={index} />
@@ -56,7 +56,7 @@ export default function ListView() {
 
   return (
     <div className="relative bg-white h-full w-full overflow-y-auto max-h-[calc(100vh)]">
-      <SearchBar onChange={handleSearchChange} />
+      <SearchBar view={"List view"} onChange={handleSearchChange} />
 
       {filteredCards.map(([key, value]) => (
         <div key={key}>
