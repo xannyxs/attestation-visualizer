@@ -3,9 +3,9 @@ import { useGraphData } from "../context/GraphDataContext";
 import { useState, useEffect, useMemo } from "react";
 import makeBlockie from "ethereum-blockies-base64";
 import { useSelectedNodeContext } from "../context/SelectedNodeContextProps";
-import { Search } from "lucide-react";
 import GridCard from "../cards/GridCard";
 import GridCardSkeleton from "../cards/GridCardSkeleton";
+import SearchBar from "../shared/SearchBar";
 
 export default function ListView() {
   const { setSelectedNodeId } = useSelectedNodeContext();
@@ -41,19 +41,7 @@ export default function ListView() {
   if (!addressHashMap) {
     return (
       <div className="relative bg-white h-full w-full overflow-y-auto max-h-[calc(100vh)]">
-        <div className="sticky top-0 mx-2 border-b border-gray-300 pt-4 pb-3 bg-white flex justify-between items-center">
-          <div className="text-3xl">Grid view</div>
-          <div className="flex justify-end items-center bg-gray-200 rounded">
-            <input
-              aria-label="Search addresses"
-              type="text"
-              placeholder="Search an address..."
-              className="m-1 p-1 border border-gray-300 rounded transition-all"
-              onChange={handleSearchChange}
-            />
-            <Search className="m-2" />
-          </div>
-        </div>
+        <SearchBar onChange={handleSearchChange} />
 
         <div className="grid grid-cols-2 gap-2 m-2">
           {Array.from({ length: 16 }).map((_, index) => (
@@ -70,19 +58,8 @@ export default function ListView() {
 
   return (
     <div className="relative bg-white h-full w-full overflow-y-auto max-h-[calc(100vh)]">
-      <div className="sticky top-0 mx-2 border-b border-gray-300 pt-4 pb-3 bg-white flex justify-between items-center">
-        <div className="text-3xl">Grid view</div>
-        <div className="flex justify-end items-center bg-gray-200 rounded">
-          <input
-            aria-label="Search addresses"
-            type="text"
-            placeholder="Search an address..."
-            className="m-1 p-1 border border-gray-300 rounded transition-all"
-            onChange={handleSearchChange}
-          />
-          <Search className="m-2" />
-        </div>
-      </div>
+      <SearchBar onChange={handleSearchChange} />
+
       <div className="grid grid-cols-2 gap-2 m-2">
         {filteredCards.map(([key, value]) => (
           <div key={key}>
