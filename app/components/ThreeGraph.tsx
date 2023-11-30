@@ -162,12 +162,15 @@ export default function ThreeGraph() {
         ref={fgRef}
         graphData={graph}
         nodeAutoColorBy="type"
+        nodeVal={(node) => 100 / (node.level + 1)}
         linkAutoColorBy="type"
         linkWidth={(link) => (highlightLinks.has(link) ? 1.5 : 0.2)}
         linkOpacity={0.5}
         linkDirectionalArrowLength={3.5}
         linkDirectionalArrowRelPos={1}
-        linkDirectionalParticles={(link) => (highlightLinks.has(link) ? 20 : 1)}
+        linkDirectionalParticles={(link) =>
+          highlightLinks.has(link) ? 20 : 0.06
+        }
         linkColor={(link) => (highlightLinks.has(link) ? "red" : "lightblue")}
         onNodeClick={(node) => {
           const selectedNode = addressHashMap!.get(node.id);
