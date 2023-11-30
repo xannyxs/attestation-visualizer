@@ -3,9 +3,9 @@ import { useGraphData } from "../context/GraphDataContext";
 import { useState, useEffect, useMemo } from "react";
 import makeBlockie from "ethereum-blockies-base64";
 import { useSelectedNodeContext } from "../context/SelectedNodeContextProps";
-import ListCardSkeleton from "../cards/ListCardSkeleton";
 import { Search } from "lucide-react";
 import GridCard from "../cards/GridCard";
+import GridCardSkeleton from "../cards/GridCardSkeleton";
 
 export default function ListView() {
   const { setSelectedNodeId } = useSelectedNodeContext();
@@ -54,9 +54,12 @@ export default function ListView() {
             <Search className="m-2" />
           </div>
         </div>
-        {Array.from({ length: 16 }).map((_, index) => (
-          <ListCardSkeleton key={index} />
-        ))}
+
+        <div className="grid grid-cols-2 gap-2 m-2">
+          {Array.from({ length: 16 }).map((_, index) => (
+            <GridCardSkeleton key={index} />
+          ))}
+        </div>
       </div>
     );
   }

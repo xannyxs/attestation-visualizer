@@ -25,7 +25,7 @@ export default function GridCard({
   return (
     <div className="shadow-black bg-gray-100 hover:bg-red-100 rounded-md py-1 transition-all cursor-pointer">
       <button
-        className="ml-2 mt-1 p-2 rounded-md self-start hover:bg-red-300 transition-all"
+        className="ml-2 mt-1 p-2 rounded-md self-start bg-gray-200 hover:bg-red-300 transition-all"
         onClick={onIconClick}
         aria-label="Locate address on map"
       >
