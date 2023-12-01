@@ -5,32 +5,26 @@ import ListCard from "../cards/ListCard";
 import makeBlockie from "ethereum-blockies-base64";
 import { useSelectedNodeContext } from "../context/SelectedNodeContextProps";
 import ListCardSkeleton from "../cards/ListCardSkeleton";
-import SearchBar from "../shared/SearchBar";
+import SearchBar, { searchQuery } from "../shared/SearchBar";
+import { effect, signal } from "@preact/signals-react";
 
 export default function ListView() {
   const { setSelectedNodeId } = useSelectedNodeContext();
 
   const graphDataContext = useGraphData();
-  const [addressHashMap, setAddressHashMap] = useState<Map<
-    EthereumAddress,
-    CardType
-  > | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
+  const addressHashMap = signal<Map<EthereumAddress, CardType> | null>(null);
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value);
-  };
-
-  useEffect(() => {
+  effect(() => {
     if (graphDataContext?.addressHashMap) {
-      setAddressHashMap(graphDataContext.addressHashMap);
+      addressHashMap.value = graphDataContext.addressHashMap;
     }
-  }, [graphDataContext?.addressHashMap]);
+  });
 
   const filteredCards = useMemo(() => {
-    if (!addressHashMap) return [];
-    return Array.from(addressHashMap.entries()).filter(([key, value]) => {
-      const searchLower = searchQuery.toLowerCase();
+    if (!addressHashMap.value) return [];
+
+    return Array.from(addressHashMap.value.entries()).filter(([key, value]) => {
+      const searchLower = searchQuery.value.toLowerCase();
       return (
         value.currentAddress.toLowerCase().includes(searchLower) ||
         (value.ens && value.ens.toLowerCase().includes(searchLower))
@@ -41,7 +35,7 @@ export default function ListView() {
   if (!addressHashMap) {
     return (
       <div className="relative bg-white h-full w-full overflow-y-auto max-h-[calc(100vh)]">
-        <SearchBar view={"List view"} onChange={handleSearchChange} />
+        <SearchBar view={"List view"} />
 
         {Array.from({ length: 16 }).map((_, index) => (
           <ListCardSkeleton key={index} />
@@ -56,7 +50,7 @@ export default function ListView() {
 
   return (
     <div className="relative bg-white h-full w-full overflow-y-auto max-h-[calc(100vh)]">
-      <SearchBar view={"List view"} onChange={handleSearchChange} />
+      <SearchBar view={"List view"} />
 
       {filteredCards.map(([key, value]) => (
         <div key={key}>

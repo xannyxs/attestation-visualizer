@@ -1,36 +1,30 @@
 import { ICardProps as CardType, EthereumAddress } from "../../types";
 import { useGraphData } from "../context/GraphDataContext";
-import { useState, useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import makeBlockie from "ethereum-blockies-base64";
 import { useSelectedNodeContext } from "../context/SelectedNodeContextProps";
 import GridCard from "../cards/GridCard";
 import GridCardSkeleton from "../cards/GridCardSkeleton";
-import SearchBar from "../shared/SearchBar";
+import SearchBar, { searchQuery } from "../shared/SearchBar";
+import { signal, effect } from "@preact/signals-react";
 
 export default function ListView() {
   const { setSelectedNodeId } = useSelectedNodeContext();
-
   const graphDataContext = useGraphData();
-  const [addressHashMap, setAddressHashMap] = useState<Map<
-    EthereumAddress,
-    CardType
-  > | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value);
-  };
+  const addressHashMap = signal<Map<EthereumAddress, CardType> | null>(null);
 
-  useEffect(() => {
+  effect(() => {
     if (graphDataContext?.addressHashMap) {
-      setAddressHashMap(graphDataContext.addressHashMap);
+      addressHashMap.value = graphDataContext.addressHashMap;
     }
-  }, [graphDataContext?.addressHashMap]);
+  });
 
   const filteredCards = useMemo(() => {
-    if (!addressHashMap) return [];
-    return Array.from(addressHashMap.entries()).filter(([key, value]) => {
-      const searchLower = searchQuery.toLowerCase();
+    if (!addressHashMap.value) return [];
+
+    return Array.from(addressHashMap.value.entries()).filter(([key, value]) => {
+      const searchLower = searchQuery.value.toLowerCase();
       return (
         value.currentAddress.toLowerCase().includes(searchLower) ||
         (value.ens && value.ens.toLowerCase().includes(searchLower))
@@ -38,10 +32,10 @@ export default function ListView() {
     });
   }, [addressHashMap, searchQuery]);
 
-  if (!addressHashMap) {
+  if (!addressHashMap.value) {
     return (
       <div className="relative bg-white h-full w-full overflow-y-auto max-h-[calc(100vh)]">
-        <SearchBar view={"Grid view"} onChange={handleSearchChange} />
+        <SearchBar view={"Grid view"} />
 
         <div className="grid grid-cols-2 gap-2 m-2">
           {Array.from({ length: 16 }).map((_, index) => (
@@ -58,7 +52,7 @@ export default function ListView() {
 
   return (
     <div className="relative bg-white h-full w-full overflow-y-auto max-h-[calc(100vh)]">
-      <SearchBar view={"Grid view"} onChange={handleSearchChange} />
+      <SearchBar view={"Grid view"} />
 
       <div className="grid grid-cols-2 gap-2 m-2">
         {filteredCards.map(([key, value]) => (
