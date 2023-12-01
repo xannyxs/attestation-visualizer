@@ -1,6 +1,18 @@
-import { ChevronLast, ChevronFirst } from "lucide-react";
+import {
+  ChevronLast,
+  ChevronFirst,
+  Filter,
+  CircleEllipsis,
+} from "lucide-react";
 import Image from "next/image";
-import { useContext, createContext, useState, ReactNode } from "react";
+import {
+  useContext,
+  createContext,
+  useState,
+  ReactNode,
+  useCallback,
+} from "react";
+import GraphDataProvider from "./context/GraphDataContext";
 
 interface SidebarContextType {
   expanded: boolean;
@@ -10,7 +22,12 @@ const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
 
 export default function Sidebar({ children }: { children: ReactNode }) {
   const [expanded, setExpanded] = useState(false);
+  const [round, setRound] = useState(3);
   const dimension = 150;
+
+  const handleSelectRound = useCallback((selectedRound: number) => {
+    setRound(selectedRound);
+  }, []);
 
   return (
     <aside className="h-screen">
@@ -35,6 +52,20 @@ export default function Sidebar({ children }: { children: ReactNode }) {
 
         <SidebarContext.Provider value={{ expanded }}>
           <ul className="flex-1 px-3">{children}</ul>
+
+          <div className="px-3 border-t">
+            <SidebarItem
+              icon={<Filter size={20} />}
+              text="Filter"
+              onClick={() => setExpanded((curr) => !curr)}
+            />
+
+            <SidebarItem
+              icon={<CircleEllipsis size={20} />}
+              text="Filter round"
+              onClick={() => handleSelectRound(round === 2 ? 3 : 2)}
+            />
+          </div>
         </SidebarContext.Provider>
       </nav>
     </aside>

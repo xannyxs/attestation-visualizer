@@ -22,7 +22,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     console.log("round 2");
     fromDateUnixTimestamp = 1694304000;
     untilDateUnixTimestamp = 1694736000;
-  }
+  } else console.log("round 3");
 
   try {
     const { data } = await client.query({
