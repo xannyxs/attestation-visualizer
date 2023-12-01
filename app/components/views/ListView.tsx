@@ -1,6 +1,6 @@
 import { ICardProps as CardType, EthereumAddress } from "../../types";
 import { useGraphData } from "../context/GraphDataContext";
-import { useState, useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import ListCard from "../cards/ListCard";
 import makeBlockie from "ethereum-blockies-base64";
 import { useSelectedNodeContext } from "../context/SelectedNodeContextProps";
@@ -10,7 +10,6 @@ import { effect, signal } from "@preact/signals-react";
 
 export default function ListView() {
   const { setSelectedNodeId } = useSelectedNodeContext();
-
   const graphDataContext = useGraphData();
   const addressHashMap = signal<Map<EthereumAddress, CardType> | null>(null);
 
@@ -19,6 +18,10 @@ export default function ListView() {
       addressHashMap.value = graphDataContext.addressHashMap;
     }
   });
+
+  const handleIconClick = (nodeId: string) => {
+    setSelectedNodeId(nodeId);
+  };
 
   const filteredCards = useMemo(() => {
     if (!addressHashMap.value) return [];
@@ -43,10 +46,6 @@ export default function ListView() {
       </div>
     );
   }
-
-  const handleIconClick = (nodeId: string) => {
-    setSelectedNodeId(nodeId);
-  };
 
   return (
     <div className="relative bg-white h-full w-full overflow-y-auto max-h-[calc(100vh)]">
