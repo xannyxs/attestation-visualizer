@@ -40,7 +40,7 @@ export default function Home() {
   if (isMobile) {
     return (
       <div className="flex justify-center text-white text-xl">
-        Mobile version not supported.
+        Mobile version not (yet) supported.
       </div>
     );
   }

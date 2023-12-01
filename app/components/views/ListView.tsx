@@ -35,7 +35,7 @@ export default function ListView() {
     });
   }, [addressHashMap, searchQuery]);
 
-  if (!addressHashMap) {
+  if (!addressHashMap.value) {
     return (
       <div className="relative bg-white h-full w-full overflow-y-auto max-h-[calc(100vh)]">
         <SearchBar view={"List view"} />
