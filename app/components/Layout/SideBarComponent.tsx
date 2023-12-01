@@ -16,14 +16,12 @@ const SidebarComponent: React.FC<SidebarComponentProps> = ({
   return (
     <div className="w-[1/4] z-10 relative">
       <SideBar>
-        {
-          <SidebarItem
-            icon={<LayoutGrid size={20} />}
-            text="Grid view"
-            active={activeView === "grid"}
-            onClick={() => handleItemClick(ActiveView.Grid)}
-          />
-        }
+        <SidebarItem
+          icon={<LayoutGrid size={20} />}
+          text="Grid view"
+          active={activeView === "grid"}
+          onClick={() => handleItemClick(ActiveView.Grid)}
+        />
         <SidebarItem
           icon={<Rows size={20} />}
           text="List view"
@@ -43,7 +41,7 @@ const SidebarComponent: React.FC<SidebarComponentProps> = ({
           text="Report bug"
           onClick={() =>
             handleRoute(
-              "https://github.com/xvoorvaa/attestation-visualizer/issues/new?assignees=&labels=&projects=&template=bug_report.md",
+              "https://github.com/xannyxs/attestation-visualizer/issues/new?assignees=&labels=&projects=&template=bug_report.md",
             )
           }
         />
@@ -52,7 +50,7 @@ const SidebarComponent: React.FC<SidebarComponentProps> = ({
           text="Feature request"
           onClick={() =>
             handleRoute(
-              "https://github.com/xvoorvaa/attestation-visualizer/issues/new?assignees=&labels=&projects=&template=feature_request.md",
+              "https://github.com/xannyxs/attestation-visualizer/issues/new?assignees=&labels=&projects=&template=feature_request.md",
             )
           }
         />
