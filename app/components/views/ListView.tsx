@@ -3,13 +3,12 @@ import { useGraphData } from "../context/GraphDataContext";
 import { useMemo } from "react";
 import ListCard from "../cards/ListCard";
 import makeBlockie from "ethereum-blockies-base64";
-import { useSelectedNodeContext } from "../context/SelectedNodeContextProps";
 import ListCardSkeleton from "../cards/ListCardSkeleton";
 import SearchBar, { searchQuery } from "../shared/SearchBar";
 import { effect, signal } from "@preact/signals-react";
+import { g_selectedNodeId } from "../ThreeGraph";
 
 export default function ListView() {
-  const { setSelectedNodeId } = useSelectedNodeContext();
   const graphDataContext = useGraphData();
   const addressHashMap = signal<Map<EthereumAddress, CardType> | null>(null);
 
@@ -20,7 +19,7 @@ export default function ListView() {
   });
 
   const handleIconClick = (nodeId: string) => {
-    setSelectedNodeId(nodeId);
+    g_selectedNodeId.value = nodeId;
   };
 
   const filteredCards = useMemo(() => {

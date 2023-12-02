@@ -10,7 +10,9 @@ import { useGraphData } from "./context/GraphDataContext";
 import buildGraphData from "../utils/buildGraph";
 import { ModalContext } from "./context/modalContext";
 import { useThreeGraphContext } from "./context/ThreeGraphContext";
-import { useSelectedNodeContext } from "./context/SelectedNodeContextProps";
+import { signal, effect } from "@preact/signals-react";
+
+export const g_selectedNodeId = signal<string | null>(null);
 
 const initSprites = (
   addressHashMap: Map<string, CardType>,
@@ -48,25 +50,19 @@ const initSprites = (
 
 export default function ThreeGraph() {
   const { fgRef } = useThreeGraphContext();
-  const { selectedNodeId } = useSelectedNodeContext();
 
   const graphDataContext = useGraphData();
   const { openModal } = useContext(ModalContext);
 
-  const [clickedNode, setClickedNode] = useState(null);
-  const [graph, setGraph] = useState<IGraph>({ nodes: [], links: [] });
-  const [addressHashMap, setAddressHashMap] = useState<Map<
-    string,
-    CardType
-  > | null>(null);
-  const [highlightNodes, setHighlightNodes] = useState(new Set());
-  const [highlightLinks, setHighlightLinks] = useState(new Set());
-  const [spriteCache, setSetSpriteCache] = useState(
-    new Map<string, THREE.Sprite>(),
-  );
+  const clickedNode = signal<any>(null);
+  const graph = signal<IGraph>({ nodes: [], links: [] });
+  const addressMap = signal<Map<string, CardType> | null>(null);
+  const highlightNodes = signal(new Set());
+  const highlightLinks = signal(new Set());
+  const spriteCache = signal(new Map<string, THREE.Sprite>());
 
   const handleNodeClick = (node: any) => {
-    setClickedNode(node);
+    clickedNode.value = node;
     handleNodeHover(node, false);
 
     const distance = 120;
@@ -78,28 +74,25 @@ export default function ThreeGraph() {
     );
   };
 
-  useEffect(() => {
-    if (selectedNodeId) {
-      const node = graph.nodes.find((node) => node.id === selectedNodeId);
+  effect(() => {
+    if (g_selectedNodeId.value) {
+      const node = graph.value.nodes.find((node) => node.id === g_selectedNodeId.value);
       if (node) {
         handleNodeClick(node);
       }
     }
-  }, [selectedNodeId, graph.nodes]);
+  });
 
-  useEffect(() => {
+  effect(() => {
     if (graphDataContext) {
       const { graphData, addressHashMap } = graphDataContext;
       if (graphData && addressHashMap) {
-        const buildedGraph = buildGraphData(graphData);
-        const newSpriteCache = initSprites(addressHashMap);
-
-        setSetSpriteCache(newSpriteCache);
-        setGraph(buildedGraph);
-        setAddressHashMap(addressHashMap);
+        graph.value = buildGraphData(graphData);
+        spriteCache.value = initSprites(addressHashMap);
+        addressMap.value = addressHashMap;
       }
     }
-  }, [graphDataContext]);
+  });
 
   if (!graphDataContext) {
     return (
@@ -117,17 +110,17 @@ export default function ThreeGraph() {
   }
 
   const handleNodeHover = (node: any, hover: boolean) => {
-    if ((hover && clickedNode && clickedNode === node) || !node) return;
+    if ((hover && clickedNode.value && clickedNode === node) || !node) return;
 
-    highlightNodes.clear();
-    highlightLinks.clear();
+    highlightNodes.value.clear();
+    highlightLinks.value.clear();
 
     const highlightReferralChain = (currentNode: any) => {
       if (!currentNode) return;
 
-      highlightNodes.add(currentNode);
+      highlightNodes.value.add(currentNode);
 
-      const additionalInfo = addressHashMap!.get(currentNode.id);
+      const additionalInfo = addressMap.value!.get(currentNode.id);
       let referredBy = additionalInfo?.referredBy;
 
       if (!referredBy) return;
@@ -135,7 +128,7 @@ export default function ThreeGraph() {
       if (referredBy === "Optimism Foundation") {
         referredBy = "0x0000000000000000000000000000000000000000";
       }
-      const link = graph.links.find(
+      const link = graph.value.links.find(
         (link: any) =>
           (link.source.id === currentNode.id &&
             link.target.id === referredBy) ||
@@ -143,50 +136,54 @@ export default function ThreeGraph() {
       );
 
       if (link) {
-        highlightLinks.add(link);
+        highlightLinks.value.add(link);
       }
 
-      const parentNode = graph.nodes.find((n: any) => n.id === referredBy);
+      const parentNode = graph.value.nodes.find(
+        (n: any) => n.id === referredBy,
+      );
       highlightReferralChain(parentNode);
     };
 
     highlightReferralChain(node);
 
-    setHighlightNodes(new Set(highlightNodes));
-    setHighlightLinks(new Set(highlightLinks));
+    // highlightNodes.value = new Set(highlightNodes.value);
+    // highlightLinks.value = new Set(highlightLinks.value);
   };
 
   return (
     <div>
       <ForceGraph3D
         ref={fgRef}
-        graphData={graph}
+        graphData={graph.value}
         nodeAutoColorBy="type"
         linkAutoColorBy="type"
-        linkWidth={(link) => (highlightLinks.has(link) ? 1.5 : 0.2)}
+        linkWidth={(link) => (highlightLinks.value.has(link) ? 1.5 : 0.2)}
         linkOpacity={0.5}
         linkDirectionalArrowLength={3.5}
         linkDirectionalArrowRelPos={1}
         linkDirectionalParticles={(link) =>
-          highlightLinks.has(link) ? 20 : 0.06
+          highlightLinks.value.has(link) ? 20 : 0.06
         }
-        linkColor={(link) => (highlightLinks.has(link) ? "red" : "lightblue")}
+        linkColor={(link) =>
+          highlightLinks.value.has(link) ? "red" : "lightblue"
+        }
         onNodeClick={(node) => {
-          const selectedNode = addressHashMap!.get(node.id);
+          const selectedNode = addressMap.value!.get(node.id);
           if (selectedNode) {
             handleNodeClick(node);
             openModal(<ShowNodeCard cardInfo={selectedNode} />);
           }
         }}
         nodeThreeObject={(node: any) => {
-          let sprite = spriteCache.get(node.id);
+          let sprite = spriteCache.value.get(node.id);
           if (!sprite) {
             const data = makeBlockie(node.id);
             const texture = new THREE.TextureLoader().load(data);
             const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
             sprite = new THREE.Sprite(spriteMaterial);
             sprite.scale.set(8, 8, 0);
-            spriteCache.set(node.id, sprite);
+            spriteCache.value.set(node.id, sprite);
           }
           return sprite as unknown as THREE.Object3D;
         }}
