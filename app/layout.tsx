@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { League_Spartan } from "next/font/google";
 import { ModalContextProvider } from "./components/context/modalContext";
 import { ThreeGraphContextProvider } from "./components/context/ThreeGraphContext";
+import { SelectedNodeContextProvider } from "./components/context/SelectedNodeContextProps";
 
 const inter = League_Spartan({ subsets: ["latin"] });
 
@@ -22,8 +23,10 @@ export default function RootLayout({
       <body className={inter.className}>
         <ThreeGraphContextProvider>
           <ModalContextProvider>
-            {children}
-            <Analytics />
+            <SelectedNodeContextProvider>
+              {children}
+              <Analytics />
+            </SelectedNodeContextProvider>
           </ModalContextProvider>
         </ThreeGraphContextProvider>
       </body>
