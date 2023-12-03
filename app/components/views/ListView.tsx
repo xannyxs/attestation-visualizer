@@ -1,6 +1,5 @@
 import { ICardProps as CardType, EthereumAddress } from "../../types";
 import { useGraphData } from "../context/GraphDataContext";
-import { useMemo } from "react";
 import ListCard from "../cards/ListCard";
 import makeBlockie from "ethereum-blockies-base64";
 import { useSelectedNodeContext } from "../context/SelectedNodeContextProps";
@@ -23,7 +22,7 @@ export default function ListView() {
     setSelectedNodeId(nodeId);
   };
 
-  const filteredCards = useMemo(() => {
+  const getFilteredCards = () => {
     if (!addressHashMap.value) return [];
 
     return Array.from(addressHashMap.value.entries()).filter(([key, value]) => {
@@ -33,7 +32,9 @@ export default function ListView() {
         (value.ens && value.ens.toLowerCase().includes(searchLower))
       );
     });
-  }, [addressHashMap, searchQuery]);
+  };
+
+  const filteredCards = getFilteredCards();
 
   if (!addressHashMap.value) {
     return (

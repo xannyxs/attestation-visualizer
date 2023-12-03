@@ -1,7 +1,7 @@
 "use client";
 
 import { ICardProps as CardType, IGraph } from "../types";
-import { useState, useEffect, useContext } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import * as THREE from "three";
 import ForceGraph3D from "react-force-graph-3d";
 import ShowNodeCard from "./ShowNodeCard";
@@ -9,14 +9,13 @@ import makeBlockie from "ethereum-blockies-base64";
 import { useGraphData } from "./context/GraphDataContext";
 import buildGraphData from "../utils/buildGraph";
 import { ModalContext } from "./context/modalContext";
-import { useThreeGraphContext } from "./context/ThreeGraphContext";
 import { useSelectedNodeContext } from "./context/SelectedNodeContextProps";
+import { signal } from "@preact/signals-react";
 
 const initSprites = (
   addressHashMap: Map<string, CardType>,
 ): Map<string, THREE.Sprite> => {
-  const acc = Array.from(addressHashMap.entries()).reduce(
-    (acc, [key, value]) => {
+  const acc = Array.from(addressHashMap.entries()).reduce( (acc, [key, value]) => {
       let texture: THREE.Texture;
       let data = value.imageUrl ?? "";
 
@@ -47,13 +46,13 @@ const initSprites = (
 };
 
 export default function ThreeGraph() {
-  const { fgRef } = useThreeGraphContext();
+  const fgRef = useRef<any>(null);
   const { selectedNodeId } = useSelectedNodeContext();
 
   const graphDataContext = useGraphData();
   const { openModal } = useContext(ModalContext);
 
-  const [clickedNode, setClickedNode] = useState(null);
+  const clickedNode = signal(null)
   const [graph, setGraph] = useState<IGraph>({ nodes: [], links: [] });
   const [addressHashMap, setAddressHashMap] = useState<Map<
     string,
@@ -66,7 +65,7 @@ export default function ThreeGraph() {
   );
 
   const handleNodeClick = (node: any) => {
-    setClickedNode(node);
+    clickedNode.value = node
     handleNodeHover(node, false);
 
     const distance = 120;
@@ -117,7 +116,7 @@ export default function ThreeGraph() {
   }
 
   const handleNodeHover = (node: any, hover: boolean) => {
-    if ((hover && clickedNode && clickedNode === node) || !node) return;
+    if ((hover && clickedNode.value && clickedNode.value === node) || !node) return;
 
     highlightNodes.clear();
     highlightLinks.clear();

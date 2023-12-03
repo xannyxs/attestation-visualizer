@@ -1,6 +1,5 @@
 import { ICardProps as CardType, EthereumAddress } from "../../types";
 import { useGraphData } from "../context/GraphDataContext";
-import { useMemo } from "react";
 import makeBlockie from "ethereum-blockies-base64";
 import { useSelectedNodeContext } from "../context/SelectedNodeContextProps";
 import GridCard from "../cards/GridCard";
@@ -20,7 +19,11 @@ export default function ListView() {
     }
   });
 
-  const filteredCards = useMemo(() => {
+  const handleIconClick = (nodeId: string) => {
+    setSelectedNodeId(nodeId);
+  };
+
+  const getFilteredCards = () => {
     if (!addressHashMap.value) return [];
 
     return Array.from(addressHashMap.value.entries()).filter(([key, value]) => {
@@ -30,7 +33,9 @@ export default function ListView() {
         (value.ens && value.ens.toLowerCase().includes(searchLower))
       );
     });
-  }, [addressHashMap, searchQuery]);
+  };
+
+  const filteredCards = getFilteredCards();
 
   if (!addressHashMap.value) {
     return (
@@ -45,10 +50,6 @@ export default function ListView() {
       </div>
     );
   }
-
-  const handleIconClick = (nodeId: string) => {
-    setSelectedNodeId(nodeId);
-  };
 
   return (
     <div className="relative bg-white h-full w-full overflow-y-auto max-h-[calc(100vh)]">
