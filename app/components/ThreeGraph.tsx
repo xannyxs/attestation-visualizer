@@ -9,13 +9,13 @@ import makeBlockie from "ethereum-blockies-base64";
 import { useGraphData } from "./context/GraphDataContext";
 import buildGraphData from "../utils/buildGraph";
 import { ModalContext } from "./context/modalContext";
-import { useSelectedNodeContext } from "./context/SelectedNodeContextProps";
 import { signal } from "@preact/signals-react";
 
 const initSprites = (
   addressHashMap: Map<string, CardType>,
 ): Map<string, THREE.Sprite> => {
-  const acc = Array.from(addressHashMap.entries()).reduce( (acc, [key, value]) => {
+  const acc = Array.from(addressHashMap.entries()).reduce(
+    (acc, [key, value]) => {
       let texture: THREE.Texture;
       let data = value.imageUrl ?? "";
 
@@ -45,14 +45,15 @@ const initSprites = (
   return acc;
 };
 
+export const g_selectedNodeId = signal<string | null>(null);
+
 export default function ThreeGraph() {
   const fgRef = useRef<any>(null);
-  const { selectedNodeId } = useSelectedNodeContext();
 
   const graphDataContext = useGraphData();
   const { openModal } = useContext(ModalContext);
 
-  const clickedNode = signal(null)
+  const clickedNode = signal(null);
   const [graph, setGraph] = useState<IGraph>({ nodes: [], links: [] });
   const [addressHashMap, setAddressHashMap] = useState<Map<
     string,
@@ -65,7 +66,7 @@ export default function ThreeGraph() {
   );
 
   const handleNodeClick = (node: any) => {
-    clickedNode.value = node
+    clickedNode.value = node;
     handleNodeHover(node, false);
 
     const distance = 120;
@@ -78,13 +79,13 @@ export default function ThreeGraph() {
   };
 
   useEffect(() => {
-    if (selectedNodeId) {
-      const node = graph.nodes.find((node) => node.id === selectedNodeId);
+    if (g_selectedNodeId.value) {
+      const node = graph.nodes.find((node) => node.id === g_selectedNodeId.value);
       if (node) {
         handleNodeClick(node);
       }
     }
-  }, [selectedNodeId, graph.nodes]);
+  }, [g_selectedNodeId.value, graph.nodes]);
 
   useEffect(() => {
     if (graphDataContext) {
@@ -116,7 +117,8 @@ export default function ThreeGraph() {
   }
 
   const handleNodeHover = (node: any, hover: boolean) => {
-    if ((hover && clickedNode.value && clickedNode.value === node) || !node) return;
+    if ((hover && clickedNode.value && clickedNode.value === node) || !node)
+      return;
 
     highlightNodes.clear();
     highlightLinks.clear();

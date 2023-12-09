@@ -1,14 +1,13 @@
 import { ICardProps as CardType, EthereumAddress } from "../../types";
 import { useGraphData } from "../context/GraphDataContext";
 import makeBlockie from "ethereum-blockies-base64";
-import { useSelectedNodeContext } from "../context/SelectedNodeContextProps";
 import GridCard from "../cards/GridCard";
 import GridCardSkeleton from "../cards/GridCardSkeleton";
 import SearchBar, { searchQuery } from "../shared/SearchBar";
 import { signal, effect } from "@preact/signals-react";
+import { g_selectedNodeId } from "../ThreeGraph";
 
 export default function ListView() {
-  const { setSelectedNodeId } = useSelectedNodeContext();
   const graphDataContext = useGraphData();
 
   const addressHashMap = signal<Map<EthereumAddress, CardType> | null>(null);
@@ -20,7 +19,7 @@ export default function ListView() {
   });
 
   const handleIconClick = (nodeId: string) => {
-    setSelectedNodeId(nodeId);
+    g_selectedNodeId.value = nodeId;
   };
 
   const getFilteredCards = () => {
