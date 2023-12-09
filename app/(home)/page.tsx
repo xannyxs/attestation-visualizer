@@ -14,20 +14,17 @@ import GraphDataProvider from "../components/context/GraphDataContext";
 import RoundDropdown from "../components/RoundDropdown";
 import { ActiveView } from "../types";
 import useIsMobile from "../components/Layout/useIsMobile";
+import { g_isDropdownOpen } from "../components/RoundDropdown";
+
 
 export default function Home() {
   const isMobile = useIsMobile();
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [round, setRound] = useState(3);
 
   const handleSelectRound = useCallback((selectedRound: number) => {
     setRound(selectedRound);
-    setDropdownOpen(false);
+    g_isDropdownOpen.value = false;
   }, []);
-
-  const toggleDropdown = useCallback(() => {
-    setDropdownOpen(!isDropdownOpen);
-  }, [isDropdownOpen]);
 
   const configWagmi = createConfig({
     autoConnect: true,
@@ -59,12 +56,7 @@ export default function Home() {
             {activeView.value === ActiveView.List && <ListView />}
             {activeView.value === ActiveView.Credits && <CreditsView />}
           </div>
-          <RoundDropdown
-            isDropdownOpen={isDropdownOpen}
-            toggleDropdown={toggleDropdown}
-            round={round}
-            handleSelectRound={handleSelectRound}
-          />
+          <RoundDropdown round={round} handleSelectRound={handleSelectRound} />
           <div className="absolute">
             <ThreeGraph />
           </div>
