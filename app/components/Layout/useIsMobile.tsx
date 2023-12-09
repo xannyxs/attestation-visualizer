@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import { signal, effect } from "@preact/signals-react";
 
 function useIsMobile() {
-  const [isMobile, setIsMobile] = useState(false);
+  const isMobile = signal(false);
 
-  useEffect(() => {
+  effect(() => {
     const userAgent =
       typeof window.navigator === "undefined" ? "" : navigator.userAgent;
     const mobile = Boolean(
@@ -11,8 +11,8 @@ function useIsMobile() {
         /Android|BlackBerry|iPhone|iPod|Opera Mini|IEMobile|WPDesktop/i,
       ),
     );
-    setIsMobile(mobile);
-  }, []);
+    isMobile.value = mobile;
+  });
 
   return isMobile;
 }
