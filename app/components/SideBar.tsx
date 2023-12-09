@@ -1,15 +1,11 @@
+import { signal } from "@preact/signals-react";
 import { ChevronLast, ChevronFirst } from "lucide-react";
 import Image from "next/image";
-import { useContext, createContext, useState, ReactNode } from "react";
+import { ReactNode } from "react";
 
-interface SidebarContextType {
-  expanded: boolean;
-}
-
-const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
+const expanded = signal(false);
 
 export default function Sidebar({ children }: { children: ReactNode }) {
-  const [expanded, setExpanded] = useState(false);
   const dimension = 150;
 
   return (
@@ -19,23 +15,21 @@ export default function Sidebar({ children }: { children: ReactNode }) {
           <Image
             src="https://img.logoipsum.com/243.svg"
             className={`overflow-hidden transition-all ${
-              expanded ? "w-32" : "w-0"
+              expanded.value ? "w-32" : "w-0"
             }`}
             alt="logo"
             width={dimension}
             height={dimension}
           />
           <button
-            onClick={() => setExpanded((curr) => !curr)}
+            onClick={() => (expanded.value = !expanded.value)}
             className="p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100"
           >
-            {expanded ? <ChevronFirst /> : <ChevronLast />}
+            {expanded.value ? <ChevronFirst /> : <ChevronLast />}
           </button>
         </div>
 
-        <SidebarContext.Provider value={{ expanded }}>
-          <ul className="flex-1 px-3">{children}</ul>
-        </SidebarContext.Provider>
+        <ul className="flex-1 px-3">{children}</ul>
       </nav>
     </aside>
   );
@@ -52,8 +46,6 @@ export function SidebarItem({
   active?: boolean;
   onClick: () => void;
 }) {
-  const { expanded } = useContext(SidebarContext) ?? { expanded: false };
-
   return (
     <li
       onClick={onClick}
@@ -71,13 +63,13 @@ export function SidebarItem({
       {icon}
       <span
         className={`overflow-hidden transition-all ${
-          expanded ? "w-52 ml-3" : "w-0"
+          expanded.value ? "w-52 ml-3" : "w-0"
         }`}
       >
         {text}
       </span>
 
-      {!expanded && (
+      {!expanded.value && (
         <div
           className={`
           absolute left-full rounded-md px-2 py-1 ml-6

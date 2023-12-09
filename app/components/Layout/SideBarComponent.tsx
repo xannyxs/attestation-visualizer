@@ -1,18 +1,16 @@
 import SideBar, { SidebarItem } from "@/app/components/SideBar";
 import { Gem, LayoutGrid, Rows, Bug, Rocket } from "lucide-react";
 import { ActiveView } from "@/app/types";
+import { useCallback } from "react";
+import { signal } from "@preact/signals-react";
 
-interface SidebarComponentProps {
-  handleRoute: (href: string) => void;
-  activeView: ActiveView;
-  handleItemClick: (view: ActiveView) => void;
-}
+export const activeView = signal<ActiveView>(ActiveView.None);
 
-const SidebarComponent: React.FC<SidebarComponentProps> = ({
-  handleRoute,
-  activeView,
-  handleItemClick,
-}) => {
+const SidebarComponent = () => {
+  const handleRoute = useCallback((href: string) => {
+    window.open(href, "_blank");
+  }, []);
+
   return (
     <div className="w-[1/4] z-10 relative">
       <SideBar>
@@ -20,22 +18,22 @@ const SidebarComponent: React.FC<SidebarComponentProps> = ({
           <SidebarItem
             icon={<LayoutGrid size={20} />}
             text="Grid view"
-            active={activeView === "grid"}
-            onClick={() => handleItemClick(ActiveView.Grid)}
+            active={activeView.value === "grid"}
+            onClick={() => (activeView.value = ActiveView.Grid)}
           />
         }
         <SidebarItem
           icon={<Rows size={20} />}
           text="List view"
-          active={activeView === "list"}
-          onClick={() => handleItemClick(ActiveView.List)}
+          active={activeView.value === "list"}
+          onClick={() => (activeView.value = ActiveView.List)}
         />
         {
           // <SidebarItem
           //   icon={<Gem size={20} />}
           //   text="Credits"
           //   active={activeView === "credits"}
-          //   onClick={() => handleItemClick("credits")}
+          //   onClick={() => activeView.value = ("credits")}
           // />
         }
         <SidebarItem
@@ -43,7 +41,7 @@ const SidebarComponent: React.FC<SidebarComponentProps> = ({
           text="Report bug"
           onClick={() =>
             handleRoute(
-              "https://github.com/xvoorvaa/attestation-visualizer/issues/new?assignees=&labels=&projects=&template=bug_report.md",
+              "https://github.com/xannyxs/attestation-visualizer/issues/new?assignees=&labels=&projects=&template=bug_report.md",
             )
           }
         />
@@ -52,7 +50,7 @@ const SidebarComponent: React.FC<SidebarComponentProps> = ({
           text="Feature request"
           onClick={() =>
             handleRoute(
-              "https://github.com/xvoorvaa/attestation-visualizer/issues/new?assignees=&labels=&projects=&template=feature_request.md",
+              "https://github.com/xannyxs/attestation-visualizer/issues/new?assignees=&labels=&projects=&template=feature_request.md",
             )
           }
         />

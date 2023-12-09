@@ -1,7 +1,9 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
-import SidebarComponent from "../components/Layout/SideBarComponent";
+import React from "react";
+import SidebarComponent, {
+  activeView,
+} from "../components/Layout/SideBarComponent";
 import ThreeGraph from "../components/ThreeGraphWrapper";
 import { mainnet, WagmiConfig, createConfig } from "wagmi";
 import { createPublicClient, http } from "viem";
@@ -15,30 +17,6 @@ import useIsMobile from "../components/Layout/useIsMobile";
 
 export default function Home() {
   const isMobile = useIsMobile();
-  const [activeView, setActiveView] = useState<ActiveView>(ActiveView.None);
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
-  const [round, setRound] = useState(3);
-
-  const handleSelectRound = useCallback((selectedRound: number) => {
-    setRound(selectedRound);
-    setDropdownOpen(false);
-  }, []);
-
-  const toggleDropdown = useCallback(() => {
-    setDropdownOpen(!isDropdownOpen);
-  }, [isDropdownOpen]);
-
-  const handleItemClick = (view: ActiveView) => {
-    if (activeView === view) {
-      setActiveView(ActiveView.None);
-    } else {
-      setActiveView(view);
-    }
-  };
-
-  const handleRoute = useCallback((href: string) => {
-    window.open(href, "_blank");
-  }, []);
 
   const configWagmi = createConfig({
     autoConnect: true,
@@ -51,35 +29,26 @@ export default function Home() {
   if (isMobile) {
     return (
       <div className="flex justify-center text-white text-xl">
-        Mobile version not supported.
+        Mobile version not (yet) supported.
       </div>
     );
   }
 
   return (
     <WagmiConfig config={configWagmi}>
-      <GraphDataProvider round={round}>
+      <GraphDataProvider>
         <main className="flex">
-          <SidebarComponent
-            handleRoute={handleRoute}
-            activeView={activeView}
-            handleItemClick={handleItemClick}
-          />
+          <SidebarComponent />
           <div
             className={`w-[35rem] relative ${
-              activeView === ActiveView.None ? "z-0" : "z-10"
+              activeView.value === ActiveView.None ? "z-0" : "z-10"
             }`}
           >
-            {activeView === ActiveView.Grid && <GridView />}
-            {activeView === ActiveView.List && <ListView />}
-            {activeView === ActiveView.Credits && <CreditsView />}
+            {activeView.value === ActiveView.Grid && <GridView />}
+            {activeView.value === ActiveView.List && <ListView />}
+            {activeView.value === ActiveView.Credits && <CreditsView />}
           </div>
-          <RoundDropdown
-            isDropdownOpen={isDropdownOpen}
-            toggleDropdown={toggleDropdown}
-            round={round}
-            handleSelectRound={handleSelectRound}
-          />
+          <RoundDropdown />
           <div className="absolute">
             <ThreeGraph />
           </div>

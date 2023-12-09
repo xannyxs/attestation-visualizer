@@ -1,20 +1,23 @@
-import { useState, useEffect } from "react";
+"use client";
 
-function useIsMobile() {
-  const [isMobile, setIsMobile] = useState(false);
+import { signal, effect } from "@preact/signals-react";
 
-  useEffect(() => {
-    const userAgent =
-      typeof window.navigator === "undefined" ? "" : navigator.userAgent;
-    const mobile = Boolean(
-      userAgent.match(
-        /Android|BlackBerry|iPhone|iPod|Opera Mini|IEMobile|WPDesktop/i,
-      ),
-    );
-    setIsMobile(mobile);
-  }, []);
+function useIsMobile(): boolean {
+  const isMobile = signal(false);
 
-  return isMobile;
+  effect(() => {
+    if (typeof window !== "undefined") {
+      const userAgent = window.navigator.userAgent;
+      const mobile = Boolean(
+        userAgent.match(
+          /Android|BlackBerry|iPhone|iPod|Opera Mini|IEMobile|WPDesktop/i,
+        ),
+      );
+      isMobile.value = mobile;
+    }
+  });
+
+  return isMobile.value;
 }
 
 export default useIsMobile;

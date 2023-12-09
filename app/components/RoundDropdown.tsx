@@ -1,29 +1,29 @@
+import { Signal, signal } from "@preact/signals-react";
 import React from "react";
+import { g_round } from "./context/GraphDataContext";
 
-interface RoundDropdownProps {
-  isDropdownOpen: boolean;
-  toggleDropdown: () => void;
-  round: number;
-  handleSelectRound: (round: number) => void;
-}
+export const g_isDropdownOpen = signal(false);
 
-const RoundDropdown: React.FC<RoundDropdownProps> = ({
-  isDropdownOpen,
-  toggleDropdown,
-  round,
-  handleSelectRound,
-}) => {
+const RoundDropdown = () => {
+  const toggleDropdown = () => {
+    g_isDropdownOpen.value = !g_isDropdownOpen.value;
+  };
+
+  const handleSelectRound = (selectedRound: number) => {
+    g_round.value = selectedRound;
+    g_isDropdownOpen.value = false;
+  };
+
   return (
     <div className="bg-white rounded-sm absolute top-3 right-3 z-10">
       <button
-        onClick={toggleDropdown}
+        onClick={() => toggleDropdown()}
         className="p-2 hover:bg-gray-100"
         aria-haspopup="true"
-        aria-expanded={isDropdownOpen}
       >
-        Filter round | Current round: {round}
+        Filter round | Current round: {g_round.value}
       </button>
-      {isDropdownOpen && (
+      {g_isDropdownOpen.value && (
         <div
           className="origin-top-right absolute right-0 mt-2 w-full rounded-md bg-white shadow-lg z-10"
           role="menu"
