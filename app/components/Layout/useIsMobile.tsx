@@ -1,6 +1,6 @@
 import { signal, effect } from "@preact/signals-react";
 
-function useIsMobile() {
+function useIsMobile(): boolean {
   const isMobile = signal(false);
 
   effect(() => {
@@ -14,7 +14,7 @@ function useIsMobile() {
     isMobile.value = mobile;
   });
 
-  return isMobile;
+  return isMobile.value;
 }
 
 export default useIsMobile;
