@@ -35,7 +35,7 @@ export default function GraphDataProvider({
 
   effect(() => {
     const fetchData = async () => {
-      const response = await fetch(`/api/fetchgraph?round=${g_round}`);
+      const response = await fetch(`/api/fetchgraph?round=${g_round.value}`);
       if (!response.ok) {
         console.error("Something went wrong: ", response.status);
       }

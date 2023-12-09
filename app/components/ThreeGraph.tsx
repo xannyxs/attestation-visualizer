@@ -85,7 +85,7 @@ export default function ThreeGraph() {
         handleNodeClick(node);
       }
     }
-  }, [g_selectedNodeId.value, graph.nodes]);
+  }, [graph.nodes]);
 
   useEffect(() => {
     if (graphDataContext) {

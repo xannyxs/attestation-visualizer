@@ -4,7 +4,7 @@ import { g_round } from "./context/GraphDataContext";
 
 export const g_isDropdownOpen = signal(false);
 
-const RoundDropdown: React.FC<RoundDropdownProps> = () => {
+const RoundDropdown = () => {
   const toggleDropdown = () => {
     g_isDropdownOpen.value = !g_isDropdownOpen.value;
   };
