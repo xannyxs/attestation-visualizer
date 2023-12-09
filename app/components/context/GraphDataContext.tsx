@@ -9,6 +9,9 @@ import React, {
 } from "react";
 import buildAddressHashMap from "@/app/utils/buildAddressHashmap";
 import { ICardProps as CardType, EthereumAddress } from "@/app/types";
+import { effect, signal } from "@preact/signals-react";
+
+export const g_round = signal(3);
 
 interface GraphDataContextType {
   graphData: any;
@@ -21,10 +24,8 @@ export const useGraphData = () => useContext(GraphDataContext);
 
 export default function GraphDataProvider({
   children,
-  round,
 }: {
   children: ReactNode;
-  round: number;
 }) {
   const [graphData, setGraphData] = useState<any>(null);
   const [addressHashMap, setAddressHashMap] = useState<Map<
@@ -32,9 +33,9 @@ export default function GraphDataProvider({
     CardType
   > | null>(null);
 
-  useEffect(() => {
+  effect(() => {
     const fetchData = async () => {
-      const response = await fetch(`/api/fetchgraph?round=${round}`);
+      const response = await fetch(`/api/fetchgraph?round=${g_round}`);
       if (!response.ok) {
         console.error("Something went wrong: ", response.status);
       }
@@ -46,7 +47,7 @@ export default function GraphDataProvider({
     };
 
     fetchData();
-  }, [round]);
+  });
 
   return (
     <GraphDataContext.Provider value={{ graphData, addressHashMap }}>
