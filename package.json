@@ -16,6 +16,7 @@
     "@ethereum-attestation-service/eas-sdk": "^1.1.0-beta.2",
     "@fontsource-variable/league-spartan": "^5.0.8",
     "@vercel/analytics": "^1.1.1",
+    "@vercel/speed-insights": "^1.0.2",
     "autoprefixer": "10.4.15",
     "eslint": "8.47.0",
     "eslint-config-next": "13.4.16",
@@ -35,11 +36,11 @@
     "wagmi": "^1.4.1"
   },
   "devDependencies": {
+    "@tsconfig/recommended": "^1.0.3",
     "@types/node": "20.5.0",
     "@types/react": "18.2.20",
     "@types/react-dom": "18.2.7",
     "@types/three": "^0.155.0",
-    "@tsconfig/recommended": "^1.0.3",
     "prettier": "^3.0.3"
   }
 }
