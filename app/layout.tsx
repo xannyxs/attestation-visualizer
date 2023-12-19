@@ -21,13 +21,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={font.className}>
-          <ModalContextProvider>
-            <SelectedNodeContextProvider>
-              {children}
-              <Analytics />
-              <SpeedInsights />
-            </SelectedNodeContextProvider>
-          </ModalContextProvider>
+        <ModalContextProvider>
+          <SelectedNodeContextProvider>
+            {children}
+            <Analytics />
+            <SpeedInsights />
+          </SelectedNodeContextProvider>
+        </ModalContextProvider>
       </body>
     </html>
   );
