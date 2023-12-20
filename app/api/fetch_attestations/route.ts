@@ -1,7 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 import { Attestation } from "@/app/types";
-import { c_CLIENT_URI, c_QUERY, c_SCHEMAID, c_ATTESTER } from "@/CONFIG";
+import { c_CLIENT_URI, c_QUERY, c_GQL_VARIABLES, c_ATTESTER } from "@/CONFIG";
 
 const createApolloClient = () =>
   new ApolloClient({
@@ -18,12 +18,7 @@ const fetchAttestations = async (
       ${c_QUERY}
     `,
     variables: {
-      where: {
-        AND: [
-          { schemaId: { equals: c_SCHEMAID } },
-          { revoked: { equals: false } },
-        ],
-      },
+      ...c_GQL_VARIABLES,
     },
   });
 
