@@ -34,7 +34,7 @@ export default function GraphDataProvider({
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(`/api/fetchAttestations?round=${round}`);
+      const response = await fetch(`/api/fetch_attestations?round=${round}`);
       if (!response.ok) {
         console.error("Something went wrong: ", response.status);
       }

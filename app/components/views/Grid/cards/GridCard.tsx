@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { LocateFixed } from "lucide-react";
 import { useContext } from "react";
-import { ModalContext } from "../context/modalContext";
-import ShowNodeCard from "../ShowNodeCard";
+import { ModalContext } from "@/app/components/context/modalContext";
+import ShowNodeCard from "@/app/components/ShowNodeCard";
 import { ICardProps as CardInfo } from "@/app/types";
 
 export default function GridCard({
