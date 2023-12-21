@@ -4,7 +4,7 @@ import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useEffect, useState } from "react";
 
-export default function CreditsView() {
+export default function ReadMeView() {
   const [readMe, setReadMe] = useState<string | null>(null);
 
   useEffect(() => {

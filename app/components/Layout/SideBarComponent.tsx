@@ -51,8 +51,8 @@ const SidebarComponent: React.FC<SidebarComponentProps> = ({
         <SidebarItem
           icon={<FileQuestion size={20} />}
           text="Read Me"
-          active={activeView === "credits"}
-          onClick={() => handleItemClick(ActiveView.Credits)}
+          active={activeView === "readme"}
+          onClick={() => handleItemClick(ActiveView.ReadMe)}
         />
       </SideBar>
     </div>

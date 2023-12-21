@@ -7,7 +7,7 @@ import { mainnet, WagmiConfig, createConfig } from "wagmi";
 import { createPublicClient, http } from "viem";
 import ListView from "../components/views/List/ListView";
 import GridView from "../components/views/Grid/GridView";
-import CreditsView from "../components/views/Credits/CreditsView";
+import ReadMeView from "../components/views/ReadMe/ReadMeView";
 import GraphDataProvider from "../components/context/GraphDataContext";
 import RoundDropdown from "../components/RoundDropdown";
 import { ActiveView } from "../types";
@@ -72,7 +72,7 @@ export default function Home() {
           >
             {activeView === ActiveView.Grid && <GridView />}
             {activeView === ActiveView.List && <ListView />}
-            {activeView === ActiveView.Credits && <CreditsView />}
+            {activeView === ActiveView.ReadMe && <ReadMeView />}
           </div>
           <RoundDropdown
             isDropdownOpen={isDropdownOpen}
