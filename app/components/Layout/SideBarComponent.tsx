@@ -30,14 +30,12 @@ const SidebarComponent: React.FC<SidebarComponentProps> = ({
           active={activeView === "list"}
           onClick={() => handleItemClick(ActiveView.List)}
         />
-        {
-          // <SidebarItem
-          //   icon={<Gem size={20} />}
-          //   text="Credits"
-          //   active={activeView === "credits"}
-          //   onClick={() => handleItemClick("credits")}
-          // />
-        }
+        <SidebarItem
+          icon={<Gem size={20} />}
+          text="Credits"
+          active={activeView === "credits"}
+          onClick={() => handleItemClick(ActiveView.Credits)}
+        />
         <SidebarItem
           icon={<Bug size={20} />}
           text="Report bug"

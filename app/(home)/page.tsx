@@ -66,7 +66,7 @@ export default function Home() {
             handleItemClick={handleItemClick}
           />
           <div
-            className={`w-[35rem] relative ${
+            className={`w-full relative ${
               activeView === ActiveView.None ? "z-0" : "z-10"
             }`}
           >
