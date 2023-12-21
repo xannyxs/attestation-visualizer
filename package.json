@@ -11,7 +11,7 @@
     "prettier:check": "prettier --check ./app"
   },
   "dependencies": {
-    "3d-force-graph": "^1.72.1",
+    "3d-force-graph": "1.73.0",
     "@apollo/client": "^3.8.1",
     "@ethereum-attestation-service/eas-sdk": "^1.1.0-beta.2",
     "@fontsource-variable/league-spartan": "^5.0.8",
@@ -24,7 +24,7 @@
     "ethers": "^6.8.0",
     "graphql": "^16.8.0",
     "lucide-react": "^0.284.0",
-    "next": "13.4.16",
+    "next": "14.0.4",
     "postcss": "8.4.31",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -33,7 +33,7 @@
     "three": "^0.155.0",
     "typescript": "5.1.6",
     "viem": "^1.10.7",
-    "wagmi": "^1.4.1"
+    "wagmi": "1.4.12"
   },
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.3",
