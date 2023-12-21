@@ -46,7 +46,7 @@ export interface IGraph {
 export enum ActiveView {
   Grid = "grid",
   List = "list",
-  Credits = "credits",
+  ReadMe = "readme",
   Bug = "bug",
   Feature = "feature",
   None = "none",

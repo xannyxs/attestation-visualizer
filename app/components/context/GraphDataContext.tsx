@@ -45,7 +45,9 @@ export default function GraphDataProvider({
       setAddressHashMap(hashMap);
     };
 
-    fetchData();
+    if (!graphData || !addressHashMap) {
+      fetchData();
+    }
   }, [round]);
 
   return (
