@@ -1,5 +1,5 @@
 import SideBar, { SidebarItem } from "@/app/components/SideBar";
-import { Gem, LayoutGrid, Rows, Bug, Rocket } from "lucide-react";
+import { LayoutGrid, Rows, Bug, Rocket, FileQuestion } from "lucide-react";
 import { ActiveView } from "@/app/types";
 
 interface SidebarComponentProps {
@@ -31,12 +31,6 @@ const SidebarComponent: React.FC<SidebarComponentProps> = ({
           onClick={() => handleItemClick(ActiveView.List)}
         />
         <SidebarItem
-          icon={<Gem size={20} />}
-          text="Credits"
-          active={activeView === "credits"}
-          onClick={() => handleItemClick(ActiveView.Credits)}
-        />
-        <SidebarItem
           icon={<Bug size={20} />}
           text="Report bug"
           onClick={() =>
@@ -53,6 +47,12 @@ const SidebarComponent: React.FC<SidebarComponentProps> = ({
               "https://github.com/xvoorvaa/attestation-visualizer/issues/new?assignees=&labels=&projects=&template=feature_request.md",
             )
           }
+        />
+        <SidebarItem
+          icon={<FileQuestion size={20} />}
+          text="Read Me"
+          active={activeView === "credits"}
+          onClick={() => handleItemClick(ActiveView.Credits)}
         />
       </SideBar>
     </div>
