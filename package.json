@@ -11,13 +11,19 @@
     "prettier:check": "prettier --check ./app"
   },
   "dependencies": {
-    "3d-force-graph": "1.73.0",
     "@apollo/client": "^3.8.1",
     "@ethereum-attestation-service/eas-sdk": "^1.1.0-beta.2",
     "@fontsource-variable/league-spartan": "^5.0.8",
+    "@headlessui/react": "^1.7.18",
+    "@headlessui/tailwindcss": "^0.2.0",
+    "@remixicon/react": "^4.1.1",
+    "@tremor/react": "^3.14.0",
     "@vercel/analytics": "^1.1.1",
     "@vercel/speed-insights": "^1.0.2",
+    "3d-force-graph": "1.73.0",
     "autoprefixer": "10.4.15",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.0",
     "eslint": "8.47.0",
     "eslint-config-next": "13.4.16",
     "ethereum-blockies-base64": "^1.0.2",
@@ -29,18 +35,21 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-force-graph-3d": "^1.23.0",
+    "tailwind-merge": "^2.2.1",
     "tailwindcss": "3.3.3",
+    "tailwindcss-animate": "^1.0.7",
     "three": "^0.155.0",
     "viem": "^1.10.7",
     "wagmi": "1.4.12"
   },
   "devDependencies": {
-    "typescript": "5.1.6",
+    "@tailwindcss/forms": "^0.5.7",
     "@tsconfig/recommended": "^1.0.3",
     "@types/node": "20.5.0",
     "@types/react": "18.2.20",
     "@types/react-dom": "18.2.7",
     "@types/three": "^0.155.0",
-    "prettier": "^3.0.3"
+    "prettier": "^3.0.3",
+    "typescript": "5.1.6"
   }
 }
