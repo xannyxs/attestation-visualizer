@@ -19,7 +19,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html className="antialiased" lang="en">
       <body className={font.className}>
         <ModalContextProvider>
           <SelectedNodeContextProvider>
