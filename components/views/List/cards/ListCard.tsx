@@ -13,6 +13,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import Dialog from "@/components/misc/Dialog";
 
 export default function ListCard({
   image,
@@ -23,13 +24,12 @@ export default function ListCard({
   card: CardInfo;
   onIconClick: () => void;
 }) {
+  const dimensions = 55;
   const { openModal } = useContext(ModalContext);
 
   const handleCardClick = () => {
     openModal(<ShowNodeCard cardInfo={card} />);
   };
-
-  const dimensions = 55;
 
   return (
     <Card className="flex items-center m-2 transition-all cursor-pointer">
@@ -71,6 +71,7 @@ export default function ListCard({
       >
         <LocateFixed size={25} />
       </Button>
+      <Dialog />
     </Card>
   );
 }
