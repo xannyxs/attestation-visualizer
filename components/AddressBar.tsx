@@ -1,4 +1,6 @@
-import { EthereumAddress } from "../types";
+import { EthereumAddress } from "@/lib/types";
+import { Card } from "./ui/card";
+import { Link } from "lucide-react";
 
 interface InforCardProps {
   objectName: string;
@@ -12,12 +14,12 @@ export default function AddressBar({ objectName, object }: InforCardProps) {
 
   return (
     <>
-      <div className="ml-4 font-bold">{objectName}</div>
-      <div className="bg-gray-300 rounded mt-1 m-4 hover:bg-gray-400 hover:rounded">
-        <a href={`https://etherscan.io/address/${object}`}>
-          <p className="truncate text-mg p-4">{object}</p>
-        </a>
-      </div>
+      <span className="ml-4 font-bold">{objectName}</span>
+      <Card className="m-4 mt-1 bg-gray-300 rounded hover:bg-gray-400 hover:rounded">
+        <Link href={`https://etherscan.io/address/${object}`}>
+          <p className="p-4 truncate text-mg">{object}</p>
+        </Link>
+      </Card>
     </>
   );
 }

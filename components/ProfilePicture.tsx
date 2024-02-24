@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { EthereumAddress } from "@/lib/types";
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import openSeaFetch from "@/lib/actions/openSeaFetch";
 
 export async function fetchOptimismNFTImage(
@@ -31,9 +30,9 @@ const ProfilePicture = ({ url }: { url?: string }) => {
   }
 
   return (
-    <div className="flex w-full justify-center mb-4">
+    <div className="flex justify-center mb-4 w-full">
       <Image
-        className="rounded-full border-gray border-2"
+        className="rounded-full border-2 border-gray"
         src={url}
         alt="Optimism NFT"
         width={dimensions}

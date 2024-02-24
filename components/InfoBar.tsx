@@ -1,4 +1,5 @@
-import { EthereumAddress } from "../types";
+import { EthereumAddress } from "@/lib/types";
+import { Card } from "./ui/card";
 
 interface InforCardProps {
   objectName: string;
@@ -12,10 +13,10 @@ export default function InfoBar({ objectName, object }: InforCardProps) {
 
   return (
     <>
-      <div className="ml-4 font-bold">{objectName}</div>
-      <div className="bg-gray-300 rounded mt-1 m-4 ">
-        <p className="truncate text-mg p-4">{object}</p>
-      </div>
+      <span className="ml-4 font-bold">{objectName}</span>
+      <Card className="m-4 mt-1 bg-gray-300 rounded">
+        <p className="p-4 truncate text-mg">{object}</p>
+      </Card>
     </>
   );
 }

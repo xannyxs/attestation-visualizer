@@ -1,4 +1,6 @@
-import { EthereumAddress } from "../types";
+import { EthereumAddress } from "@/lib/types";
+import { Card } from "./ui/card";
+import Link from "next/link";
 
 interface InforCardProps {
   objectName: string;
@@ -10,28 +12,28 @@ export default function EnsBar({ objectName, address, ens }: InforCardProps) {
   if (!ens) {
     return (
       <>
-        <div className="ml-4 font-bold">{objectName}</div>
-        <div className="bg-gray-300 rounded mt-1 m-4">
-          <a href={`https://etherscan.io/address/${address}`}>
-            <p className="truncate text-mg p-4 hover:bg-gray-400 hover:rounded transition-all">
+        <span className="ml-4 font-bold">{objectName}</span>
+        <Card className="m-4 mt-1 bg-gray-300 rounded">
+          <Link href={`https://etherscan.io/address/${address}`}>
+            <p className="p-4 transition-all hover:bg-gray-400 hover:rounded truncate text-mg">
               {address}
             </p>
-          </a>
-        </div>
+          </Link>
+        </Card>
       </>
     );
   }
 
   return (
     <>
-      <div className="ml-4 font-bold">{objectName}</div>
-      <div className="bg-gray-300 rounded mt-1 m-4">
-        <a href={`https://app.ens.domains/${ens}`}>
-          <p className="truncate text-mg p-4 hover:bg-gray-400 hover:rounded transition-all">
+      <span className="ml-4 font-bold">{objectName}</span>
+      <Card className="m-4 mt-1 bg-gray-300 rounded">
+        <Link href={`https://app.ens.domains/${ens}`}>
+          <p className="p-4 transition-all hover:bg-gray-400 hover:rounded truncate text-mg">
             {ens}
           </p>
-        </a>
-      </div>
+        </Link>
+      </Card>
     </>
   );
 }
