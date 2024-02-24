@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { ModalContext } from "@/components/context/modalContext";
 import ShowNodeCard from "@/components/ShowNodeCard";
 import { ICardProps as CardInfo } from "@/lib/types";
+import { Card } from "@/components/ui/card";
 
 const ListCard = ({
   image,
@@ -24,12 +25,9 @@ const ListCard = ({
 
   return (
     <div className="flex items-center m-2 transition-all cursor-pointer">
-      <div
-        className="flex items-center w-full bg-gray-200 rounded-l-md transition-all hover:bg-red-100 hover:shadow-md shadow-black"
+      <Card
+        className="flex items-center w-full bg-gray-200 rounded-l-md transition-all hover:bg-red-100 hover:shadow-md"
         onClick={handleCardClick}
-        role="button"
-        aria-label={`Details for ${card.currentAddress}`}
-        tabIndex={0}
       >
         <Image
           src={image}
@@ -52,14 +50,13 @@ const ListCard = ({
             Referred By: {card.referredBy}
           </p>
         </div>
-      </div>
-      <button
-        className="flex justify-center items-center p-2 pt-4 pb-4 ml-2 bg-gray-200 rounded-r-md transition-all hover:bg-red-100"
+      </Card>
+      <Card
+        className="flex justify-center items-center p-2 py-4 ml-2 bg-gray-200 transition-all hover:bg-red-100"
         onClick={onIconClick}
-        aria-label="Locate address on map"
       >
         <LocateFixed size={25} />
-      </button>
+      </Card>
     </div>
   );
 };
