@@ -7,8 +7,8 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
-import buildAddressHashMap from "@/app/utils/buildAddressHashmap";
-import { ICardProps as CardType, EthereumAddress } from "@/app/types";
+import buildAddressHashMap from "@/lib/utils/buildAddressHashmap";
+import { ICardProps as CardType, EthereumAddress } from "@/lib/types";
 
 interface GraphDataContextType {
   graphData: any;

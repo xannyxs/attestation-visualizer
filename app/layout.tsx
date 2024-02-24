@@ -3,8 +3,8 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 import type { Metadata } from "next";
 import { League_Spartan } from "next/font/google";
-import { ModalContextProvider } from "./components/context/modalContext";
-import { SelectedNodeContextProvider } from "./components/context/SelectedNodeContextProps";
+import { ModalContextProvider } from "@/components/context/modalContext";
+import { SelectedNodeContextProvider } from "@/components/context/SelectedNodeContextProps";
 
 const font = League_Spartan({ subsets: ["latin"] });
 

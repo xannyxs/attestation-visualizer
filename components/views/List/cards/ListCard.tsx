@@ -1,9 +1,9 @@
 import Image from "next/image";
 import { LocateFixed } from "lucide-react";
 import { useContext } from "react";
-import { ModalContext } from "@/app/components/context/modalContext";
-import ShowNodeCard from "@/app/components/ShowNodeCard";
-import { ICardProps as CardInfo } from "@/app/types";
+import { ModalContext } from "@/components/context/modalContext";
+import ShowNodeCard from "@/components/ShowNodeCard";
+import { ICardProps as CardInfo } from "@/lib/types";
 
 export default function ListCard({
   image,
@@ -23,9 +23,9 @@ export default function ListCard({
   const dimensions = 55;
 
   return (
-    <div className="flex m-2 transition-all cursor-pointer items-center">
+    <div className="flex items-center m-2 transition-all cursor-pointer">
       <div
-        className="shadow-black bg-gray-200 rounded-l-md flex items-center hover:bg-red-100 hover:shadow-md transition-all w-full"
+        className="flex items-center w-full bg-gray-200 rounded-l-md transition-all hover:bg-red-100 hover:shadow-md shadow-black"
         onClick={handleCardClick}
         role="button"
         aria-label={`Details for ${card.currentAddress}`}
@@ -38,23 +38,23 @@ export default function ListCard({
           width={dimensions}
           height={dimensions}
         />
-        <div className="flex-grow border-l-2 pl-3 pr-3 flex flex-col justify-center truncate">
+        <div className="flex flex-col flex-grow justify-center pr-3 pl-3 border-l-2 truncate">
           {card.ens ? (
-            <h2 className="text-md font-semibold truncate">
+            <h2 className="font-semibold text-md truncate">
               ENS Address: {card.ens}
             </h2>
           ) : (
-            <h2 className="text-md font-semibold truncate">
+            <h2 className="font-semibold text-md truncate">
               Address: {card.currentAddress}
             </h2>
           )}
-          <p className="text-gray-500 text-base truncate">
+          <p className="text-base text-gray-500 truncate">
             Referred By: {card.referredBy}
           </p>
         </div>
       </div>
       <button
-        className="flex justify-center items-center ml-2 p-2 pt-4 pb-4 bg-gray-200 rounded-r-md hover:bg-red-100 transition-all"
+        className="flex justify-center items-center p-2 pt-4 pb-4 ml-2 bg-gray-200 rounded-r-md transition-all hover:bg-red-100"
         onClick={onIconClick}
         aria-label="Locate address on map"
       >

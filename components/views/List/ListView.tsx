@@ -1,11 +1,11 @@
-import { ICardProps as CardType, EthereumAddress } from "@/app/types";
+import { ICardProps as CardType, EthereumAddress } from "@/lib/types";
 import { useGraphData } from "../../context/GraphDataContext";
 import { useState, useEffect, useMemo } from "react";
+import ListCard from "./cards/ListCard";
 import makeBlockie from "ethereum-blockies-base64";
 import { useSelectedNodeContext } from "../../context/SelectedNodeContextProps";
-import GridCard from "./cards/GridCard";
-import GridCardSkeleton from "./cards/GridCardSkeleton";
-import SearchBar from "../../shared/SearchBar";
+import ListCardSkeleton from "./cards/ListCardSkeleton";
+import SearchBar from "@/components/misc/SearchBar";
 
 export default function ListView() {
   const { setSelectedNodeId } = useSelectedNodeContext();
@@ -41,13 +41,11 @@ export default function ListView() {
   if (!addressHashMap) {
     return (
       <div className="relative bg-white h-full w-full overflow-y-auto max-h-[calc(100vh)]">
-        <SearchBar view={"Grid view"} onChange={handleSearchChange} />
+        <SearchBar view={"List view"} onChange={handleSearchChange} />
 
-        <div className="grid grid-cols-2 gap-2 m-2">
-          {Array.from({ length: 16 }).map((_, index) => (
-            <GridCardSkeleton key={index} />
-          ))}
-        </div>
+        {Array.from({ length: 16 }).map((_, index) => (
+          <ListCardSkeleton key={index} />
+        ))}
       </div>
     );
   }
@@ -58,19 +56,17 @@ export default function ListView() {
 
   return (
     <div className="relative bg-white h-full w-full overflow-y-auto max-h-[calc(100vh)]">
-      <SearchBar view={"Grid view"} onChange={handleSearchChange} />
+      <SearchBar view={"List view"} onChange={handleSearchChange} />
 
-      <div className="grid grid-cols-2 gap-2 m-2">
-        {filteredCards.map(([key, value]) => (
-          <div key={key}>
-            <GridCard
-              image={value.imageUrl || makeBlockie(value.currentAddress)}
-              card={value}
-              onIconClick={() => handleIconClick(value.currentAddress)}
-            />
-          </div>
-        ))}
-      </div>
+      {filteredCards.map(([key, value]) => (
+        <div key={key}>
+          <ListCard
+            image={value.imageUrl || makeBlockie(value.currentAddress)}
+            card={value}
+            onIconClick={() => handleIconClick(value.currentAddress)}
+          />
+        </div>
+      ))}
     </div>
   );
 }

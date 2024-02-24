@@ -1,4 +1,4 @@
-import { fetchOptimismNFTImage } from "../components/ProfilePicture";
+import { fetchOptimismNFTImage } from "@/components/ProfilePicture";
 import { Attestation, EthereumAddress, ICardProps as CardType } from "../types";
 import fetchEnsName from "./fetchEnsName";
 

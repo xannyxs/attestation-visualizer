@@ -1,6 +1,6 @@
-import SideBar, { SidebarItem } from "@/app/components/SideBar";
+import SideBar, { SidebarItem } from "@/components/SideBar";
 import { Gem, LayoutGrid, Rows, Bug, Rocket } from "lucide-react";
-import { ActiveView } from "@/app/types";
+import { ActiveView } from "@/lib/types";
 
 interface SidebarComponentProps {
   handleRoute: (href: string) => void;
@@ -14,7 +14,7 @@ const SidebarComponent: React.FC<SidebarComponentProps> = ({
   handleItemClick,
 }) => {
   return (
-    <div className="w-[1/4] z-10 relative">
+    <div className="relative z-10 w-[1/4]">
       <SideBar>
         {
           <SidebarItem

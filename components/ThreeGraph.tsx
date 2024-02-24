@@ -1,13 +1,13 @@
 "use client";
 
-import { ICardProps as CardType, IGraph } from "../types";
+import { ICardProps as CardType, IGraph } from "@/lib/types";
 import { useState, useEffect, useContext, useRef } from "react";
 import * as THREE from "three";
 import ForceGraph3D from "react-force-graph-3d";
 import ShowNodeCard from "./ShowNodeCard";
 import makeBlockie from "ethereum-blockies-base64";
 import { useGraphData } from "./context/GraphDataContext";
-import buildGraphData from "../utils/buildGraph";
+import buildGraphData from "@/lib/utils/buildGraph";
 import { ModalContext } from "./context/modalContext";
 import { useSelectedNodeContext } from "./context/SelectedNodeContextProps";
 

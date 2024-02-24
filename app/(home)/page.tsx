@@ -1,17 +1,17 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
-import SidebarComponent from "../components/Layout/SideBarComponent";
-import ThreeGraph from "../components/ThreeGraphWrapper";
+import SidebarComponent from "@/components/Layout/SideBarComponent";
+import ThreeGraph from "@/components/ThreeGraphWrapper";
 import { mainnet, WagmiConfig, createConfig } from "wagmi";
 import { createPublicClient, http } from "viem";
-import ListView from "../components/views/List/ListView";
-import GridView from "../components/views/Grid/GridView";
-import CreditsView from "../components/views/Credits/CreditsView";
-import GraphDataProvider from "../components/context/GraphDataContext";
-import RoundDropdown from "../components/RoundDropdown";
-import { ActiveView } from "../types";
-import useIsMobile from "../components/Layout/useIsMobile";
+import ListView from "@/components/views/List/ListView";
+import GridView from "@/components/views/Grid/GridView";
+import CreditsView from "@/components/views/Credits/CreditsView";
+import GraphDataProvider from "@/components/context/GraphDataContext";
+import RoundDropdown from "@/components/RoundDropdown";
+import { ActiveView } from "@/lib/types";
+import useIsMobile from "@/components/Layout/useIsMobile";
 
 export default function Home() {
   const isMobile = useIsMobile();
@@ -23,7 +23,6 @@ export default function Home() {
     setRound(selectedRound);
     setDropdownOpen(false);
   }, []);
-
   const toggleDropdown = useCallback(() => {
     setDropdownOpen(!isDropdownOpen);
   }, [isDropdownOpen]);
@@ -50,7 +49,7 @@ export default function Home() {
 
   if (isMobile) {
     return (
-      <div className="flex justify-center text-white text-xl">
+      <div className="flex justify-center text-xl text-white">
         Mobile version not supported.
       </div>
     );
@@ -66,9 +65,8 @@ export default function Home() {
             handleItemClick={handleItemClick}
           />
           <div
-            className={`w-[35rem] relative ${
-              activeView === ActiveView.None ? "z-0" : "z-10"
-            }`}
+            className={`w-[35rem] relative ${activeView === ActiveView.None ? "z-0" : "z-10"
+              }`}
           >
             {activeView === ActiveView.Grid && <GridView />}
             {activeView === ActiveView.List && <ListView />}
