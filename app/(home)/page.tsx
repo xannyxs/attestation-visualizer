@@ -13,19 +13,14 @@ import RoundDropdown from "@/components/RoundDropdown";
 import { ActiveView } from "@/lib/types";
 import useIsMobile from "@/components/Layout/useIsMobile";
 
-export default function Home() {
+const Home = () => {
   const isMobile = useIsMobile();
   const [activeView, setActiveView] = useState<ActiveView>(ActiveView.None);
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [round, setRound] = useState(3);
 
   const handleSelectRound = useCallback((selectedRound: number) => {
     setRound(selectedRound);
-    setDropdownOpen(false);
   }, []);
-  const toggleDropdown = useCallback(() => {
-    setDropdownOpen(!isDropdownOpen);
-  }, [isDropdownOpen]);
 
   const handleItemClick = (view: ActiveView) => {
     if (activeView === view) {
@@ -72,12 +67,7 @@ export default function Home() {
             {activeView === ActiveView.List && <ListView />}
             {activeView === ActiveView.Credits && <CreditsView />}
           </div>
-          <RoundDropdown
-            isDropdownOpen={isDropdownOpen}
-            toggleDropdown={toggleDropdown}
-            round={round}
-            handleSelectRound={handleSelectRound}
-          />
+          <RoundDropdown round={round} handleSelectRound={handleSelectRound} />
           <div className="absolute">
             <ThreeGraph />
           </div>
@@ -85,4 +75,6 @@ export default function Home() {
       </GraphDataProvider>
     </WagmiConfig>
   );
-}
+};
+
+export default Home;
