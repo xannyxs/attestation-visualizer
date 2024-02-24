@@ -4,8 +4,10 @@ import { useContext } from "react";
 import { ModalContext } from "@/components/context/modalContext";
 import ShowNodeCard from "@/components/ShowNodeCard";
 import { ICardProps as CardInfo } from "@/lib/types";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
-export default function GridCard({
+const GridCard = ({
   image,
   card,
   onIconClick,
@@ -13,7 +15,7 @@ export default function GridCard({
   image: string;
   card: CardInfo;
   onIconClick: () => void;
-}) {
+}) => {
   const { openModal } = useContext(ModalContext);
 
   const handleCardClick = () => {
@@ -23,17 +25,17 @@ export default function GridCard({
   const dimensions = 75;
 
   return (
-    <div
+    <Card
       onClick={() => handleCardClick()}
-      className="py-1 bg-gray-100 rounded-md transition-all cursor-pointer hover:bg-red-100 shadow-black"
+      className="py-1 bg-gray-100 transition-all cursor-pointer hover:bg-red-100"
     >
-      <button
+      <Button
         className="self-start p-2 mt-1 ml-2 bg-gray-200 rounded-md transition-all hover:bg-red-300"
         onClick={onIconClick}
         aria-label="Locate address on map"
       >
-        <LocateFixed size={25} />
-      </button>
+        <LocateFixed size={25} className="text-black" />
+      </Button>
       <div className="p-2 photo-wrapper">
         <Image
           src={image}
@@ -68,6 +70,8 @@ export default function GridCard({
           </div>
         </div>
       </div>
-    </div>
+    </Card>
   );
-}
+};
+
+export default GridCard;
