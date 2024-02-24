@@ -3,7 +3,7 @@ import { LocateFixed } from "lucide-react";
 import { useContext } from "react";
 import { ModalContext } from "@/components/context/modalContext";
 import ShowNodeCard from "@/components/ShowNodeCard";
-import { ICardProps as CardInfo } from "@/app/types";
+import { ICardProps as CardInfo } from "@/lib/types";
 
 const ListCard = ({
   image,
