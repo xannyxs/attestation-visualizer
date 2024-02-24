@@ -3,19 +3,14 @@ import EnsBar from "./EnsBox";
 import ProfilePicture from "./ProfilePicture";
 import { X } from "lucide-react";
 import { ICardProps } from "@/lib/types";
-import { useContext } from "react";
-import { ModalContext } from "./context/modalContext";
+import { AlertDialogCancel } from "@radix-ui/react-alert-dialog";
 
 const ShowNodeCard = ({ cardInfo }: { cardInfo: ICardProps }) => {
-  const { closeModal } = useContext(ModalContext);
-
   return (
     <div className="h-full bg-white">
-      <div className="flex">
-        <button className="p-4 text-red-500" onClick={() => closeModal()}>
-          <X />
-        </button>
-      </div>
+      <AlertDialogCancel className="pb-4 pl-4 text-red-500">
+        <X />
+      </AlertDialogCancel>
       <ProfilePicture url={cardInfo.imageUrl} />
       <EnsBar
         objectName={"Current ENS address"}
