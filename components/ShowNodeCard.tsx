@@ -2,15 +2,11 @@ import InfoBar from "./InfoBar";
 import EnsBar from "./EnsBox";
 import ProfilePicture from "./ProfilePicture";
 import { X } from "lucide-react";
-import { ICardProps } from "../types";
+import { ICardProps } from "@/lib/types";
 import { useContext } from "react";
 import { ModalContext } from "./context/modalContext";
 
-interface NodeInfoCardProps {
-  cardInfo: ICardProps;
-}
-
-export default function ShowNodeCard({ cardInfo }: NodeInfoCardProps) {
+const ShowNodeCard = ({ cardInfo }: { cardInfo: ICardProps }) => {
   const { closeModal } = useContext(ModalContext);
 
   return (
@@ -39,4 +35,6 @@ export default function ShowNodeCard({ cardInfo }: NodeInfoCardProps) {
       />
     </div>
   );
-}
+};
+
+export default ShowNodeCard;
