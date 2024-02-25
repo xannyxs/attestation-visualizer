@@ -10,20 +10,24 @@ const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
 
 export default function Sidebar({ children }: { children: ReactNode }) {
   const [expanded, setExpanded] = useState(false);
-  const dimension = 150;
+  const dimension = 50;
 
   return (
     <aside className="h-screen">
       <nav className="flex flex-col h-full bg-white border-r">
         <div className="flex justify-between items-center p-4 pb-2">
-          <Image
-            src="https://img.logoipsum.com/243.svg"
-            className={`overflow-hidden transition-all ${expanded ? "w-32" : "w-0"
+          <div
+            className={`flex items-center overflow-hidden transition-all ${expanded ? "w-36" : "w-0"
               }`}
-            alt="logo"
-            width={dimension}
-            height={dimension}
-          />
+          >
+            <Image
+              src={"/logo.png"}
+              alt="logo"
+              width={dimension}
+              height={dimension}
+            />
+            <span className="ml-3 font-bold">RetroPGF Visualizer</span>
+          </div>
           <button
             onClick={() => setExpanded((curr) => !curr)}
             className="p-1.5 bg-gray-50 rounded-lg hover:bg-gray-100"
@@ -32,6 +36,7 @@ export default function Sidebar({ children }: { children: ReactNode }) {
           </button>
         </div>
 
+        <hr className="mx-3 border border-gray-400" />
         <SidebarContext.Provider value={{ expanded }}>
           <ul className="flex-1 px-3">{children}</ul>
         </SidebarContext.Provider>
@@ -58,9 +63,9 @@ export function SidebarItem({
       onClick={onClick}
       className={`
         relative flex items-center py-2 px-3 my-1
-        font-medium rounded-md cursor-pointer
-        transition-colors group
-        ${active
+            font-medium rounded-md cursor-pointer
+            transition-colors group
+            ${active
           ? "bg-gradient-to-tr from-red-200 to-red-100 text-red-800"
           : "hover:bg-red-50 text-gray-600"
         }
