@@ -1,7 +1,7 @@
 "use client";
 
 import { ICardProps as CardType, IGraph } from "@/lib/types";
-import { useState, useEffect, useContext, useRef } from "react";
+import React, { useState, useEffect, useContext, useRef, useMemo } from "react";
 import * as THREE from "three";
 import ForceGraph3D from "react-force-graph-3d";
 import ShowNodeCard from "./ShowNodeCard";
@@ -45,7 +45,7 @@ const initSprites = (
   return acc;
 };
 
-export default function ThreeGraph() {
+const ThreeGraph = () => {
   const fgRef = useRef<any>();
   const { selectedNodeId } = useSelectedNodeContext();
 
@@ -86,7 +86,7 @@ export default function ThreeGraph() {
     }
   }, [selectedNodeId, graph.nodes]);
 
-  useEffect(() => {
+  useMemo(() => {
     if (graphDataContext) {
       const { graphData, addressHashMap } = graphDataContext;
       if (graphData && addressHashMap) {
@@ -98,7 +98,7 @@ export default function ThreeGraph() {
         setAddressHashMap(addressHashMap);
       }
     }
-  }, [graphDataContext]);
+  }, [graphDataContext?.graphData, graphDataContext?.addressHashMap]);
 
   if (!graphDataContext) {
     return (
@@ -191,4 +191,6 @@ export default function ThreeGraph() {
       onNodeHover={(node) => handleNodeHover(node, true)}
     />
   );
-}
+};
+
+export default ThreeGraph;
