@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from "next/server";
-import { EthereumAddress } from "@/app/types";
+import { EthereumAddress } from "@/lib/types";
 import { JsonRpcProvider } from "ethers/providers";
 import { getAddress } from "viem";
 

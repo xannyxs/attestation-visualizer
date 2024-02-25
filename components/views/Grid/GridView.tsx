@@ -1,4 +1,4 @@
-import { ICardProps as CardType, EthereumAddress } from "@/app/types";
+import { ICardProps as CardType, EthereumAddress } from "@/lib/types";
 import { useGraphData } from "../../context/GraphDataContext";
 import { useState, useEffect, useMemo } from "react";
 import makeBlockie from "ethereum-blockies-base64";
