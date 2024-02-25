@@ -43,7 +43,7 @@ const SidebarComponent: React.FC<SidebarComponentProps> = ({
           text="Report bug"
           onClick={() =>
             handleRoute(
-              "https://github.com/xvoorvaa/attestation-visualizer/issues/new?assignees=&labels=&projects=&template=bug_report.md",
+              "https://github.com/xannyx/attestation-visualizer/issues/new?assignees=&labels=&projects=&template=bug_report.md",
             )
           }
         />
@@ -52,7 +52,7 @@ const SidebarComponent: React.FC<SidebarComponentProps> = ({
           text="Feature request"
           onClick={() =>
             handleRoute(
-              "https://github.com/xvoorvaa/attestation-visualizer/issues/new?assignees=&labels=&projects=&template=feature_request.md",
+              "https://github.com/xannyx/attestation-visualizer/issues/new?assignees=&labels=&projects=&template=feature_request.md",
             )
           }
         />

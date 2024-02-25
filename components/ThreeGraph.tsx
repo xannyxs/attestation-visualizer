@@ -156,41 +156,39 @@ export default function ThreeGraph() {
   };
 
   return (
-    <div>
-      <ForceGraph3D
-        ref={fgRef}
-        graphData={graph}
-        nodeAutoColorBy="type"
-        linkAutoColorBy="type"
-        linkWidth={(link) => (highlightLinks.has(link) ? 1.5 : 0.2)}
-        linkOpacity={0.5}
-        linkDirectionalArrowLength={3.5}
-        linkDirectionalArrowRelPos={1}
-        linkDirectionalParticles={(link) =>
-          highlightLinks.has(link) ? 20 : 0.06
+    <ForceGraph3D
+      ref={fgRef}
+      graphData={graph}
+      nodeAutoColorBy="type"
+      linkAutoColorBy="type"
+      linkWidth={(link) => (highlightLinks.has(link) ? 1.5 : 0.2)}
+      linkOpacity={0.5}
+      linkDirectionalArrowLength={3.5}
+      linkDirectionalArrowRelPos={1}
+      linkDirectionalParticles={(link) =>
+        highlightLinks.has(link) ? 20 : 0.06
+      }
+      linkColor={(link) => (highlightLinks.has(link) ? "red" : "lightblue")}
+      onNodeClick={(node) => {
+        const selectedNode = addressHashMap!.get(node.id);
+        if (selectedNode) {
+          handleNodeClick(node);
+          // openModal(<ShowNodeCard cardInfo={selectedNode} />);
         }
-        linkColor={(link) => (highlightLinks.has(link) ? "red" : "lightblue")}
-        onNodeClick={(node) => {
-          const selectedNode = addressHashMap!.get(node.id);
-          if (selectedNode) {
-            handleNodeClick(node);
-            openModal(<ShowNodeCard cardInfo={selectedNode} />);
-          }
-        }}
-        nodeThreeObject={(node: any) => {
-          let sprite = spriteCache.get(node.id);
-          if (!sprite) {
-            const data = makeBlockie(node.id);
-            const texture = new THREE.TextureLoader().load(data);
-            const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
-            sprite = new THREE.Sprite(spriteMaterial);
-            sprite.scale.set(8, 8, 0);
-            spriteCache.set(node.id, sprite);
-          }
-          return sprite as unknown as THREE.Object3D;
-        }}
-        onNodeHover={(node) => handleNodeHover(node, true)}
-      />
-    </div>
+      }}
+      nodeThreeObject={(node: any) => {
+        let sprite = spriteCache.get(node.id);
+        if (!sprite) {
+          const data = makeBlockie(node.id);
+          const texture = new THREE.TextureLoader().load(data);
+          const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
+          sprite = new THREE.Sprite(spriteMaterial);
+          sprite.scale.set(8, 8, 0);
+          spriteCache.set(node.id, sprite);
+        }
+        return sprite as unknown as THREE.Object3D;
+      }}
+      onNodeHover={(node) => handleNodeHover(node, true)}
+    />
   );
 }
