@@ -6,11 +6,13 @@ export async function fetchOptimismNFTImage(
   address: EthereumAddress,
 ): Promise<string> {
   try {
-    const data = await openSeaFetch(address);
-    if (!data) {
+    const res = await fetch(`/api/fetchnft?address=${address}`);
+    if (!res.ok) {
+      console.log("Failed to fetch data. Status:", res.status);
       return "";
     }
 
+    const data = await res.json();
     const optimismNFT = data.nfts?.find(
       (nft: any) => nft.collection === "optimist-nft",
     );

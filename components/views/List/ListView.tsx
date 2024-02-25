@@ -6,6 +6,8 @@ import makeBlockie from "ethereum-blockies-base64";
 import { useSelectedNodeContext } from "../../context/SelectedNodeContextProps";
 import ListCardSkeleton from "./cards/ListCardSkeleton";
 import SearchBar from "@/components/misc/SearchBar";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@radix-ui/react-dropdown-menu";
 
 export default function ListView() {
   const { setSelectedNodeId } = useSelectedNodeContext();
@@ -49,13 +51,12 @@ export default function ListView() {
       </div>
     );
   }
-
   const handleIconClick = (nodeId: string) => {
     setSelectedNodeId(nodeId);
   };
 
   return (
-    <div className="relative bg-white h-full w-full overflow-y-auto max-h-[calc(100vh)]">
+    <ScrollArea className="relative bg-white h-full w-full overflow-y-auto max-h-[calc(100vh)] pr-1">
       <SearchBar view={"List view"} onChange={handleSearchChange} />
 
       {filteredCards.map(([key, value]) => (
@@ -67,6 +68,6 @@ export default function ListView() {
           />
         </div>
       ))}
-    </div>
+    </ScrollArea>
   );
 }

@@ -1,4 +1,3 @@
-import { Filter } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,9 +15,9 @@ const RoundDropdown = ({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="absolute top-3 right-3 z-10 p-2 bg-white rounded-sm w-70">
-        Filter round | Current round: {round}
+        <span>Filter round | Current round: {round}</span>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-70">
+      <DropdownMenuContent className="w-full">
         <DropdownMenuItem onClick={() => handleSelectRound(2)}>
           Round 2
         </DropdownMenuItem>

@@ -35,7 +35,11 @@ export default function GraphDataProvider({
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await attestationFetch(round);
+      const response = await fetch(`/api/fetch_attestations?round=${round}`);
+      if (!response.ok) {
+        console.error("Something went wrong: ", response.status);
+      }
+      const data = await response.json();
       setGraphData(data);
 
       const hashMap = await buildAddressHashMap(data);

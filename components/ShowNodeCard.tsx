@@ -3,14 +3,11 @@ import EnsBar from "./EnsBox";
 import ProfilePicture from "./ProfilePicture";
 import { X } from "lucide-react";
 import { ICardProps } from "@/lib/types";
-import { AlertDialogCancel } from "@radix-ui/react-alert-dialog";
 
 const ShowNodeCard = ({ cardInfo }: { cardInfo: ICardProps }) => {
   return (
     <div className="h-full bg-white">
-      <AlertDialogCancel className="pb-4 pl-4 text-red-500">
-        <X />
-      </AlertDialogCancel>
+      <X />
       <ProfilePicture url={cardInfo.imageUrl} />
       <EnsBar
         objectName={"Current ENS address"}

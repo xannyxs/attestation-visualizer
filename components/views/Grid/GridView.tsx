@@ -6,6 +6,7 @@ import { useSelectedNodeContext } from "../../context/SelectedNodeContextProps";
 import GridCard from "./cards/GridCard";
 import GridCardSkeleton from "./cards/GridCardSkeleton";
 import SearchBar from "@/components/misc/SearchBar";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function ListView() {
   const { setSelectedNodeId } = useSelectedNodeContext();
@@ -57,7 +58,7 @@ export default function ListView() {
   };
 
   return (
-    <div className="relative bg-white h-full w-full overflow-y-auto max-h-[calc(100vh)]">
+    <ScrollArea className="relative bg-white h-full w-full overflow-y-auto max-h-[calc(100vh)] pr-1">
       <SearchBar view={"Grid view"} onChange={handleSearchChange} />
 
       <div className="grid grid-cols-2 gap-2 m-2">
@@ -71,6 +72,6 @@ export default function ListView() {
           </div>
         ))}
       </div>
-    </div>
+    </ScrollArea>
   );
 }
