@@ -8,7 +8,7 @@ interface SidebarContextType {
 
 const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
 
-export default function Sidebar({ children }: { children: ReactNode }) {
+const Sidebar = ({ children }: { children: ReactNode }) => {
   const [expanded, setExpanded] = useState(false);
   const dimension = 50;
 
@@ -43,9 +43,9 @@ export default function Sidebar({ children }: { children: ReactNode }) {
       </nav>
     </aside>
   );
-}
+};
 
-export function SidebarItem({
+export const SidebarItem = ({
   icon,
   text,
   active = false,
@@ -55,7 +55,7 @@ export function SidebarItem({
   text: string;
   active?: boolean;
   onClick: () => void;
-}) {
+}) => {
   const { expanded } = useContext(SidebarContext) ?? { expanded: false };
 
   return (
@@ -93,4 +93,6 @@ export function SidebarItem({
       )}
     </li>
   );
-}
+};
+
+export default Sidebar;
