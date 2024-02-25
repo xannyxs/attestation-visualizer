@@ -29,7 +29,7 @@
     "ethereum-blockies-base64": "^1.0.2",
     "ethers": "^6.8.0",
     "graphql": "^16.8.0",
-    "lucide-react": "latest",
+    "lucide-react": "^0.338.0",
     "next": "latest",
     "postcss": "8.4.31",
     "react": "18.2.0",
@@ -40,15 +40,15 @@
     "tailwindcss-animate": "^1.0.7",
     "three": "^0.155.0",
     "viem": "^1.10.7",
-    "wagmi": "latest"
+    "wagmi": "1.4.12"
   },
   "devDependencies": {
-    "@tsconfig/recommended": "latest",
+    "@tsconfig/recommended": "^1.0.3",
     "@types/node": "20.5.0",
     "@types/react": "18.2.20",
     "@types/react-dom": "18.2.7",
     "@types/three": "^0.155.0",
-    "prettier": "latest",
-    "typescript": "latest"
+    "prettier": "^3.0.3",
+    "typescript": "5.1.6"
   }
 }
