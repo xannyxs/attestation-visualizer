@@ -2,7 +2,18 @@
 # yarn lockfile v1
 
 
-"3d-force-graph@1.73.0", "3d-force-graph@^1.73":
+"3d-force-graph@1.73.x":
+  version "1.73.2"
+  resolved "https://registry.yarnpkg.com/3d-force-graph/-/3d-force-graph-1.73.2.tgz#e23f93a6c4a68c568e567a11e4f1a12b0e04110b"
+  integrity sha512-+x1xG3kw7Iok5BtSDURJXM6ZoB672mq7MUSRLJkEiDlIfUjyQFXvyyZ9gXG5xxSgOsH1XBOyep6VAH4q2YcdMw==
+  dependencies:
+    accessor-fn "1"
+    kapsule "1"
+    three ">=0.118 <1"
+    three-forcegraph "1"
+    three-render-objects "^1.29"
+
+"3d-force-graph@^1.73":
   version "1.73.0"
   resolved "https://registry.yarnpkg.com/3d-force-graph/-/3d-force-graph-1.73.0.tgz#aa1117766f55459d88b3048afd70701d52a60c9e"
   integrity sha512-fMuZxQRIx6pVnn/JiB/0VnM0VD6uRpku1TkXMXYbnzKiMziPYQnaKobQ/QAqSskrQGJA9RUaale0ux4lOsCnOw==
@@ -744,10 +755,10 @@
   resolved "https://registry.yarnpkg.com/@floating-ui/utils/-/utils-0.2.1.tgz#16308cea045f0fc777b6ff20a9f25474dd8293d2"
   integrity sha512-9TANp6GPoMtYzQdt54kfAyMmz1+osLlXdg2ENroU7zzrtflTLrrC/lgrIfaSe+Wu0b89GKccT7vxXA0MoAIO+Q==
 
-"@fontsource-variable/league-spartan@^5.0.8":
-  version "5.0.14"
-  resolved "https://registry.yarnpkg.com/@fontsource-variable/league-spartan/-/league-spartan-5.0.14.tgz#c453493dce466eaea539b29bab66552df0ad4e4b"
-  integrity sha512-uADhB5oLPnXWqPGGMq4I0ZzHgR5LX6SnMQXkTeRMn2Rm+VBi7dq/QRtg0AziMXkPANZmtGoR1q7eDFkpm+q4Og==
+"@fontsource-variable/league-spartan@latest":
+  version "5.0.18"
+  resolved "https://registry.yarnpkg.com/@fontsource-variable/league-spartan/-/league-spartan-5.0.18.tgz#2f081373eea79b3629e18f6a6503442dca6b89c9"
+  integrity sha512-CEPNcrJV445XE+XtLpk9wb5auqae7bXafSOnD0U+H0p61Oq25fbeYsQFbgQ7k462Zu2Iq1nQTFaVGcFYFLRhOQ==
 
 "@graphql-typed-document-node/core@^3.1.1":
   version "3.2.0"
@@ -2199,7 +2210,7 @@
   dependencies:
     "@tanstack/query-core" "5.24.1"
 
-"@tsconfig/recommended@^1.0.3":
+"@tsconfig/recommended@latest":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@tsconfig/recommended/-/recommended-1.0.3.tgz#742540ba9170897a44097e838bca411abf56ccd2"
   integrity sha512-+jby/Guq9H8O7NWgCv6X8VAiQE8Dr/nccsCtL74xyHKhu2Knu5EAKmOZj3nLCnLm1KooUzKY+5DsnGVqhM8/wQ==
@@ -2438,17 +2449,17 @@
     "@typescript-eslint/types" "6.7.4"
     eslint-visitor-keys "^3.4.1"
 
-"@vercel/analytics@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@vercel/analytics/-/analytics-1.1.1.tgz#2a712378a95014a548b4f9d2ae1ea0721433908d"
-  integrity sha512-+NqgNmSabg3IFfxYhrWCfB/H+RCUOCR5ExRudNG2+pcRehq628DJB5e1u1xqwpLtn4pAYii4D98w7kofORAGQA==
+"@vercel/analytics@latest":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@vercel/analytics/-/analytics-1.2.2.tgz#715d8f203a170c06ba36b363e03b048c03060d5d"
+  integrity sha512-X0rctVWkQV1e5Y300ehVNqpOfSOufo7ieA5PIdna8yX/U7Vjz0GFsGf4qvAhxV02uQ2CVt7GYcrFfddXXK2Y4A==
   dependencies:
     server-only "^0.0.1"
 
-"@vercel/speed-insights@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@vercel/speed-insights/-/speed-insights-1.0.2.tgz#1bebf3e7c7046b6a911721233b263b69214ddb3e"
-  integrity sha512-y5HWeB6RmlyVYxJAMrjiDEz8qAIy2cit0fhBq+MD78WaUwQvuBnQlX4+5MuwVTWi46bV3klaRMq83u9zUy1KOg==
+"@vercel/speed-insights@latest":
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/@vercel/speed-insights/-/speed-insights-1.0.10.tgz#2e2e6a16beff72cbb58fd59ea8deb18f7338a014"
+  integrity sha512-4uzdKB0RW6Ff2FkzshzjZ+RlJfLPxgm/00i0XXgxfMPhwnnsk92YgtqsxT9OcPLdJUyVU1DqFlSWWjIQMPkh0g==
 
 "@wagmi/connectors@4.1.14":
   version "4.1.14"
@@ -6701,10 +6712,10 @@ react-dom@18.2.0, react-dom@^18.2.0:
     loose-envify "^1.1.0"
     scheduler "^0.23.0"
 
-react-force-graph-3d@^1.23.0:
-  version "1.24.0"
-  resolved "https://registry.yarnpkg.com/react-force-graph-3d/-/react-force-graph-3d-1.24.0.tgz#560a0c6835dc0ec09696481237b4eb3e7fe14e14"
-  integrity sha512-EyfiIqhs6L6q5OvUQFUtcbn9EGMPaG5nesX12gsQZ6tf8DvOR4haBY3Vj+C7afIqUl5579Ac6yhPIeolgsV7pA==
+react-force-graph-3d@^1.23.x:
+  version "1.24.2"
+  resolved "https://registry.yarnpkg.com/react-force-graph-3d/-/react-force-graph-3d-1.24.2.tgz#e94d14981e06f3a0b5b4a5f5d69888a2ff88ee35"
+  integrity sha512-/tZ0BywYuj35Q84AH2WN+Cx0RIygnN5F1+EvsdAqsAMoIJ0xl4L/9aD/pwjCoWfFqi3w5wR2DQuitDXeTayZnQ==
   dependencies:
     "3d-force-graph" "^1.73"
     prop-types "15"
@@ -7953,7 +7964,7 @@ void-elements@3.1.0:
   resolved "https://registry.yarnpkg.com/void-elements/-/void-elements-3.1.0.tgz#614f7fbf8d801f0bb5f0661f5b2f5785750e4f09"
   integrity sha512-Dhxzh5HZuiHQhbvTW9AMetFfBHDMYpo23Uo9btPXgdYP+3T5S+p+jgNy7spra+veYhBP2dCSgxR/i2Y02h5/6w==
 
-wagmi@^2.5.7:
+wagmi@^2.5.x:
   version "2.5.7"
   resolved "https://registry.yarnpkg.com/wagmi/-/wagmi-2.5.7.tgz#dc5bdba16e8d5a3e8d7af6ab545cf438b564d9d1"
   integrity sha512-xSuteMXFKvra4xDddqZbZv/gQlcg3X+To5AoZW7WoAm0iVlF8/vEGpQzCWy6KZs2z1szxPrr0YnH3Zr1Qj4E/A==
