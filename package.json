@@ -30,7 +30,7 @@
     "ethers": "^6.8.0",
     "graphql": "^16.8.0",
     "lucide-react": "^0.338.0",
-    "next": "14.0.4",
+    "next": "latest",
     "postcss": "8.4.31",
     "react": "18.2.0",
     "react-dom": "18.2.0",
