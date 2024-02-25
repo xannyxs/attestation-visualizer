@@ -9,6 +9,7 @@ import React, {
 } from "react";
 import buildAddressHashMap from "@/lib/utils/buildAddressHashmap";
 import { ICardProps as CardType, EthereumAddress } from "@/lib/types";
+import attestationFetch from "@/lib/actions/attestationFetch";
 
 interface GraphDataContextType {
   graphData: any;
@@ -34,11 +35,7 @@ export default function GraphDataProvider({
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(`/api/fetch_attestations?round=${round}`);
-      if (!response.ok) {
-        console.error("Something went wrong: ", response.status);
-      }
-      const data = await response.json();
+      const data = await attestationFetch(round);
       setGraphData(data);
 
       const hashMap = await buildAddressHashMap(data);

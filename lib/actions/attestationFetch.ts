@@ -1,4 +1,5 @@
-import { NextResponse, NextRequest } from "next/server";
+"use server";
+
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 import { Attestation } from "@/lib/types";
 import { c_CLIENT_URI, c_QUERY, c_GQL_VARIABLES, c_ATTESTER } from "@/CONFIG";
@@ -11,7 +12,7 @@ const createApolloClient = () =>
 
 const fetchAttestations = async (
   client: ApolloClient<any>,
-  round: string,
+  round: number,
 ): Promise<Attestation[]> => {
   const { data } = await client.query({
     query: gql`
@@ -30,25 +31,15 @@ const fetchAttestations = async (
     }))
     .filter(
       (attestation: Attestation) =>
-        attestation.decodedDataJson[0].value.value === round,
+        attestation.decodedDataJson[0].value.value === round.toString(),
     );
 };
 
-export async function GET(request: NextRequest): Promise<NextResponse> {
-  const round = request.nextUrl.searchParams.get("round");
-  if (!round) {
-    return new NextResponse("No round param in URL", { status: 404 });
-  }
-
+const attestationFetch = async (round: number) => {
   const client = createApolloClient();
 
-  try {
-    const attestations = await fetchAttestations(client, round);
-    return new NextResponse(JSON.stringify(attestations));
-  } catch (error) {
-    console.error("Error fetching attestations:", error);
-    return new NextResponse("An error occurred while processing your request", {
-      status: 500,
-    });
-  }
-}
+  const attestations = await fetchAttestations(client, round);
+  return attestations;
+};
+
+export default attestationFetch;
