@@ -3,15 +3,24 @@
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Suspense, useEffect, useState } from "react";
-import fetchFile from "@/lib/actions/fetchFile";
 
 export default function ReadMeView() {
   const [readMe, setReadMe] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      const file = await fetchFile("./public/README.md");
-      setReadMe(file);
+      const response = await fetch(
+        "https://raw.githubusercontent.com/xannyxs/attestation-visualizer/master/README.md",
+        { cache: "force-cache" },
+      );
+
+      if (!response.ok) {
+        console.error("Could not fetch the README uri", response.status);
+        return;
+      }
+
+      const data = await response.text();
+      setReadMe(data);
     };
 
     if (!readMe) {
