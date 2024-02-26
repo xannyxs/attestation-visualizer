@@ -1,11 +1,9 @@
 import Image from "next/image";
 import { LocateFixed } from "lucide-react";
-import { useContext } from "react";
-import { ModalContext } from "@/components/context/modalContext";
 import ShowNodeCard from "@/components/ShowNodeCard";
 import { ICardProps as CardInfo } from "@/lib/types";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card } from "@/ui/card";
+import { Button } from "@/ui/button";
 import {
   AlertDialog,
   AlertDialogContent,

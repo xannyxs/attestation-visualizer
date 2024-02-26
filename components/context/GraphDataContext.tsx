@@ -9,7 +9,6 @@ import React, {
 } from "react";
 import buildAddressHashMap from "@/lib/utils/buildAddressHashmap";
 import { ICardProps as CardType, EthereumAddress } from "@/lib/types";
-import attestationFetch from "@/lib/actions/attestationFetch";
 
 interface GraphDataContextType {
   graphData: any;

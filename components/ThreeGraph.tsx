@@ -1,14 +1,12 @@
 "use client";
 
-import { ICardProps as CardType, IGraph } from "@/lib/types";
-import React, { useState, useEffect, useContext, useRef, useMemo } from "react";
+import { type ICardProps as CardType, type IGraph } from "@/lib/types";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import * as THREE from "three";
 import ForceGraph3D from "react-force-graph-3d";
-import ShowNodeCard from "./ShowNodeCard";
 import makeBlockie from "ethereum-blockies-base64";
 import { useGraphData } from "./context/GraphDataContext";
 import buildGraphData from "@/lib/utils/buildGraph";
-import { ModalContext } from "./context/modalContext";
 import { useSelectedNodeContext } from "./context/SelectedNodeContextProps";
 
 const initSprites = (
@@ -50,7 +48,6 @@ const ThreeGraph = () => {
   const { selectedNodeId } = useSelectedNodeContext();
 
   const graphDataContext = useGraphData();
-  const { openModal } = useContext(ModalContext);
 
   const [clickedNode, setClickedNode] = useState(null);
   const [graph, setGraph] = useState<IGraph>({ nodes: [], links: [] });

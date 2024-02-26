@@ -1,5 +1,5 @@
 import SideBar, { SidebarItem } from "@/components/SideBar";
-import { Gem, LayoutGrid, Rows, Bug, Rocket } from "lucide-react";
+import { LayoutGrid, Rows, Bug, Rocket } from "lucide-react";
 import { ActiveView } from "@/lib/types";
 
 interface SidebarComponentProps {

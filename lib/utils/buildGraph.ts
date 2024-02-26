@@ -1,11 +1,11 @@
 import { Attestation } from "../types";
 
-export default function buildGraphData(attestations: Attestation[]) {
+const buildGraphData = (attestations: Attestation[]) => {
   const addresses = new Set<string>();
   const addressToLinks = new Map<string, any[]>();
 
   const processedAttestations = attestations.map((attestation) => {
-    const source = attestation.decodedDataJson[1].value.value;
+    const source = attestation.decodedDataJson[1]!.value.value;
     const target = attestation.recipient;
 
     addresses.add(source);
@@ -35,4 +35,6 @@ export default function buildGraphData(attestations: Attestation[]) {
     })),
     links: processedAttestations,
   };
-}
+};
+
+export default buildGraphData;

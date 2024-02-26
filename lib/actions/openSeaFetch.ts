@@ -3,7 +3,7 @@
 import { EthereumAddress } from "@/lib/types";
 
 const openSeaFetch = async (address: EthereumAddress) => {
-  if (!process.env.OPENSEA_API) {
+  if (!process.env["OPENSEA_API"]) {
     throw new Error("Missing OPENSEA_API ENV variable");
   }
 
@@ -16,7 +16,7 @@ const openSeaFetch = async (address: EthereumAddress) => {
     {
       cache: "force-cache",
       headers: {
-        "X-API-KEY": process.env.OPENSEA_API,
+        "X-API-KEY": process.env["OPENSEA_API"],
         Accept: "application/json",
       },
     },

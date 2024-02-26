@@ -1,4 +1,4 @@
-import { fetchOptimismNFTImage } from "@/components/ProfilePicture";
+import { fetchOptimismNFTImage } from "@/components/dialogCard/ProfilePicture";
 import { Attestation, EthereumAddress, ICardProps as CardType } from "../types";
 import fetchEnsName from "./fetchEnsName";
 
@@ -10,7 +10,7 @@ export default async function buildAddressHashMap(
   const fetchPromises: Promise<
     [EthereumAddress, string, string | null, number | null]
   >[] = attestations.map(async (attestation) => {
-    const retroPGFRound = Number(attestation.decodedDataJson[0].value.value);
+    const retroPGFRound = Number(attestation.decodedDataJson[0]!.value.value);
     const imageUrl = await fetchOptimismNFTImage(attestation.recipient);
 
     let ens: string | null;
@@ -35,7 +35,7 @@ export default async function buildAddressHashMap(
 
     if (attestation) {
       let referredBy: EthereumAddress | string =
-        attestation.decodedDataJson[1].value.value;
+        attestation.decodedDataJson[1]!.value.value;
 
       if (
         referredBy &&
@@ -47,7 +47,7 @@ export default async function buildAddressHashMap(
       const info: CardType = {
         currentAddress: recipient,
         referredBy: referredBy,
-        referredMethod: attestation.decodedDataJson[2].value.value,
+        referredMethod: attestation.decodedDataJson[2]!.value.value,
         retroPGFRound,
         imageUrl,
         ens,

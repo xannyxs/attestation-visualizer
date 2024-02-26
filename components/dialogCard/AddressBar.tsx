@@ -1,5 +1,5 @@
 import { EthereumAddress } from "@/lib/types";
-import { Card } from "./ui/card";
+import { Card } from "@/ui/card";
 import { Link } from "lucide-react";
 
 interface InforCardProps {

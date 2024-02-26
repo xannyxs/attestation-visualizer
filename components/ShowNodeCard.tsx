@@ -1,6 +1,6 @@
-import InfoBar from "./InfoBar";
-import EnsBar from "./EnsBox";
-import ProfilePicture from "./ProfilePicture";
+import InfoBar from "./dialogCard/InfoBar";
+import EnsBar from "./dialogCard/EnsBox";
+import ProfilePicture from "./dialogCard/ProfilePicture";
 import { X } from "lucide-react";
 import { ICardProps } from "@/lib/types";
 import { AlertDialogCancel } from "./ui/alert-dialog";

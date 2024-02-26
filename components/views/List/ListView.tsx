@@ -30,7 +30,7 @@ export default function ListView() {
 
   const filteredCards = useMemo(() => {
     if (!addressHashMap) return [];
-    return Array.from(addressHashMap.entries()).filter(([key, value]) => {
+    return Array.from(addressHashMap.entries()).filter(([_, value]) => {
       const searchLower = searchQuery.toLowerCase();
       return (
         value.currentAddress.toLowerCase().includes(searchLower) ||

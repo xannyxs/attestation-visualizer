@@ -31,7 +31,7 @@ const fetchAttestations = async (
     }))
     .filter(
       (attestation: Attestation) =>
-        attestation.decodedDataJson[0].value.value === round.toString(),
+        attestation.decodedDataJson[0]!.value.value === round.toString(),
     );
 };
 

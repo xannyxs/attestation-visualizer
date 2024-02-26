@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { EthereumAddress } from "@/lib/types";
-import openSeaFetch from "@/lib/actions/openSeaFetch";
 
 export async function fetchOptimismNFTImage(
   address: EthereumAddress,
@@ -24,7 +23,7 @@ export async function fetchOptimismNFTImage(
   }
 }
 
-const ProfilePicture = ({ url }: { url?: string }) => {
+const ProfilePicture = ({ url }: { url: string | undefined }) => {
   const dimensions = 150;
 
   if (!url) {
