@@ -3,6 +3,7 @@
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Suspense, useEffect, useState } from "react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function ReadMeView() {
   const [readMe, setReadMe] = useState<string | null>(null);
@@ -30,14 +31,15 @@ export default function ReadMeView() {
 
   return (
     <Suspense fallback={<p className="mx-auto">Loading README content...</p>}>
-      <div className="relative bg-white h-full w-full overflow-y-auto max-h-[calc(100vh)] z-20">
-        <div className="flex sticky top-0 justify-between items-center pt-4 pb-3 mx-2 bg-white border-b border-gray-300">
+      <ScrollArea className="relative bg-white h-full w-[50rem] overflow-y-auto max-h-[calc(100vh)]">
+        <div className="sticky top-0 pt-4 pb-3 mx-2 bg-white">
           <div className="text-3xl">Read Me</div>
+          <hr className="text-black bg-black border-b" />
+          <article className="py-5 mx-auto prose">
+            <Markdown remarkPlugins={[remarkGfm]}>{readMe}</Markdown>
+          </article>
         </div>
-        <article className="py-5 mx-auto prose">
-          <Markdown remarkPlugins={[remarkGfm]}>{readMe}</Markdown>
-        </article>
-      </div>
+      </ScrollArea>
     </Suspense>
   );
 }
