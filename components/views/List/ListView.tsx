@@ -1,13 +1,12 @@
 import { ICardProps as CardType, EthereumAddress } from "@/lib/types";
 import { useGraphData } from "../../context/GraphDataContext";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import ListCard from "./cards/ListCard";
 import makeBlockie from "ethereum-blockies-base64";
 import { useSelectedNodeContext } from "../../context/SelectedNodeContextProps";
 import ListCardSkeleton from "./cards/ListCardSkeleton";
 import SearchBar from "@/components/misc/SearchBar";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@radix-ui/react-dropdown-menu";
 
 export default function ListView() {
   const { setSelectedNodeId } = useSelectedNodeContext();
@@ -23,7 +22,7 @@ export default function ListView() {
     setSearchQuery(event.target.value);
   };
 
-  useEffect(() => {
+  useMemo(() => {
     if (graphDataContext?.addressHashMap) {
       setAddressHashMap(graphDataContext.addressHashMap);
     }

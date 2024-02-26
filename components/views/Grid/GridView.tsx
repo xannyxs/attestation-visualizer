@@ -1,6 +1,6 @@
 import { ICardProps as CardType, EthereumAddress } from "@/lib/types";
 import { useGraphData } from "../../context/GraphDataContext";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import makeBlockie from "ethereum-blockies-base64";
 import { useSelectedNodeContext } from "../../context/SelectedNodeContextProps";
 import GridCard from "./cards/GridCard";
@@ -22,7 +22,7 @@ export default function ListView() {
     setSearchQuery(event.target.value);
   };
 
-  useEffect(() => {
+  useMemo(() => {
     if (graphDataContext?.addressHashMap) {
       setAddressHashMap(graphDataContext.addressHashMap);
     }
