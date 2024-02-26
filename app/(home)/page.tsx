@@ -1,32 +1,27 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
-import SidebarComponent from "../components/Layout/SideBarComponent";
-import ThreeGraph from "../components/ThreeGraphWrapper";
-import { mainnet, WagmiConfig, createConfig } from "wagmi";
-import { createPublicClient, http } from "viem";
-import ListView from "../components/views/List/ListView";
-import GridView from "../components/views/Grid/GridView";
-import CreditsView from "../components/views/Credits/CreditsView";
-import GraphDataProvider from "../components/context/GraphDataContext";
-import RoundDropdown from "../components/RoundDropdown";
-import { ActiveView } from "../types";
-import useIsMobile from "../components/Layout/useIsMobile";
+import SidebarComponent from "@/components/Layout/SideBarComponent";
+import ThreeGraph from "@/components/ThreeGraphWrapper";
+import { http, createConfig } from "wagmi";
+import { mainnet } from "wagmi/chains";
+import { WagmiProvider } from "wagmi";
+import ListView from "@/components/views/List/ListView";
+import GridView from "@/components/views/Grid/GridView";
+import GraphDataProvider from "@/components/context/GraphDataContext";
+import RoundDropdown from "@/components/misc/RoundDropdown";
+import { ActiveView } from "@/lib/types";
+import useIsMobile from "@/components/Layout/useIsMobile";
+import ReadMeView from "@/components/views/ReadMe/ReadMeView";
 
-export default function Home() {
+const Home = () => {
   const isMobile = useIsMobile();
   const [activeView, setActiveView] = useState<ActiveView>(ActiveView.None);
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [round, setRound] = useState(3);
 
   const handleSelectRound = useCallback((selectedRound: number) => {
     setRound(selectedRound);
-    setDropdownOpen(false);
   }, []);
-
-  const toggleDropdown = useCallback(() => {
-    setDropdownOpen(!isDropdownOpen);
-  }, [isDropdownOpen]);
 
   const handleItemClick = (view: ActiveView) => {
     if (activeView === view) {
@@ -41,23 +36,22 @@ export default function Home() {
   }, []);
 
   const configWagmi = createConfig({
-    autoConnect: true,
-    publicClient: createPublicClient({
-      chain: mainnet,
-      transport: http(),
-    }),
+    chains: [mainnet],
+    transports: {
+      [mainnet.id]: http(),
+    },
   });
 
   if (isMobile) {
     return (
-      <div className="flex justify-center text-white text-xl">
+      <div className="flex justify-center text-xl text-white">
         Mobile version not supported.
       </div>
     );
   }
 
   return (
-    <WagmiConfig config={configWagmi}>
+    <WagmiProvider config={configWagmi}>
       <GraphDataProvider round={round}>
         <main className="flex">
           <SidebarComponent
@@ -66,25 +60,22 @@ export default function Home() {
             handleItemClick={handleItemClick}
           />
           <div
-            className={`w-[35rem] relative ${
-              activeView === ActiveView.None ? "z-0" : "z-10"
+            className={`relative ${
+              activeView === ActiveView.None ? "z-0" : "z-20"
             }`}
           >
             {activeView === ActiveView.Grid && <GridView />}
             {activeView === ActiveView.List && <ListView />}
-            {activeView === ActiveView.Credits && <CreditsView />}
+            {activeView === ActiveView.ReadMe && <ReadMeView />}
           </div>
-          <RoundDropdown
-            isDropdownOpen={isDropdownOpen}
-            toggleDropdown={toggleDropdown}
-            round={round}
-            handleSelectRound={handleSelectRound}
-          />
+          <RoundDropdown round={round} handleSelectRound={handleSelectRound} />
           <div className="absolute">
             <ThreeGraph />
           </div>
         </main>
       </GraphDataProvider>
-    </WagmiConfig>
+    </WagmiProvider>
   );
-}
+};
+
+export default Home;

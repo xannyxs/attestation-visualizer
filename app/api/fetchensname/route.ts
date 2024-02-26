@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from "next/server";
-import { EthereumAddress } from "@/app/types";
+import { EthereumAddress } from "@/lib/types";
 import { JsonRpcProvider } from "ethers/providers";
 import { getAddress } from "viem";
 
@@ -8,7 +8,7 @@ async function fetchEnsName({
 }: {
   address: EthereumAddress;
 }): Promise<string | null> {
-  const provider = new JsonRpcProvider(process.env.INFURA_URL);
+  const provider = new JsonRpcProvider(process.env["INFURA_URL"]);
   const checksumAddress = getAddress(address);
 
   try {

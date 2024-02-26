@@ -3,7 +3,7 @@ import { NextResponse, NextRequest } from "next/server";
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const address = req.nextUrl.searchParams.get("address");
 
-  if (!process.env.NEXT_PUBLIC_OPENSEA_API) {
+  if (!process.env["OPENSEA_API"]) {
     return new NextResponse("Internal: Missing ENV variable", {
       status: 500,
     });
@@ -20,7 +20,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     {
       cache: "force-cache",
       headers: {
-        "X-API-KEY": process.env.NEXT_PUBLIC_OPENSEA_API,
+        "X-API-KEY": process.env["OPENSEA_API"],
         Accept: "application/json",
       },
     },
