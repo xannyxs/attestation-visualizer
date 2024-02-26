@@ -55,7 +55,7 @@ export default function ListView() {
   };
 
   return (
-    <ScrollArea className="relative bg-white h-full w-full overflow-y-auto max-h-[calc(100vh)] pr-1">
+    <ScrollArea className="relative bg-white h-full w-[35rem] overflow-y-auto max-h-[calc(100vh)] pr-1">
       <SearchBar view={"List view"} onChange={handleSearchChange} />
 
       {filteredCards.map(([key, value]) => (

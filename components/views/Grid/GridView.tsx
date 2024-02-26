@@ -58,7 +58,7 @@ export default function ListView() {
   };
 
   return (
-    <ScrollArea className="relative bg-white h-full w-full overflow-y-auto max-h-[calc(100vh)] pr-1">
+    <ScrollArea className="relative bg-white h-full w-[35rem] overflow-y-auto max-h-[calc(100vh)] pr-1">
       <SearchBar view={"Grid view"} onChange={handleSearchChange} />
 
       <div className="grid grid-cols-2 gap-2 m-2">
