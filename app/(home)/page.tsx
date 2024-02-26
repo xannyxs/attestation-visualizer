@@ -8,7 +8,6 @@ import { mainnet } from "wagmi/chains";
 import { WagmiProvider } from "wagmi";
 import ListView from "@/components/views/List/ListView";
 import GridView from "@/components/views/Grid/GridView";
-import CreditsView from "@/components/views/Credits/CreditsView";
 import GraphDataProvider from "@/components/context/GraphDataContext";
 import RoundDropdown from "@/components/RoundDropdown";
 import { ActiveView } from "@/lib/types";
@@ -60,12 +59,13 @@ const Home = () => {
             handleItemClick={handleItemClick}
           />
           <div
-            className={`w-[35rem] relative ${activeView === ActiveView.None ? "z-0" : "z-10"
-              }`}
+            className={`w-full relative ${
+              activeView === ActiveView.None ? "z-0" : "z-10"
+            }`}
           >
             {activeView === ActiveView.Grid && <GridView />}
             {activeView === ActiveView.List && <ListView />}
-            {activeView === ActiveView.Credits && <CreditsView />}
+            {activeView === ActiveView.ReadMe && <ReadMeView />}
           </div>
           <RoundDropdown round={round} handleSelectRound={handleSelectRound} />
           <div className="absolute">
