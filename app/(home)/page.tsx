@@ -60,7 +60,7 @@ const Home = () => {
             handleItemClick={handleItemClick}
           />
           <div
-            className={`w-full relative ${activeView === ActiveView.None ? "z-0" : "z-10"
+            className={`w-full relative ${activeView === ActiveView.None ? "z-0" : "z-20"
               }`}
           >
             {activeView === ActiveView.Grid && <GridView />}
