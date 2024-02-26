@@ -3,7 +3,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/ui/dropdown-menu";
 
 const RoundDropdown = ({
   round,
@@ -14,10 +14,10 @@ const RoundDropdown = ({
 }) => {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="absolute top-3 right-3 z-10 p-2 bg-white rounded-sm w-70">
+      <DropdownMenuTrigger className="absolute top-3 right-3 z-10 p-2 w-56 min-w-max bg-white rounded-sm">
         <span>Filter round | Current round: {round}</span>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-full">
+      <DropdownMenuContent className="w-56">
         <DropdownMenuItem onClick={() => handleSelectRound(2)}>
           Round 2
         </DropdownMenuItem>
