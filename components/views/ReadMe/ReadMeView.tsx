@@ -10,7 +10,7 @@ export default function ReadMeView() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const file = await fetchFile("README.md");
+      const file = await fetchFile("./public/README.md");
       setReadMe(file);
     };
 
