@@ -12,6 +12,7 @@ import GraphDataProvider from "@/components/context/GraphDataContext";
 import RoundDropdown from "@/components/RoundDropdown";
 import { ActiveView } from "@/lib/types";
 import useIsMobile from "@/components/Layout/useIsMobile";
+import ReadMeView from "@/components/views/ReadMe/ReadMeView";
 
 const Home = () => {
   const isMobile = useIsMobile();
@@ -59,9 +60,8 @@ const Home = () => {
             handleItemClick={handleItemClick}
           />
           <div
-            className={`w-full relative ${
-              activeView === ActiveView.None ? "z-0" : "z-10"
-            }`}
+            className={`w-full relative ${activeView === ActiveView.None ? "z-0" : "z-10"
+              }`}
           >
             {activeView === ActiveView.Grid && <GridView />}
             {activeView === ActiveView.List && <ListView />}
