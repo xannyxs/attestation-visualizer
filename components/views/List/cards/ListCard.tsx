@@ -22,9 +22,9 @@ const ListCard = ({
 
   return (
     <AlertDialog>
-      <div className="flex items-center m-2 transition-all cursor-pointer">
+      <div className="flex items-center m-2 transition-all">
         <AlertDialogTrigger>
-          <Card className="flex items-center w-full bg-gray-200 rounded-l-md transition-all hover:bg-red-100 hover:shadow-md">
+          <Card className="flex items-center w-full bg-gray-200 transition-all hover:bg-red-100 hover:shadow-md">
             <Image
               src={image}
               alt={`${card.currentAddress} Avatar`}
@@ -32,7 +32,7 @@ const ListCard = ({
               width={dimensions}
               height={dimensions}
             />
-            <div className="flex flex-col flex-grow justify-center pr-3 pl-3 border-l-2 truncate">
+            <div className="flex flex-col flex-grow justify-center pr-3 pl-3 w-full truncate">
               {card.ens ? (
                 <h2 className="font-semibold text-md truncate">
                   ENS Address: {card.ens}
