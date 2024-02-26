@@ -9,7 +9,7 @@ import { WagmiProvider } from "wagmi";
 import ListView from "@/components/views/List/ListView";
 import GridView from "@/components/views/Grid/GridView";
 import GraphDataProvider from "@/components/context/GraphDataContext";
-import RoundDropdown from "@/components/RoundDropdown";
+import RoundDropdown from "@/components/misc/RoundDropdown";
 import { ActiveView } from "@/lib/types";
 import useIsMobile from "@/components/Layout/useIsMobile";
 import ReadMeView from "@/components/views/ReadMe/ReadMeView";
