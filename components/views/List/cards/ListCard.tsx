@@ -52,7 +52,7 @@ const ListCard = ({
           <ShowNodeCard cardInfo={card} />
         </AlertDialogContent>
         <Card
-          className="flex justify-center items-center p-2 py-4 ml-2 bg-gray-200 transition-all hover:bg-red-100"
+          className="flex justify-center items-center p-2 py-4 ml-2 bg-gray-200 transition-all cursor-pointer hover:bg-red-100"
           onClick={onIconClick}
         >
           <LocateFixed size={25} />
