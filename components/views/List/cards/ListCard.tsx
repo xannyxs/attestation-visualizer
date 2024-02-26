@@ -32,7 +32,7 @@ const ListCard = ({
               width={dimensions}
               height={dimensions}
             />
-            <div className="flex flex-col justify-start px-3 truncate">
+            <div className="flex flex-col justify-center px-3 truncate">
               {card.ens ? (
                 <h2 className="font-semibold text-md truncate">
                   ENS Address: {card.ens}
