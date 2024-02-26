@@ -24,7 +24,7 @@ const ListCard = ({
     <AlertDialog>
       <div className="flex m-2 min-w-max transition-all">
         <AlertDialogTrigger>
-          <Card className="flex bg-gray-200 transition-all hover:bg-red-100 hover:shadow-md w-[490px]">
+          <Card className="flex items-center bg-gray-200 transition-all hover:bg-red-100 hover:shadow-md w-[490px]">
             <Image
               src={image}
               alt={`${card.currentAddress} Avatar`}
