@@ -13,14 +13,21 @@ import RoundDropdown from "@/components/misc/RoundDropdown";
 import { ActiveView } from "@/lib/types";
 import useIsMobile from "@/components/Layout/useIsMobile";
 import ReadMeView from "@/components/views/ReadMe/ReadMeView";
+import TwoGraph from "@/components/TwoGraphWrapper";
+import GraphSwitch from "@/components/misc/GraphSwitch";
 
 const Home = () => {
   const isMobile = useIsMobile();
   const [activeView, setActiveView] = useState<ActiveView>(ActiveView.None);
-  const [round, setRound] = useState(3);
+  const [loadThreeGraph, setLoadThreeGraph] = useState<boolean>(true);
+  const [round, setRound] = useState<number>(3);
 
   const handleSelectRound = useCallback((selectedRound: number) => {
     setRound(selectedRound);
+  }, []);
+
+  const handleSwitch = useCallback((selectedGraph: boolean) => {
+    setLoadThreeGraph(selectedGraph);
   }, []);
 
   const handleItemClick = (view: ActiveView) => {
@@ -68,10 +75,20 @@ const Home = () => {
             {activeView === ActiveView.List && <ListView />}
             {activeView === ActiveView.ReadMe && <ReadMeView />}
           </div>
+          <GraphSwitch
+            selectedGraph={loadThreeGraph}
+            handleSelectedGraph={handleSwitch}
+          />
           <RoundDropdown round={round} handleSelectRound={handleSelectRound} />
-          <div className="absolute">
-            <ThreeGraph />
-          </div>
+          {loadThreeGraph ? (
+            <div className="absolute">
+              <ThreeGraph />
+            </div>
+          ) : (
+            <div className="absolute">
+              <TwoGraph />
+            </div>
+          )}
         </main>
       </GraphDataProvider>
     </WagmiProvider>

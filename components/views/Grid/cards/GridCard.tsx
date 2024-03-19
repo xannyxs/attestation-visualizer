@@ -4,11 +4,7 @@ import ShowNodeCard from "@/components/ShowNodeCard";
 import { ICardProps as CardInfo } from "@/lib/types";
 import { Card } from "@/ui/card";
 import { Button } from "@/ui/button";
-import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 const GridCard = ({
   image,
@@ -22,7 +18,7 @@ const GridCard = ({
   const dimensions = 75;
 
   return (
-    <AlertDialog>
+    <Dialog>
       <Card className="flex flex-col justify-start py-1 bg-gray-100 transition-all hover:bg-red-100 truncate">
         <Button
           className="self-start p-2 mt-1 ml-2 bg-gray-200 rounded-md transition-all hover:bg-red-300"
@@ -31,7 +27,7 @@ const GridCard = ({
         >
           <LocateFixed size={25} className="text-black" />
         </Button>
-        <AlertDialogTrigger>
+        <DialogTrigger>
           <div className="p-2 photo-wrapper">
             <Image
               src={image}
@@ -66,12 +62,12 @@ const GridCard = ({
               </div>
             </div>
           </div>
-        </AlertDialogTrigger>
+        </DialogTrigger>
       </Card>
-      <AlertDialogContent>
+      <DialogContent>
         <ShowNodeCard cardInfo={card} />
-      </AlertDialogContent>
-    </AlertDialog>
+      </DialogContent>
+    </Dialog>
   );
 };
 
