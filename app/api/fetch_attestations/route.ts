@@ -1,7 +1,12 @@
 import { NextResponse, NextRequest } from "next/server";
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 import { Attestation } from "@/lib/types";
-import { c_CLIENT_URI, c_QUERY, c_GQL_VARIABLES, c_ATTESTER } from "@/CONFIG";
+import {
+  c_CLIENT_URI,
+  c_QUERY,
+  c_GQL_VARIABLES,
+  c_ATTESTER,
+} from "@/app.config";
 
 const createApolloClient = () =>
   new ApolloClient({
