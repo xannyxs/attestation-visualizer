@@ -1,49 +1,53 @@
 "use client";
 
 import { type ICardProps as CardType, type IGraph } from "@/lib/types";
-import React, { useState, useEffect, useRef, useMemo } from "react";
-import * as THREE from "three";
-import { ForceGraph3D } from "react-force-graph";
+import React, { useState, useEffect, useRef, useMemo, Suspense } from "react";
+import { ForceGraph2D } from "react-force-graph";
 import makeBlockie from "ethereum-blockies-base64";
 import { useGraphData } from "./context/GraphDataContext";
 import buildGraphData from "@/lib/utils/buildGraph";
 import { useSelectedNodeContext } from "./context/SelectedNodeContextProps";
 
-const initSprites = (
+const initImages = async (
   addressHashMap: Map<string, CardType>,
-): Map<string, THREE.Sprite> => {
-  const acc = Array.from(addressHashMap.entries()).reduce(
-    (acc, [key, value]) => {
-      let texture: THREE.Texture;
-      let data = value.imageUrl ?? "";
+): Promise<Map<string, HTMLImageElement>> => {
+  const acc = new Map<string, HTMLImageElement>();
 
-      if (data === "") {
-        return acc;
+  const loadImage = (key: string, data?: string): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      const image = new Image();
+      image.onload = () => {
+        acc.set(key, image);
+        resolve();
+      };
+      image.onerror = reject;
+
+      if (!data) {
+        image.src = makeBlockie(key);
+      } else {
+        image.src = data;
       }
+    });
+  };
 
-      texture = new THREE.TextureLoader().load(data);
-      const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
-      const sprite = new THREE.Sprite(spriteMaterial);
-      sprite.scale.set(8, 8, 0);
-
-      acc.set(key, sprite);
-      return acc;
-    },
-    new Map<string, THREE.Sprite>(),
-  );
+  const loadPromises = [];
+  Array.from(addressHashMap.entries()).forEach(([key, value]) => {
+    const data = value.imageUrl ?? "";
+    loadPromises.push(loadImage(key, data));
+  });
 
   if (!acc.has("0x0000000000000000000000000000000000000000")) {
-    const texture = new THREE.TextureLoader().load("sunny.png");
-    const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
-    const sprite = new THREE.Sprite(spriteMaterial);
-    sprite.scale.set(8, 8, 0);
-    acc.set("0x0000000000000000000000000000000000000000", sprite);
+    loadPromises.push(
+      loadImage("0x0000000000000000000000000000000000000000", "sunny.png"),
+    );
   }
+
+  await Promise.all(loadPromises);
 
   return acc;
 };
 
-const ThreeGraph = () => {
+const TwoGraph = () => {
   const fgRef = useRef<any>();
   const { selectedNodeId } = useSelectedNodeContext();
 
@@ -57,21 +61,16 @@ const ThreeGraph = () => {
   > | null>(null);
   const [highlightNodes, setHighlightNodes] = useState(new Set());
   const [highlightLinks, setHighlightLinks] = useState(new Set());
-  const [spriteCache, setSpriteCache] = useState(
-    new Map<string, THREE.Sprite>(),
+  const [imageCache, setImageCache] = useState(
+    new Map<string, HTMLImageElement>(),
   );
 
   const handleNodeClick = (node: any) => {
     setClickedNode(node);
     handleNodeHover(node, false);
 
-    const distance = 120;
-    const distRatio = 1 + distance / Math.hypot(node.x, node.y, node.z);
-    fgRef.current?.cameraPosition(
-      { x: node.x * distRatio, y: node.y * distRatio, z: node.z * distRatio },
-      node,
-      3000,
-    );
+    fgRef.current.centerAt(node.x, node.y, 1000);
+    fgRef.current.zoom(8, 2000);
   };
 
   useEffect(() => {
@@ -83,14 +82,14 @@ const ThreeGraph = () => {
     }
   }, [selectedNodeId, graph.nodes]);
 
-  useMemo(() => {
+  useMemo(async () => {
     if (graphDataContext) {
       const { graphData, addressHashMap } = graphDataContext;
       if (graphData && addressHashMap) {
         const buildedGraph = buildGraphData(graphData);
-        const newSpriteCache = initSprites(addressHashMap);
+        const newSpriteCache = await initImages(addressHashMap);
 
-        setSpriteCache(newSpriteCache);
+        setImageCache(newSpriteCache);
         setGraph(buildedGraph);
         setAddressHashMap(addressHashMap);
       }
@@ -153,41 +152,49 @@ const ThreeGraph = () => {
   };
 
   return (
-    <ForceGraph3D
-      ref={fgRef}
-      graphData={graph}
-      nodeAutoColorBy="type"
-      linkAutoColorBy="type"
-      linkWidth={(link) => (highlightLinks.has(link) ? 1.5 : 0.2)}
-      linkOpacity={0.5}
-      linkDirectionalArrowLength={3.5}
-      linkDirectionalArrowRelPos={1}
-      linkDirectionalParticles={(link) =>
-        highlightLinks.has(link) ? 20 : 0.06
-      }
-      linkColor={(link) => (highlightLinks.has(link) ? "red" : "lightblue")}
-      onNodeClick={(node) => {
-        const selectedNode = addressHashMap!.get(node.id);
-        if (selectedNode) {
-          handleNodeClick(node);
-          // openModal(<ShowNodeCard cardInfo={selectedNode} />);
+    <Suspense fallback={<div className="text-3xl text-white">Loading...</div>}>
+      <ForceGraph2D
+        ref={fgRef}
+        graphData={graph}
+        nodeAutoColorBy="type"
+        linkAutoColorBy="type"
+        linkWidth={(link) => (highlightLinks.has(link) ? 1.0 : 0.2)}
+        linkDirectionalArrowLength={3.5}
+        linkDirectionalArrowRelPos={1}
+        linkDirectionalParticles={(link) =>
+          highlightLinks.has(link) ? 10 : 0.06
         }
-      }}
-      nodeThreeObject={(node: any) => {
-        let sprite = spriteCache.get(node.id);
-        if (!sprite) {
-          const data = makeBlockie(node.id);
-          const texture = new THREE.TextureLoader().load(data);
-          const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
-          sprite = new THREE.Sprite(spriteMaterial);
-          sprite.scale.set(8, 8, 0);
-          spriteCache.set(node.id, sprite);
-        }
-        return sprite as unknown as THREE.Object3D;
-      }}
-      onNodeHover={(node) => handleNodeHover(node, true)}
-    />
+        linkColor={(link) => (highlightLinks.has(link) ? "red" : "lightblue")}
+        onNodeClick={(node) => {
+          const selectedNode = addressHashMap!.get(node.id);
+          if (selectedNode) {
+            handleNodeClick(node);
+            // openModal(<ShowNodeCard cardInfo={selectedNode} />);
+          }
+        }}
+        nodeCanvasObject={(node, ctx) => {
+          const size = 6;
+          const image = imageCache.get(node.id);
+
+          if (image) {
+            ctx.drawImage(
+              image,
+              node.x! - size / 2,
+              node.y! - size / 2,
+              size,
+              size,
+            );
+          } else {
+            ctx.beginPath();
+            ctx.arc(node.x!, node.y!, size / 2, 0, 2 * Math.PI, false);
+            ctx.fillStyle = "lightblue";
+            ctx.fill();
+          }
+        }}
+        onNodeHover={(node) => handleNodeHover(node, true)}
+      />
+    </Suspense>
   );
 };
 
-export default ThreeGraph;
+export default TwoGraph;
