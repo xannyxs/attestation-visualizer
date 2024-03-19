@@ -1,9 +1,7 @@
 import InfoBar from "./dialogCard/InfoBar";
 import EnsBar from "./dialogCard/EnsBox";
 import ProfilePicture from "./dialogCard/ProfilePicture";
-import { X } from "lucide-react";
 import { ICardProps } from "@/lib/types";
-import { DialogClose } from "./ui/dialog";
 
 const ShowNodeCard = ({ cardInfo }: { cardInfo: ICardProps }) => {
   return (
