@@ -7,6 +7,7 @@ import GraphSwitch from "@/components/misc/GraphSwitch";
 import attestationFetch from "@/lib/actions/attestationFetch";
 import buildAddressHashMap from "@/lib/utils/buildAddressHashmap";
 import SideBar from "@/components/Sidebar/Sidebar";
+import { notFound } from "next/navigation";
 
 const Graph = async ({
   searchParams,
@@ -21,7 +22,7 @@ const Graph = async ({
 
   if (!roundParam || !graphParam) {
     console.log("Missing roundParam or graphParam");
-    return null;
+    return notFound();
   }
 
   const graphData = await attestationFetch(roundParam);
