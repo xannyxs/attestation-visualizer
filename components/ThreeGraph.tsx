@@ -8,7 +8,7 @@ import {
 } from "@/lib/types";
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import * as THREE from "three";
-import ForceGraph3D from "react-force-graph-3d";
+import { ForceGraph3D } from "react-force-graph";
 import makeBlockie from "ethereum-blockies-base64";
 import buildGraphData from "@/lib/utils/buildGraph";
 import { useSelectedNodeContext } from "./context/SelectedNodeContextProps";
@@ -61,7 +61,7 @@ const ThreeGraph = ({
   const [graph, setGraph] = useState<IGraph>({ nodes: [], links: [] });
   const [highlightNodes, setHighlightNodes] = useState(new Set());
   const [highlightLinks, setHighlightLinks] = useState(new Set());
-  const [spriteCache, setSetSpriteCache] = useState(
+  const [spriteCache, setSpriteCache] = useState(
     new Map<string, THREE.Sprite>(),
   );
 
@@ -91,29 +91,6 @@ const ThreeGraph = ({
     const buildedGraph = buildGraphData(graphData);
     const newSpriteCache = initSprites(addresses);
 
-<<<<<<< Updated upstream
-        setSetSpriteCache(newSpriteCache);
-        setGraph(buildedGraph);
-        setAddressHashMap(addressHashMap);
-      }
-    }
-  }, [graphDataContext?.graphData, graphDataContext?.addressHashMap]);
-
-  if (!graphDataContext) {
-    return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}
-      >
-        An error occurred
-      </div>
-    );
-  }
-||||||| Stash base
         setSpriteCache(newSpriteCache);
         setGraph(buildedGraph);
         setAddressHashMap(addressHashMap);
@@ -135,11 +112,30 @@ const ThreeGraph = ({
       </div>
     );
   }
-=======
+        setSpriteCache(newSpriteCache);
+        setGraph(buildedGraph);
+        setAddressHashMap(addressHashMap);
+      }
+    }
+  }, [graphDataContext?.graphData, graphDataContext?.addressHashMap]);
+
+  if (!graphDataContext) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        An error occurred
+      </div>
+    );
+  }
     setSpriteCache(newSpriteCache);
     setGraph(buildedGraph);
   }, [graphData, addresses]);
->>>>>>> Stashed changes
 
   const handleNodeHover = (node: any, hover: boolean) => {
     if ((hover && clickedNode && clickedNode === node) || !node) return;

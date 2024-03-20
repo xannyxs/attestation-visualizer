@@ -3,11 +3,7 @@ import { LocateFixed } from "lucide-react";
 import ShowNodeCard from "@/components/ShowNodeCard";
 import { ICardProps as CardInfo } from "@/lib/types";
 import { Card } from "@/components/ui/card";
-import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 const ListCard = ({
   image,
@@ -21,9 +17,9 @@ const ListCard = ({
   const dimensions = 55;
 
   return (
-    <AlertDialog>
+    <Dialog>
       <div className="flex m-2 min-w-max transition-all">
-        <AlertDialogTrigger>
+        <DialogTrigger>
           <Card className="flex items-center bg-gray-200 transition-all hover:bg-red-100 hover:shadow-md w-[490px]">
             <Image
               src={image}
@@ -47,10 +43,10 @@ const ListCard = ({
               </p>
             </div>
           </Card>
-        </AlertDialogTrigger>
-        <AlertDialogContent>
+        </DialogTrigger>
+        <DialogContent>
           <ShowNodeCard cardInfo={card} />
-        </AlertDialogContent>
+        </DialogContent>
         <Card
           className="flex justify-center items-center p-2 py-4 ml-2 bg-gray-200 transition-all cursor-pointer hover:bg-red-100"
           onClick={onIconClick}
@@ -58,7 +54,7 @@ const ListCard = ({
           <LocateFixed size={25} />
         </Card>
       </div>
-    </AlertDialog>
+    </Dialog>
   );
 };
 
