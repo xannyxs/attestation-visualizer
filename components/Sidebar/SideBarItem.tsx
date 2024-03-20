@@ -2,13 +2,11 @@ import { ChevronLast, ChevronFirst } from "lucide-react";
 import Image from "next/image";
 import { useContext, createContext, useState, ReactNode } from "react";
 
-interface SidebarContextType {
-  expanded: boolean;
-}
+const SidebarContext = createContext<{ expanded: boolean } | undefined>(
+  undefined,
+);
 
-const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
-
-const Sidebar = ({ children }: { children: ReactNode }) => {
+export const SidebarUI = ({ children }: { children: ReactNode }) => {
   const [expanded, setExpanded] = useState(false);
   const dimension = 50;
 
@@ -94,5 +92,3 @@ export const SidebarItem = ({
     </li>
   );
 };
-
-export default Sidebar;

@@ -8,11 +8,15 @@ import React, {
   ReactNode,
 } from "react";
 import buildAddressHashMap from "@/lib/utils/buildAddressHashmap";
-import { ICardProps as CardType, EthereumAddress } from "@/lib/types";
+import {
+  Attestation,
+  ICardProps as CardType,
+  EthereumAddress,
+} from "@/lib/types";
 import attestationFetch from "@/lib/actions/attestationFetch";
 
 interface GraphDataContextType {
-  graphData: any;
+  graphData: Attestation[] | null;
   addressHashMap: Map<EthereumAddress, CardType> | null;
 }
 
@@ -27,7 +31,7 @@ export default function GraphDataProvider({
   children: ReactNode;
   round: number;
 }) {
-  const [graphData, setGraphData] = useState<any>(null);
+  const [graphData, setGraphData] = useState<Attestation[] | null>(null);
   const [addressHashMap, setAddressHashMap] = useState<Map<
     EthereumAddress,
     CardType

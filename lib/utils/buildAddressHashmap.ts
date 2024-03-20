@@ -1,4 +1,4 @@
-import { fetchOptimismNFTImage } from "@/components/dialogCard/ProfilePicture";
+import openSeaFetch from "../actions/openSeaFetch";
 import { Attestation, EthereumAddress, ICardProps as CardType } from "../types";
 import fetchEnsName from "./fetchEnsName";
 
@@ -11,7 +11,7 @@ export default async function buildAddressHashMap(
     [EthereumAddress, string, string | null, number | null]
   >[] = attestations.map(async (attestation) => {
     const retroPGFRound = Number(attestation.decodedDataJson[0]!.value.value);
-    const imageUrl = await fetchOptimismNFTImage(attestation.recipient);
+    const imageUrl = await openSeaFetch(attestation.recipient);
 
     let ens: string | null;
     if (process.env.NODE_ENV === "production") {

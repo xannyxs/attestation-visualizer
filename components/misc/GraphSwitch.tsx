@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/ui/dropdown-menu";
 
-const RoundDropdown = ({
+const GraphSwitch = ({
   selectedRound,
   selectedGraph,
 }: {
@@ -17,18 +17,18 @@ const RoundDropdown = ({
 }) => {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="absolute top-3 right-3 z-10 p-2 w-56 min-w-max bg-white rounded-sm">
-        <span>Filter round | Current round: {selectedRound}</span>
+      <DropdownMenuTrigger className="absolute top-3 right-64 min-w-max z-10 p-2 w-96 bg-white rounded-sm">
+        <span>Choose type of graph | Current graph: {selectedGraph} Graph</span>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
-        <Link href={`/graph?graph=${selectedGraph}&round=2`}>
+      <DropdownMenuContent className="w-96">
+        <Link href={`/graph?graph=2d&round=${selectedRound}`}>
           <DropdownMenuItem className="cursor-pointer">
-            Round 2
+            2D Graph
           </DropdownMenuItem>
         </Link>
-        <Link href={`/graph?graph=${selectedGraph}&round=3`}>
+        <Link href={`/graph?graph=3d&round=${selectedRound}`}>
           <DropdownMenuItem className="cursor-pointer">
-            Round 3
+            3D Graph
           </DropdownMenuItem>
         </Link>
       </DropdownMenuContent>
@@ -36,4 +36,4 @@ const RoundDropdown = ({
   );
 };
 
-export default RoundDropdown;
+export default GraphSwitch;
