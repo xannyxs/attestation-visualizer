@@ -1,8 +1,8 @@
 "use client";
 
 import {
-  Attestation,
   EthereumAddress,
+  Attestation,
   type ICardProps as CardType,
   type IGraph,
 } from "@/lib/types";
@@ -91,48 +91,6 @@ const ThreeGraph = ({
     const buildedGraph = buildGraphData(graphData);
     const newSpriteCache = initSprites(addresses);
 
-        setSpriteCache(newSpriteCache);
-        setGraph(buildedGraph);
-        setAddressHashMap(addressHashMap);
-      }
-    }
-  }, [graphDataContext?.graphData, graphDataContext?.addressHashMap]);
-
-  if (!graphDataContext) {
-    return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}
-      >
-        An error occurred
-      </div>
-    );
-  }
-        setSpriteCache(newSpriteCache);
-        setGraph(buildedGraph);
-        setAddressHashMap(addressHashMap);
-      }
-    }
-  }, [graphDataContext?.graphData, graphDataContext?.addressHashMap]);
-
-  if (!graphDataContext) {
-    return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}
-      >
-        An error occurred
-      </div>
-    );
-  }
     setSpriteCache(newSpriteCache);
     setGraph(buildedGraph);
   }, [graphData, addresses]);

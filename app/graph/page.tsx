@@ -28,8 +28,8 @@ const Graph = async ({
   const addresses = await buildAddressHashMap(graphData);
 
   return (
-    <>
-      <div className="flex"></div>
+    <div className="flex">
+      <SideBar addresses={addresses} />
       <RoundDropdown selectedRound={roundParam} selectedGraph={graphParam} />
       <GraphSwitch selectedRound={roundParam} selectedGraph={graphParam} />
       <div className="absolute">
@@ -39,7 +39,7 @@ const Graph = async ({
           <TwoGraph graphData={graphData} addresses={addresses} />
         )}
       </div>
-    </>
+    </div>
   );
 };
 
