@@ -14,10 +14,12 @@
     "3d-force-graph": "1.73.x",
     "@apollo/client": "^3.8.1",
     "@ethereum-attestation-service/eas-sdk": "^1.1.0-beta.2",
+    "@faker-js/faker": "^8.4.1",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-dropdown-menu": "^2.0.6",
     "@radix-ui/react-scroll-area": "^1.0.5",
     "@radix-ui/react-slot": "^1.0.2",
+    "@radix-ui/react-tabs": "^1.0.4",
     "@tanstack/react-query": "^5.24.1",
     "@vercel/analytics": "latest",
     "@vercel/speed-insights": "latest",
@@ -44,8 +46,7 @@
     "three": "^0.155.0",
     "ua-parser-js": "^1.0.37",
     "viem": "2.x",
-    "wagmi": "^2.5.x",
-    "@faker-js/faker": "^8.4.1"
+    "wagmi": "^2.5.x"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.x.x",

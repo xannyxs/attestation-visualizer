@@ -8,46 +8,50 @@ import {
   LineElement,
   Title,
   Tooltip,
-  Legend,
+  Filler,
 } from "chart.js";
-import { Doughnut, Bar, Line } from "react-chartjs-2";
-import { faker } from "@faker-js/faker";
+import { Line } from "react-chartjs-2";
+import { Attestation } from "@/lib/types";
 
-const BadgeholdersChart = () => {
+const BadgeholdersChart = ({
+  attestations,
+}: {
+  attestations: Attestation[];
+}) => {
   ChartJS.register(
     CategoryScale,
     LinearScale,
     PointElement,
     LineElement,
     Title,
+    Filler,
     Tooltip,
-    Legend,
   );
 
-  const labels = ["Round 2", "Round 3", "Round 4"];
+  const labels = ["Round 2", "Round 3"];
+  const dataCounts = labels.map((label) => {
+    const roundNumber = parseInt(label.split(" ")[1]!, 10);
+    return attestations.filter((attestation) => {
+      return (
+        attestation.decodedDataJson[0]?.value?.value === roundNumber.toString()
+      );
+    }).length;
+  });
 
   const data = {
     labels,
     datasets: [
       {
+        fill: true,
         label: "Amount of Badgeholders",
-        data: labels.map(() => faker.number.int({ min: 0, max: 1000 })),
-        backgroundColor: "rgba(255, 99, 132, 1)",
+        data: dataCounts,
+        backgroundColor: "lightblue",
       },
     ],
   };
 
   const options = {
     responsive: true,
-    plugins: {
-      legend: {
-        position: "top" as const,
-      },
-      title: {
-        display: true,
-        text: "Amount of Badgeholders per round",
-      },
-    },
   };
 
   return <Line options={options} data={data} />;

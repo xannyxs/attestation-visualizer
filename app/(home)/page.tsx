@@ -1,12 +1,11 @@
 "use server";
 
-import { Card } from "@/components/ui/card";
-import Link from "next/link";
-import { Boxes } from "lucide-react";
 import attestationFetch from "@/lib/actions/attestationFetch";
 import { redirect } from "next/navigation";
-import buildAddressHashMap from "@/lib/utils/buildAddressHashmap";
+// import buildAddressHashMap from "@/lib/utils/buildAddressHashmap";
 import BadgeholdersChart from "./components/charts/BadgeholdersChart";
+import TokenChart from "./components/charts/TokenChart";
+import InformativeGrid from "./components/InformativeGrid";
 
 const Home = async ({
   searchParams,
@@ -23,24 +22,19 @@ const Home = async ({
     redirect("/?graph=3d&round=3");
   }
 
-  const graphData = await attestationFetch(roundParam);
-  const addresses = await buildAddressHashMap(graphData);
+  const attestations = await attestationFetch();
+  // const addresses = await buildAddressHashMap(attestations);
 
   return (
-    <div className="h-screen bg-white p-4 grid grid-rows-4 grid-cols-3 gap-4">
-      <div className="bg-gray-200 row-span-4 col-span-1 p-4 flex flex-col justify-between">
-        <Link href={"/graph?graph=3d&round=3"}>
-          <Card className="bg-gray-300 p-4 hover:bg-red-200 transition-colors flex items-center justify-between font-semibold">
-            <Boxes />
-            See Attestation Visualiser
-          </Card>
-        </Link>
+    <div className="grid grid-cols-3 grid-rows-4 gap-4 p-4 h-screen bg-white">
+      <div className="flex flex-col col-span-1 row-span-4 justify-between p-4 bg-gray-200">
+        <InformativeGrid />
       </div>
-      <div className="bg-gray-200 row-span-2 col-span-2 p-4 flex justify-center items-center">
-        <BadgeholdersChart />
+      <div className="flex col-span-2 row-span-2 justify-center items-center p-4 bg-gray-200">
+        <BadgeholdersChart attestations={attestations} />
       </div>
-      <div className="bg-gray-200 row-span-2 col-span-2 p-4 flex justify-center items-center">
-        Chart - 3
+      <div className="flex col-span-2 row-span-2 justify-center items-center p-4 bg-gray-200">
+        <TokenChart />
       </div>
     </div>
   );
