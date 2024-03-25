@@ -17,7 +17,7 @@ const createApolloClient = () =>
 
 const fetchAttestations = async (
   client: ApolloClient<any>,
-  round: number,
+  round?: number,
 ): Promise<Attestation[]> => {
   const { data } = await client.query({
     query: gql`
@@ -36,11 +36,12 @@ const fetchAttestations = async (
     }))
     .filter(
       (attestation: Attestation) =>
+        round === undefined ||
         attestation.decodedDataJson[0]!.value.value === round.toString(),
     );
 };
 
-const attestationFetch = async (round: number) => {
+const attestationFetch = async (round?: number) => {
   const client = createApolloClient();
 
   const attestations = await fetchAttestations(client, round);

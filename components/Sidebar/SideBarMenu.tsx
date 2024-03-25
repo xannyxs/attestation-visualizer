@@ -1,29 +1,27 @@
-import SideBar, { SidebarItem } from "@/components/SideBar";
+import { SidebarUI, SidebarItem } from "./SideBarItem";
 import { FileQuestion, LayoutGrid, Rows, Bug, Rocket } from "lucide-react";
 import { ActiveView } from "@/lib/types";
 
-interface SidebarComponentProps {
-  handleRoute: (href: string) => void;
-  activeView: ActiveView;
-  handleItemClick: (view: ActiveView) => void;
-}
-
-const SidebarComponent: React.FC<SidebarComponentProps> = ({
-  handleRoute,
+const SidebarMenu = ({
   activeView,
   handleItemClick,
+}: {
+  activeView: ActiveView;
+  handleItemClick: (view: ActiveView) => void;
 }) => {
+  const handleRoute = (href: string) => {
+    window.open(href, "_blank");
+  };
+
   return (
     <div className="relative z-10 w-[1/4]">
-      <SideBar>
-        {
-          <SidebarItem
-            icon={<LayoutGrid size={20} />}
-            text="Grid view"
-            active={activeView === "grid"}
-            onClick={() => handleItemClick(ActiveView.Grid)}
-          />
-        }
+      <SidebarUI>
+        <SidebarItem
+          icon={<LayoutGrid size={20} />}
+          text="Grid view"
+          active={activeView === "grid"}
+          onClick={() => handleItemClick(ActiveView.Grid)}
+        />
         <SidebarItem
           icon={<Rows size={20} />}
           text="List view"
@@ -54,9 +52,9 @@ const SidebarComponent: React.FC<SidebarComponentProps> = ({
           active={activeView === "readme"}
           onClick={() => handleItemClick(ActiveView.ReadMe)}
         />
-      </SideBar>
+      </SidebarUI>
     </div>
   );
 };
 
-export default SidebarComponent;
+export default SidebarMenu;

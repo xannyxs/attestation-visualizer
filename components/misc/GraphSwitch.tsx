@@ -1,3 +1,6 @@
+"use client";
+
+import Link from "next/link";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -6,26 +9,28 @@ import {
 } from "@/ui/dropdown-menu";
 
 const GraphSwitch = ({
+  selectedRound,
   selectedGraph,
-  handleSelectedGraph,
 }: {
-  selectedGraph: boolean;
-  handleSelectedGraph: (SelectedGraph: boolean) => void;
+  selectedRound: number;
+  selectedGraph: string;
 }) => {
-  const graphText = selectedGraph ? "3DGraph" : "2DGraph";
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="absolute top-3 right-64 min-w-max z-10 p-2 w-96 bg-white rounded-sm">
-        <span>Choose type of graph | Current graph: {graphText}</span>
+        <span>Choose type of graph | Current graph: {selectedGraph} Graph</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-96">
-        <DropdownMenuItem onClick={() => handleSelectedGraph(false)}>
-          2D Graph
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleSelectedGraph(true)}>
-          3D Graph
-        </DropdownMenuItem>
+        <Link href={`/graph?graph=2d&round=${selectedRound}`}>
+          <DropdownMenuItem className="cursor-pointer">
+            2D Graph
+          </DropdownMenuItem>
+        </Link>
+        <Link href={`/graph?graph=3d&round=${selectedRound}`}>
+          <DropdownMenuItem className="cursor-pointer">
+            3D Graph
+          </DropdownMenuItem>
+        </Link>
       </DropdownMenuContent>
     </DropdownMenu>
   );

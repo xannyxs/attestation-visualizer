@@ -1,10 +1,14 @@
 "use client";
 
-import { type ICardProps as CardType, type IGraph } from "@/lib/types";
+import {
+  type ICardProps as CardType,
+  type Attestation,
+  type EthereumAddress,
+  type IGraph,
+} from "@/lib/types";
 import React, { useState, useEffect, useRef, useMemo, Suspense } from "react";
 import { ForceGraph2D } from "react-force-graph";
 import makeBlockie from "ethereum-blockies-base64";
-import { useGraphData } from "./context/GraphDataContext";
 import buildGraphData from "@/lib/utils/buildGraph";
 import { useSelectedNodeContext } from "./context/SelectedNodeContextProps";
 
@@ -47,18 +51,18 @@ const initImages = async (
   return acc;
 };
 
-const TwoGraph = () => {
+const TwoGraph = ({
+  graphData,
+  addresses,
+}: {
+  graphData: Attestation[];
+  addresses: Map<EthereumAddress, CardType>;
+}) => {
   const fgRef = useRef<any>();
   const { selectedNodeId } = useSelectedNodeContext();
 
-  const graphDataContext = useGraphData();
-
   const [clickedNode, setClickedNode] = useState(null);
   const [graph, setGraph] = useState<IGraph>({ nodes: [], links: [] });
-  const [addressHashMap, setAddressHashMap] = useState<Map<
-    string,
-    CardType
-  > | null>(null);
   const [highlightNodes, setHighlightNodes] = useState(new Set());
   const [highlightLinks, setHighlightLinks] = useState(new Set());
   const [imageCache, setImageCache] = useState(
@@ -83,33 +87,12 @@ const TwoGraph = () => {
   }, [selectedNodeId, graph.nodes]);
 
   useMemo(async () => {
-    if (graphDataContext) {
-      const { graphData, addressHashMap } = graphDataContext;
-      if (graphData && addressHashMap) {
-        const buildedGraph = buildGraphData(graphData);
-        const newSpriteCache = await initImages(addressHashMap);
+    const buildedGraph = buildGraphData(graphData);
+    const newSpriteCache = await initImages(addresses);
 
-        setImageCache(newSpriteCache);
-        setGraph(buildedGraph);
-        setAddressHashMap(addressHashMap);
-      }
-    }
-  }, [graphDataContext?.graphData, graphDataContext?.addressHashMap]);
-
-  if (!graphDataContext) {
-    return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}
-      >
-        An error occurred
-      </div>
-    );
-  }
+    setImageCache(newSpriteCache);
+    setGraph(buildedGraph);
+  }, [graphData, addresses]);
 
   const handleNodeHover = (node: any, hover: boolean) => {
     if ((hover && clickedNode && clickedNode === node) || !node) return;
@@ -122,9 +105,8 @@ const TwoGraph = () => {
 
       highlightNodes.add(currentNode);
 
-      const additionalInfo = addressHashMap!.get(currentNode.id);
+      const additionalInfo = addresses.get(currentNode.id);
       let referredBy = additionalInfo?.referredBy;
-
       if (!referredBy) return;
 
       if (referredBy === "Optimism Foundation") {
@@ -166,7 +148,7 @@ const TwoGraph = () => {
         }
         linkColor={(link) => (highlightLinks.has(link) ? "red" : "lightblue")}
         onNodeClick={(node) => {
-          const selectedNode = addressHashMap!.get(node.id);
+          const selectedNode = addresses.get(node.id as EthereumAddress);
           if (selectedNode) {
             handleNodeClick(node);
             // openModal(<ShowNodeCard cardInfo={selectedNode} />);

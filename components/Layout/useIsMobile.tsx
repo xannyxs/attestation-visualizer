@@ -1,20 +1,21 @@
-import { useState, useEffect } from "react";
+"use server";
 
-function useIsMobile() {
-  const [isMobile, setIsMobile] = useState(false);
+import { headers } from "next/headers";
+import { UAParser } from "ua-parser-js";
 
-  useEffect(() => {
-    const userAgent =
-      typeof window.navigator === "undefined" ? "" : navigator.userAgent;
-    const mobile = Boolean(
-      userAgent.match(
-        /Android|BlackBerry|iPhone|iPod|Opera Mini|IEMobile|WPDesktop/i,
-      ),
+const isMobileDevice = async () => {
+  if (typeof process === "undefined") {
+    throw new Error(
+      "[Server method] you are importing a server-only module outside of server",
     );
-    setIsMobile(mobile);
-  }, []);
+  }
 
-  return isMobile;
-}
+  const { get } = headers();
+  const ua = get("user-agent");
 
-export default useIsMobile;
+  const device = new UAParser(ua || "").getDevice();
+
+  return device.type === "mobile";
+};
+
+export default isMobileDevice;
