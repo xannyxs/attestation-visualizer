@@ -28,14 +28,16 @@ const fetchAttestations = async (
   });
 
   return data.attestations
-    .filter((attestation: Attestation) => attestation.attester === c_ATTESTER)
     .map((attestation: any) => ({
       ...attestation,
       decodedDataJson: JSON.parse(attestation.decodedDataJson),
     }))
     .filter(
       (attestation: Attestation) =>
-        attestation.decodedDataJson[0]!.value.value === round,
+        attestation.decodedDataJson[0]!.value.value === round.toString(),
+    )
+    .filter((attestation: Attestation) =>
+      c_ATTESTER.includes(attestation.attester),
     );
 };
 
