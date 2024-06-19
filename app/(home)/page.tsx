@@ -20,7 +20,7 @@ const Home = () => {
   const isMobile = useIsMobile();
   const [activeView, setActiveView] = useState<ActiveView>(ActiveView.None);
   const [loadThreeGraph, setLoadThreeGraph] = useState<boolean>(true);
-  const [round, setRound] = useState<number>(3);
+  const [round, setRound] = useState<number>(4);
 
   const handleSelectRound = useCallback((selectedRound: number) => {
     setRound(selectedRound);

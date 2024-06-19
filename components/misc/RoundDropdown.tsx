@@ -24,6 +24,9 @@ const RoundDropdown = ({
         <DropdownMenuItem onClick={() => handleSelectRound(3)}>
           Round 3
         </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => handleSelectRound(4)}>
+          Round 4
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

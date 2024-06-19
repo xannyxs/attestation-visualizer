@@ -18,5 +18,8 @@ export const c_GQL_VARIABLES = {
   },
 };
 
-export const c_ATTESTER = "0x621477dBA416E12df7FF0d48E14c4D20DC85D7D9";
+export const c_ATTESTER = [
+  "0x621477dBA416E12df7FF0d48E14c4D20DC85D7D9",
+  "0xE4553b743E74dA3424Ac51f8C1E586fd43aE226F",
+];
 export const c_CLIENT_URI = "https://optimism.easscan.org/graphql";
